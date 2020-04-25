@@ -13,7 +13,9 @@
   "author": "Facebook",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
     "body-parser": "^1.15.0",
+    "cheerio": "^1.0.0-rc.3",
     "express": "^4.13.4",
     "request": "^2.88.2"
   },

@@ -26,8 +26,11 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 const 
   request = require('request'),
   express = require('express'),
+  axios = require('axios'),
+  cheerio = require('cheerio'),
   body_parser = require('body-parser'),
   app = express().use(body_parser.json()); // creates express http server
+  
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
@@ -110,10 +113,14 @@ function handleMessage(sender_psid, received_message) {
     response = {
       "text": `You are searching for: "${received_message.text}".`
     }
-    url = "https://www.roguefitness.com/rogue-color-echo-bumper-plate";
-    $.get(url, function( data ) {
-    console.log(data);     
-    });
+    const url = "https://www.roguefitness.com/rogue-color-echo-bumper-plate";
+    axios.get(url)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
     let attachment_url = received_message.attachments[0].payload.url;

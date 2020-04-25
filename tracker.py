@@ -39,14 +39,12 @@ def check_page():
     print(out_stock_items)
     print("")
 
-    username = "jonnyxchow@gmail.com"
-    client = fbchat.Client(username, getpass()) 
+    # username = "jonnyxchow@gmail.com"
+    # client = fbchat.Client(username, getpass()) 
     
-    print("Own id: {}".format(client.uid))
+    # print("Own id: {}".format(client.uid))
 
-    client.send(Message(text="Hi me!"), thread_id=client.uid, thread_type=ThreadType.USER)
-
-    client.logout()
+   
 
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
