@@ -147,12 +147,16 @@ function handleMessage(sender_psid, received_message) {
         else {
           avail = deocdeURI('\u2705');
         }
-        item_str += data[i]['name'] + "\n" + data[i]['price'] + "\n" + avail + "\n"
+        item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
       }
-  
+      var today = new Date();
+      var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+      var time = today.getHours() % 12 + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var dateTime = time + ' ' + date;
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
-              item_str
+              item_str + 
+              "Checked On " + dateTime
       };
       //console.log(response);
       callSendAPI(sender_psid, response);
