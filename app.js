@@ -129,9 +129,9 @@ function handleMessage(sender_psid, received_message) {
   
       console.log("Date" + JSON.stringify(items));
       response = {
-        "text": `You are searching for: "${received_message.text}".` + "\n" + 
+        "text": `You are searching for: "${received_message.text}".` //+ "\n" + 
                //this.url + "\n" //+ 
-              JSON.stringify(items)
+              //JSON.stringify(items)
       };
   
     });
