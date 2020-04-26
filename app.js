@@ -103,6 +103,29 @@ app.get('/webhook', (req, res) => {
   }
 });
 
+function get_data_from_url(callback) {
+      request({
+        method: 'GET',
+        url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
+      }, function(error, response, html) {
+        if(error){ return callback(error) };
+        if (!error && response.statusCode == 200) {
+          let $ = cheerio.load(html);
+          var items = [];
+
+          $('.grouped-item').each(function(index, element) {
+            items[index] = {};
+            items[index]['name'] = $(element).find('.item-name').text();
+            items[index]['price'] = $(element).find('.price').text();
+            items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+          });
+
+          callback(null, items);
+        } 
+
+      });
+}
+
 function handleMessage(sender_psid, received_message) {
   let response;
   
@@ -110,32 +133,16 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    var items = [];
-    request({
-      method: 'GET',
-      url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
-    }, (err, res, body) => {
-      if (err) return console.error(err);
-      //console.log("Loading: " + this.url);
-      let $ = cheerio.load(body);
+    
+    get_data_from_url(function(err, items){
+      response = {
+        "text": `You are searching for: "${received_message.text}".` + "\n" + 
+               //this.url + "\n" //+ 
+              JSON.stringify(items)
+      };
+    })
 
-      
-
-      $('.grouped-item').each(function(index, element) {
-        items[index] = {};
-        items[index]['name'] = $(element).find('.item-name').text();
-        items[index]['price'] = $(element).find('.price').text();
-        items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
-      });
-
-      console.log("Date" + JSON.stringify(items));
-    });
-
-    response = {
-      "text": `You are searching for: "${received_message.text}".` + "\n" + 
-             //this.url + "\n" //+ 
-            JSON.stringify(items)
-    };
+    
     
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
