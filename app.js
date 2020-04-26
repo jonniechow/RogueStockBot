@@ -25,7 +25,6 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 // Imports dependencies and set up http server
 const 
   request = require('request'),
-  rp = require('request-promise'),
   express = require('express'),
   axios = require('axios'),
   cheerio = require('cheerio'),
@@ -104,6 +103,28 @@ app.get('/webhook', (req, res) => {
   }
 });
 
+function  getData(callback) {
+  request({
+    method: 'GET',
+    url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
+  }, function(error, response, html) {
+    if(error){ return callback(error) };
+    if (!error && response.statusCode == 200) {
+      let $ = cheerio.load(html);
+      var items = [];
+
+      $('.grouped-item').each(function(index, element) {
+        items[index] = {};
+        items[index]['name'] = $(element).find('.item-name').text();
+        items[index]['price'] = $(element).find('.price').text();
+        items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+      });
+      console.log(JSON.stringify(items));
+      return callback(JSON.stringify(items));
+    } 
+  });
+}
+
 
 function handleMessage(sender_psid, received_message) {
   let response;
@@ -112,32 +133,15 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    rp({
-      method: 'GET',
-      url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
-    }, function(error, response, html) {
-      if (error) { return console.log(error) };
-      
-        let $ = cheerio.load(html);
-        var items = [];
-
-        $('.grouped-item').each(function(index, element) {
-          items[index] = {};
-          items[index]['name'] = $(element).find('.item-name').text();
-          items[index]['price'] = $(element).find('.price').text();
-          items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
-        });
-
-        console.log(JSON.stringify(items));
-        return JSON.stringify(items);
-      
-    }).then(function(data) {
+    getData(function(data) {
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
-               //this.url + "\n" //+ 
+                //this.url + "\n" //+ 
               JSON.stringify(data)
       };
     });
+    
+
 
     
     
