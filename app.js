@@ -128,7 +128,8 @@ function handleMessage(sender_psid, received_message) {
 
     console.log(items);
     response = {
-      "text": `You are searching for: "${received_message.text}".` + JSON.stringify(items)
+      "text": `You are searching for: "${received_message.text}".` + "\n" + 
+              url
     };
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
