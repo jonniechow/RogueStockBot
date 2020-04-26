@@ -139,10 +139,10 @@ function handleMessage(sender_psid, received_message) {
     response = getData(function(data) {
       let item_str = "";
       console.log(data)
-      for (var item in data) {
-        console.log(data[item])
-        item_str += data[item]['name'] + "\n" + data[item]['price'] + "\n" + data[item]['in_stock'] + "\n"
-      }
+      data.forEach((item) => {
+        console.log(item)
+      })
+  
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
                 //this.url + "\n" //+ 
