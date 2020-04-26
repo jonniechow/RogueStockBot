@@ -120,7 +120,7 @@ function  getData(callback) {
         items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
       });
 
-      return callback(JSON.stringify(items));
+      return callback(items);
     } 
   });
 }
