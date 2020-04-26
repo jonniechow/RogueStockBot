@@ -136,14 +136,14 @@ function handleMessage(sender_psid, received_message) {
     response = {
       "text": `You are searching for: "${received_message.text}".` + "\n"
     };
-    getData(function(data) {
+    response = getData(function(data) {
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
                 //this.url + "\n" //+ 
               JSON.stringify(data)
       };
       console.log(response);
-      callback(response);
+      return response;
     });
 
     
