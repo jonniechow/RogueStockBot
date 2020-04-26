@@ -137,7 +137,7 @@ function handleMessage(sender_psid, received_message) {
       "text": `You are searching for: "${received_message.text}".` + "\n"
     };
     response = getData(function(data) {
-      item_str = "";
+      let item_str = "";
       for (var item in data) {
         item_str += item['name'] + "\n" + item['price'] + "\n" + item['in_stock'] + "\n"
       }
