@@ -121,11 +121,14 @@ function handleMessage(sender_psid, received_message) {
       items[index]['name'] = $(element).find('.item-name').text();
       items[index]['price'] = $(element).find('.price').text();
       items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+      console.log($(element).find('.item-name').text());
+      console.log($(element).find('.price').text());
+      console.log($(element).find('.bin-stock-availability').text());
     });
 
     console.log(items);
     response = {
-      "text": `You are searching for: "${received_message.text}".` + ", " + items[0]['name']
+      "text": `You are searching for: "${received_message.text}".` + JSON.stringify(items)
     };
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
