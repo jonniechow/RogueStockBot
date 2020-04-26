@@ -115,7 +115,7 @@ function handleMessage(sender_psid, received_message) {
       url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
     }, (err, res, body) => {
       if (err) return console.error(err);
-      console.log("Loading: " + this.url);
+      //console.log("Loading: " + this.url);
       let $ = cheerio.load(body);
 
       var items = [];
@@ -127,10 +127,10 @@ function handleMessage(sender_psid, received_message) {
         items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
       });
   
-      console.log("Date" + items);
+      console.log("Date" + JSON.stringify(items));
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
-               this.url + "\n" //+ 
+               //this.url + "\n" //+ 
                 // JSON.stringify(items)
       };
   
