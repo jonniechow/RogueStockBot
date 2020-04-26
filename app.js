@@ -110,17 +110,21 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    response = {
-      "text": `You are searching for: "${received_message.text}".`
-    }
+    
     const url = "https://www.roguefitness.com/rogue-color-echo-bumper-plate";
-    axios.get(url)
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      })
+    let $ = cheerio.load(url);
+
+    var items = [];
+
+    $('.grouped-item').each(function(index, element) {
+      items[index] = {};
+      items[index]['name'] = $(element).find('.item-name').text();
+      items[index]['price'] = $(element).find('.item-name').text();
+      items[index]['in_stock'] = $(element).find('.bin-stockavailability').text();
+    });
+    response = {
+      "text": `You are searching for: "${received_message.text}".` + items
+    };
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
     let attachment_url = received_message.attachments[0].payload.url;
