@@ -112,10 +112,11 @@ function handleMessage(sender_psid, received_message) {
     // will be added to the body of our request to the Send API
     
     const url = "https://www.roguefitness.com/rogue-color-echo-bumper-plate";
-    let $ = cheerio.load(url);
+    const $ = cheerio.load(url);
     console.log("Loading: " + url);
     var items = [];
-
+    let test = $(".item-name").text();
+    console.log(test);
     $('.grouped-item').each(function(index, element) {
       items[index] = {};
       items[index]['name'] = $(element).find('.item-name').text();
@@ -126,10 +127,11 @@ function handleMessage(sender_psid, received_message) {
       console.log($(element).find('.bin-stock-availability').text());
     });
 
-    console.log(items);
+    console.log("Date" + items);
     response = {
       "text": `You are searching for: "${received_message.text}".` + "\n" + 
-              url
+              url + "\n" + 
+              test
     };
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
