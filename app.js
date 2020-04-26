@@ -133,19 +133,16 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
+    response = {};
     getData(function(data) {
       console.log(JSON.stringify(data));
-      return data;
-    }).then(function(data) {
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
                 //this.url + "\n" //+ 
               JSON.stringify(data)
       };
     });
-    // response = {
-    //   "text": `You are searching for: "${received_message.text}".` 
-    // };
+
     
 
 
