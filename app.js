@@ -115,7 +115,7 @@ function handleMessage(sender_psid, received_message) {
       url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
     }, (err, res, body) => {
       if (err) return console.error(err);
-
+      console.log("Loading: " + this.url);
       let $ = cheerio.load(body);
 
       var items = [];
@@ -130,8 +130,8 @@ function handleMessage(sender_psid, received_message) {
       console.log("Date" + items);
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
-               // url + "\n" + 
-                JSON.stringify(items)
+               this.url + "\n" //+ 
+                // JSON.stringify(items)
       };
   
     });
