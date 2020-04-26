@@ -119,7 +119,7 @@ function  getData(callback) {
         items[index]['price'] = $(element).find('.price').text();
         items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
       });
-      console.log(JSON.stringify(items));
+
       return callback(JSON.stringify(items));
     } 
   });
@@ -134,12 +134,14 @@ function handleMessage(sender_psid, received_message) {
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
     getData(function(data) {
+      console.log(JSON.stringify(data));
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
                 //this.url + "\n" //+ 
               JSON.stringify(data)
       };
     });
+
     
 
 
