@@ -130,7 +130,7 @@ function handleMessage(sender_psid, received_message) {
       console.log("Date" + items);
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
-                url + "\n" + 
+               // url + "\n" + 
                 JSON.stringify(items)
       };
   
