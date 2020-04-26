@@ -116,7 +116,7 @@ function handleMessage(sender_psid, received_message) {
     console.log("Loading: " + url);
     var items = [];
 
-    $('.grouped-items-table').each(function(index, element) {
+    $('.grouped-item').each(function(index, element) {
       items[index] = {};
       items[index]['name'] = $(element).find('.item-name').text();
       items[index]['price'] = $(element).find('.price').text();
