@@ -135,13 +135,11 @@ function handleMessage(sender_psid, received_message) {
     // will be added to the body of our request to the Send API
     getData(function(data) {
       console.log(JSON.stringify(data));
-      response = {
-        "text": `You are searching for: "${received_message.text}".` + "\n" + 
-                //this.url + "\n" //+ 
-              JSON.stringify(data)
-      };
+      
     });
-
+    response = {
+      "text": `You are searching for: "${received_message.text}".` 
+    };
     
 
 
