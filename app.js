@@ -140,8 +140,8 @@ function handleMessage(sender_psid, received_message) {
       let item_str = "";
       console.log(data)
       for (var item in data) {
-        console.log(item)
-        item_str += item['name'] + "\n" + item['price'] + "\n" + item['in_stock'] + "\n"
+        console.log(data[item])
+        item_str += data[item]['name'] + "\n" + data[item]['price'] + "\n" + data[item]['in_stock'] + "\n"
       }
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
