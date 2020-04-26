@@ -110,7 +110,7 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    data = request({
+    let data = request({
       method: 'GET',
       url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
     }, (err, res, body) => {
