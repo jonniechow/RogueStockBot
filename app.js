@@ -141,12 +141,13 @@ function handleMessage(sender_psid, received_message) {
       console.log(data);
       for (let i = 0; i < data.length; i++) {
         console.log(data[i]);
+        item_str += data[i]['name'] + "\n" + data[i]['price'] + "\n" + data[i]['in_stock'] + "\n"
       }
   
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
                 //this.url + "\n" //+ 
-              JSON.stringify(data)
+              item_str
       };
       //console.log(response);
       callSendAPI(sender_psid, response);
