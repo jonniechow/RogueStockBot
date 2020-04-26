@@ -122,8 +122,9 @@ function handleMessage(sender_psid, received_message) {
       items[index]['price'] = $(element).find('.item-name').text();
       items[index]['in_stock'] = $(element).find('.bin-stockavailability').text();
     });
+    console.log(items);
     response = {
-      "text": `You are searching for: "${received_message.text}".` + items
+      "text": `You are searching for: "${received_message.text}".` 
     };
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
