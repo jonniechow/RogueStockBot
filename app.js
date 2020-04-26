@@ -138,10 +138,10 @@ function handleMessage(sender_psid, received_message) {
     };
     response = getData(function(data) {
       let item_str = "";
-      console.log(data)
-      data.forEach((item) => {
-        console.log(item)
-      })
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        console.log(item);
+      }
   
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
