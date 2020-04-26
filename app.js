@@ -140,13 +140,18 @@ function handleMessage(sender_psid, received_message) {
       let item_str = "";
       console.log(data);
       for (let i = 0; i < data.length; i++) {
-        console.log(data[i]);
-        item_str += data[i]['name'] + "\n" + data[i]['price'] + "\n" + data[i]['in_stock'] + "\n"
+        let avail = "no";
+        if (data[i]['in_stock'].indexOf("Notify Me")) {
+          avail = decodeURI('\u274C');
+        }
+        else {
+          avail = deocdeURI('\u2705');
+        }
+        item_str += data[i]['name'] + "\n" + data[i]['price'] + "\n" + avail + "\n"
       }
   
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
-                //this.url + "\n" //+ 
               item_str
       };
       //console.log(response);
