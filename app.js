@@ -145,7 +145,7 @@ function handleMessage(sender_psid, received_message) {
       console.log(response);
       return response;
     });
-
+    console.log(response);
     
 
 
