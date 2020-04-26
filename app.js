@@ -143,9 +143,10 @@ function handleMessage(sender_psid, received_message) {
               JSON.stringify(data)
       };
       console.log(response);
-      return response;
+      callSendAPI(sender_psid, response);
+      return;
     });
-    console.log(response);
+
     
 
 
