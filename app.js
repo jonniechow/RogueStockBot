@@ -131,7 +131,7 @@ function handleMessage(sender_psid, received_message) {
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
                //this.url + "\n" //+ 
-                // JSON.stringify(items)
+              JSON.stringify(items)
       };
   
     });
