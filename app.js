@@ -140,7 +140,7 @@ function handleMessage(sender_psid, received_message) {
       let item_str = "";
       console.log(data);
       for (let i = 0; i < data.length; i++) {
-        console.log(item);
+        console.log(data[i]);
       }
   
       response = {
