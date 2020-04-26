@@ -103,28 +103,6 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-function get_data_from_url(callback) {
-      request({
-        method: 'GET',
-        url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
-      }, function(error, response, html) {
-        if(error){ return callback(error) };
-        if (!error && response.statusCode == 200) {
-          let $ = cheerio.load(html);
-          var items = [];
-
-          $('.grouped-item').each(function(index, element) {
-            items[index] = {};
-            items[index]['name'] = $(element).find('.item-name').text();
-            items[index]['price'] = $(element).find('.price').text();
-            items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
-          });
-          console.log(JSON.stringify(items));
-          callback(null, items);
-        } 
-
-      });
-}
 
 function handleMessage(sender_psid, received_message) {
   let response;
@@ -133,15 +111,32 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    
-    get_data_from_url(function(err, items){
-      console.log(JSON.stringify(items));
+    request({
+      method: 'GET',
+      url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
+    }, function(error, response, html) {
+      if (error) { return console.log(error) };
+      
+        let $ = cheerio.load(html);
+        var items = [];
+
+        $('.grouped-item').each(function(index, element) {
+          items[index] = {};
+          items[index]['name'] = $(element).find('.item-name').text();
+          items[index]['price'] = $(element).find('.price').text();
+          items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+        });
+        
+        console.log(JSON.stringify(items));
+        return JSON.stringify(items);
+      
+    }).then(function(data) {
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
                //this.url + "\n" //+ 
-              JSON.stringify(items)
+              JSON.stringify(data)
       };
-    })
+    });
 
     
     
