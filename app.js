@@ -25,6 +25,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 // Imports dependencies and set up http server
 const 
   request = require('request'),
+  rp = require('request-promise'),
   express = require('express'),
   axios = require('axios'),
   cheerio = require('cheerio'),
@@ -111,7 +112,7 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    request({
+    rp({
       method: 'GET',
       url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
     }, function(error, response, html) {
@@ -126,7 +127,7 @@ function handleMessage(sender_psid, received_message) {
           items[index]['price'] = $(element).find('.price').text();
           items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
         });
-        
+
         console.log(JSON.stringify(items));
         return JSON.stringify(items);
       
