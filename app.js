@@ -137,13 +137,13 @@ function handleMessage(sender_psid, received_message) {
       "text": `You are searching for: "${received_message.text}".` + "\n"
     };
     getData(function(data) {
-      console.log(JSON.stringify(data));
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
                 //this.url + "\n" //+ 
               JSON.stringify(data)
       };
       console.log(response);
+      callback(response);
     });
 
     
