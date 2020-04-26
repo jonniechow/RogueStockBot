@@ -110,29 +110,35 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    
-    const url = "https://www.roguefitness.com/rogue-color-echo-bumper-plate";
-    const $ = cheerio.load(url);
-    console.log("Loading: " + url);
-    var items = [];
-    let test = $(".item-name").text();
-    console.log(test);
-    $('.grouped-item').each(function(index, element) {
-      items[index] = {};
-      items[index]['name'] = $(element).find('.item-name').text();
-      items[index]['price'] = $(element).find('.price').text();
-      items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
-      console.log($(element).find('.item-name').text());
-      console.log($(element).find('.price').text());
-      console.log($(element).find('.bin-stock-availability').text());
+    request({
+      method: 'GET',
+      url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate";
+    }, (err, res, body) => {
+      if (err) return console.error(err);
+      console.log("Loading: " + url);
+
+      let $ = cheerio.load(body);
+
+      var items = [];
+
+      $('.grouped-item').each(function(index, element) {
+        items[index] = {};
+        items[index]['name'] = $(element).find('.item-name').text();
+        items[index]['price'] = $(element).find('.price').text();
+        items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+      });
+  
+      console.log("Date" + items);
+      response = {
+        "text": `You are searching for: "${received_message.text}".` + "\n" + 
+                url + "\n" + 
+                JSON.stringify(items)
+      };
+  
     });
 
-    console.log("Date" + items);
-    response = {
-      "text": `You are searching for: "${received_message.text}".` + "\n" + 
-              url + "\n" + 
-              test
-    };
+
+    
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
     let attachment_url = received_message.attachments[0].payload.url;
