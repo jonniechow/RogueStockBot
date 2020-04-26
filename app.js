@@ -110,7 +110,7 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    request({
+    data = request({
       method: 'GET',
       url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
     }, (err, res, body) => {
@@ -126,16 +126,14 @@ function handleMessage(sender_psid, received_message) {
         items[index]['price'] = $(element).find('.price').text();
         items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
       });
-  
+      return items;
       console.log("Date" + JSON.stringify(items));
-      
-  
     });
 
     response = {
-      "text": `You are searching for: "${received_message.text}".` //+ "\n" + 
+      "text": `You are searching for: "${received_message.text}".` + "\n" + 
              //this.url + "\n" //+ 
-            //JSON.stringify(items)
+            JSON.stringify(data)
     };
     
   } else if (received_message.attachments) {
