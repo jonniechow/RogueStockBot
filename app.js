@@ -128,15 +128,15 @@ function handleMessage(sender_psid, received_message) {
       });
   
       console.log("Date" + JSON.stringify(items));
-      response = {
-        "text": `You are searching for: "${received_message.text}".` //+ "\n" + 
-               //this.url + "\n" //+ 
-              //JSON.stringify(items)
-      };
+      
   
     });
 
-
+    response = {
+      "text": `You are searching for: "${received_message.text}".` //+ "\n" + 
+             //this.url + "\n" //+ 
+            //JSON.stringify(items)
+    };
     
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
