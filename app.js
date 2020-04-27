@@ -31,9 +31,10 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
     // creates express http server
 
     var interval_id = null;
+    var interval_id_list = [];
+
     // Item url dictionary
-    var search_urls = {
-        // Plate URLs
+    var search_urls = { // Plate URLs
         "plate hi-temp": "https://www.roguefitness.com/rogue-hi-temp-bumper-plates",
         "plate hg2": "https://www.roguefitness.com/rogue-hg-2-0-bumper-plates",
         "plate comp lb": "https://www.roguefitness.com/rogue-competition-plates",
@@ -66,9 +67,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
     app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
     // Accepts POST requests at /webhook endpoint
-    app.post('/webhook', (req, res) => {
-
-        // Parse the request body from the POST
+    app.post('/webhook', (req, res) => { // Parse the request body from the POST
         let body = req.body;
 
         // Check the webhook event is from a Page subscription
@@ -76,9 +75,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
         {
 
             body.entry.forEach(function (entry)
-            {
-
-                // Gets the body of the webhook event
+            { // Gets the body of the webhook event
                 let webhook_event = entry.messaging[0];
                 console.log(webhook_event);
 
@@ -105,17 +102,14 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 
         }
         else
-        {
-            // Return a '404 Not Found' if event is not from a page subscription
+        { // Return a '404 Not Found' if event is not from a page subscription
             res.sendStatus(404);
         }
 
     });
 
     // Accepts GET requests at the /webhook endpoint
-    app.get('/webhook', (req, res) => {
-
-        /** UPDATE YOUR VERIFY TOKEN **/
+    app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
         const VERIFY_TOKEN = "VERIFY_TOKEN";
 
         // Parse params from the webhook verification request
@@ -125,19 +119,15 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 
         // Check if a token and mode were sent
         if (mode && token)
-        {
-
-            // Check the mode and token sent are correct
+        { // Check the mode and token sent are correct
             if (mode === 'subscribe' && token === VERIFY_TOKEN)
-            {
-                // Respond with 200 OK and challenge token from the request
+            { // Respond with 200 OK and challenge token from the request
                 console.log('WEBHOOK_VERIFIED');
                 res.status(200).send(challenge);
 
             }
             else
-            {
-                // Responds with '403 Forbidden' if verify tokens do not match
+            { // Responds with '403 Forbidden' if verify tokens do not match
                 res.sendStatus(403);
             }
         }
@@ -196,12 +186,13 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
             var rec_msg = received_message.text.toLowerCase();
 
             // Stop checking
-            if (rec_msg === "stop") {
-                clearInterval(interval_id);
+            if (rec_msg === "stop")
+            {
+                interval_id_list.forEach(clearInterval);
                 response = {
-                  "text": "Stopped checking items"
-              };
-                console.log("Stopped checking items");
+                    "text": "Stopped checking " + interval_id_list.length + " item(s)"
+                };
+                console.log("Stopped checking " + interval_id_list.length + " item(s)");
                 callSendAPI(sender_psid, response);
                 return;
             }
@@ -229,8 +220,8 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                 {
                     let item_str = "";
                     let in_stock_count = 0;
-                    
-                    //console.log(data);
+
+                    // console.log(data);
 
                     // Loop through each item on page
                     for (let i = 0; i < data.length; i++)
@@ -238,24 +229,22 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                         var avail = decodeURI('\u2705');
                         // Out of stock
                         if (data[i]['in_stock'].indexOf("Notify Me") > 0)
-                        {
-                            // Cross emoji
+                        { // Cross emoji
                             avail = decodeURI('\u274C');
                         }
                         // In stock
                         else
-                        {
-                            // Check emoji
+                        { // Check emoji
                             avail = decodeURI('\u2705');
                             in_stock_count += 1;
                             item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
                         }
-
                     }
 
                     // No items found, everything sold out
-                    if (item_str === ""){
-                      item_str = "Everything currently out of stock.\n\n";
+                    if (item_str === "")
+                    {
+                        item_str = "Everything currently out of stock.\n\n";
                     }
 
                     // Set date
@@ -274,15 +263,14 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                     response = {
                         "text": `You are searching for: "${
                             received_message.text
-                        }".` + "\n\n" + item_str + 
-                        "Checked On " + dateTime + "\n" + 
-                        "Link " + search_url
+                        }".` + "\n\n" + item_str + "Checked On " + dateTime + "\n" + "Link " + search_url
                     };
 
                     console.log("Interval count: " + interval_count);
                     console.log("Searching: " + rec_msg);
+                    console.log("Searching " + interval_id_list.length + " items");
                     console.log("Prev stock count: " + prev_stock_count);
-                    console.log("Curr stock count: " + in_stock_count);
+                    console.log("Curr stock count: " + in_stock_count + "\n");
 
                     // If the stock amount changed from last check
                     // Send a message on FB
@@ -298,19 +286,18 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                     {
                         clearInterval(refresh_page);
                     }
-
                     // Set prev count to current stock
                     prev_stock_count = in_stock_count;
 
 
                 });
             }, 10000);
-
+            // Add to list of all interval ids
+            interval_id_list.push(interval_id);
 
         }
         else if (received_message.attachments)
-        {
-            // Get the URL of the message attachment
+        { // Get the URL of the message attachment
             let attachment_url = received_message.attachments[0].payload.url;
             response = {
                 "attachment": {
@@ -370,8 +357,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
     }
 
     function callSendAPI(sender_psid, response)
-    {
-        // Construct the message body
+    { // Construct the message body
         let request_body = {
             "recipient": {
                 "id": sender_psid
