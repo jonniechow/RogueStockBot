@@ -275,7 +275,8 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                         "text": `You are searching for: "${
                             received_message.text
                         }".` + "\n\n" + item_str + 
-                        "Checked On " + dateTime
+                        "Checked On " + dateTime + "\n" + 
+                        "Link " + search_url
                     };
 
                     console.log("Interval count: " + interval_count);
