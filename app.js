@@ -193,7 +193,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
         {
             // Create the payload for a basic text message, which
             // will be added to the body of our request to the Send API
-            var rec_msg = received_message.text;
+            var rec_msg = received_message.text.toLowerCase();
 
             // Stop checking
             if (rec_msg === "stop") {
