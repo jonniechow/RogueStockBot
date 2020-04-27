@@ -46,7 +46,20 @@ var search_urls = {
   "plate fleck" : "https://www.roguefitness.com/rogue-fleck-plates",
   "plate olympic" : "https://www.roguefitness.com/rogue-olympic-plates",
   "plate calibrated" : "https://www.roguefitness.com/rogue-calibrated-lb-steel-plates",
-  "plate change": "https://www.roguefitness.com/rogue-lb-change-plates"
+  "plate change": "https://www.roguefitness.com/rogue-lb-change-plates",
+  // Barbell URLs
+  // Ohio Bar
+  "barbell op oxide": "https://www.roguefitness.com/rogue-ohio-bar-black-oxide",
+  "barbell op zinc" : "https://www.roguefitness.com/the-ohio-bar-black-zinc",
+  "barbell op ecoat": "https://www.roguefitness.com/the-ohio-bar-2-0-e-coat",
+  "barbell op ss" : "https://www.roguefitness.com/stainless-steel-ohio-bar",
+  "barbell op cerakote": "https://www.roguefitness.com/the-ohio-bar-cerakote",
+  // Ohio Power Bar
+  "barbell opb steel": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-bare-steel",
+  "barbell opb ecoat": "https://www.roguefitness.com/rogue-ohio-power-bar-e-coat",
+  "barbell opb zinc": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-black-zinc",
+  "barbell opb ss": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless",
+  "barbell opb cerakote": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote"
 };
 
 // Sets server port and logs message on success
@@ -120,7 +133,7 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-function getData(search_url, callback) {
+function getData(search_url, rec_msg, callback) {
   request({
     method: 'GET',
     url: search_url
@@ -129,13 +142,20 @@ function getData(search_url, callback) {
     if (!error && response.statusCode == 200) {
       let $ = cheerio.load(html);
       var items = [];
-
-      $('.grouped-item').each(function(index, element) {
-        items[index] = {};
-        items[index]['name'] = $(element).find('.item-name').text();
-        items[index]['price'] = $(element).find('.price').text();
-        items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
-      });
+      if (rec_msg.indexOf("plate") == 0) {
+        $('.grouped-item').each(function(index, element) {
+          items[index] = {};
+          items[index]['name'] = $(element).find('.item-name').text();
+          items[index]['price'] = $(element).find('.price').text();
+          items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+        });
+      }
+      else if (rec_msg.indexOf("barbell") == 0) {
+        items[0] = {};
+        items[0]['name'] = $('.product-title').text();
+        items[0]['price'] = $('.price').text();
+        items[0]['in_stock'] = $('.bin-stock-availability').text();
+      }
       return callback(items);
     } 
   });
@@ -164,36 +184,52 @@ function handleMessage(sender_psid, received_message) {
     }
     var search_url = search_urls[rec_msg];
 
-    response = getData(search_url, function(data) {
-      let item_str = "";
-      console.log(data);
-      for (let i = 0; i < data.length; i++) {
-        var avail = decodeURI('\u2705');
-        // Out of stock
-        if (data[i]['in_stock'].indexOf("Notify Me") > 0) {
-          // Cross emoji
-          avail = decodeURI('\u274C');
+    let prev_stock_count = 0;
+
+  var refresh_page = setInterval(function(){
+      response = getData(search_url, rec_msg, function(data) {
+        let item_str = "";
+        let in_stock_count = 0;
+        console.log(data);
+
+        for (let i = 0; i < data.length; i++) {
+          var avail = decodeURI('\u2705');
+          // Out of stock
+          if (data[i]['in_stock'].indexOf("Notify Me") > 0) {
+            // Cross emoji
+            avail = decodeURI('\u274C');
+          }
+          // In stock
+          else {
+            // Check emoji
+            avail = decodeURI('\u2705');
+            in_stock_count += 1;
+            item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+          }
+          
         }
-        // In stock
-        else {
-          // Check emoji
-          avail = decodeURI('\u2705');
+
+        var today = new Date();
+        var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+        var time = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+        var dateTime = time + ' ' + date;
+
+        response = {
+          "text": `You are searching for: "${received_message.text}".` + "\n" + 
+                item_str + 
+                "Checked On " + dateTime
+        };
+        
+        console.log("Prev stock count: " + prev_stock_count);
+        console.log("Curr stock count: " + in_stock_count);
+        if (in_stock_count != prev_stock_count) {
+          callSendAPI(sender_psid, response);
         }
-        item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-      }
-      var today = new Date();
-      var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
-      var time = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
-      var dateTime = time + ' ' + date;
-      response = {
-        "text": `You are searching for: "${received_message.text}".` + "\n" + 
-              item_str + 
-              "Checked On " + dateTime
-      };
-      //console.log(response);
-      callSendAPI(sender_psid, response);
-      return;
-    });
+        prev_stock_count = in_stock_count;
+        
+
+      });}, 10000
+    );
 
     
 
