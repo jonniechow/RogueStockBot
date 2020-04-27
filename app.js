@@ -195,9 +195,14 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
             // will be added to the body of our request to the Send API
             var rec_msg = received_message.text;
 
+            // Stop checking
             if (rec_msg === "stop") {
                 clearInterval(interval_id);
-                console.log("Searching stopped");
+                response = {
+                  "text": "Stopped checking items"
+              };
+                console.log("Stopped checking items");
+                callSendAPI(sender_psid, response);
                 return;
             }
             // User message is invalid
@@ -206,16 +211,17 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                 response = {
                     "text": `You are searching for: "${
                         received_message.text
-                    }".` + "\n" + "Item doesn't exist"
+                    }".` + "\n\n" + "Item doesn't exist"
                 };
                 console.log(response);
+                callSendAPI(sender_psid, response);
                 return;
             }
             var search_url = search_urls[rec_msg];
 
             // Previous count of item
             let prev_stock_count = 0;
-
+            var interval_count = 0;
             // Interval to continous check website
             interval_id = setInterval(function ()
             {
@@ -223,6 +229,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                 {
                     let item_str = "";
                     let in_stock_count = 0;
+                    
                     //console.log(data);
 
                     // Loop through each item on page
@@ -246,6 +253,11 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 
                     }
 
+                    // No items found, everything sold out
+                    if (item_str === ""){
+                      item_str = "Everything currently out of stock.\n\n";
+                    }
+
                     // Set date
                     var today = new Date();
                     var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
@@ -262,22 +274,24 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                     response = {
                         "text": `You are searching for: "${
                             received_message.text
-                        }".` + "\n" + item_str + 
+                        }".` + "\n\n" + item_str + 
                         "Checked On " + dateTime
                     };
 
+                    console.log("Interval count: " + interval_count);
+                    console.log("Searching: " + rec_msg);
                     console.log("Prev stock count: " + prev_stock_count);
                     console.log("Curr stock count: " + in_stock_count);
 
                     // If the stock amount changed from last check
                     // Send a message on FB
-                    if (in_stock_count != prev_stock_count)
+                    if (interval_count == 0 || (in_stock_count != prev_stock_count))
                     {
                         console.log("Response msg:");
                         console.log(response);
                         callSendAPI(sender_psid, response);
                     }
-
+                    interval_count += 1;
                     // All items are in stock so clear interval
                     if (in_stock_count == data.length)
                     {
