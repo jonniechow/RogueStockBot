@@ -183,7 +183,7 @@ function handleMessage(sender_psid, received_message) {
       }
       var today = new Date();
       var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
-      var time = today.getHours() % 12 + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var time = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
       var dateTime = time + ' ' + date;
       response = {
         "text": `You are searching for: "${received_message.text}".` + "\n" + 
