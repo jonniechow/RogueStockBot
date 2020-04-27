@@ -185,8 +185,22 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
             // will be added to the body of our request to the Send API
             var rec_msg = received_message.text.toLowerCase();
 
+            if (rec_msg === "help") 
+            {
+              var keys = Object.keys(search_urls);
+              var key_string = "";
+              for (var i = 0; i < keys.length; ++i) {
+                key_string += keys[i] + "\n";
+              }
+              response = {
+                "text": "Search for the following items: \n" + key_string + 
+                        "Type `stop` to stop checking all items \n" 
+            };
+            callSendAPI(sender_psid, response);
+                return;
+            }
             // Stop checking
-            if (rec_msg === "stop")
+            else if (rec_msg === "stop")
             {
                 interval_id_list.forEach(clearInterval);
                 response = {
