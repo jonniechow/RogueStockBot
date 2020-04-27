@@ -31,6 +31,23 @@ const
   body_parser = require('body-parser'),
   app = express().use(body_parser.json()); // creates express http server
   
+// Item url dictionary
+var search_urls = {
+  // Plate URLs
+  "plate hi-temp": "https://www.roguefitness.com/rogue-hi-temp-bumper-plates",
+  "plate hg2": "https://www.roguefitness.com/rogue-hg-2-0-bumper-plates",
+  "plate comp lb": "https://www.roguefitness.com/rogue-competition-plates", 
+  "plate comp lb2": "https://www.roguefitness.com/rogue-color-lb-training-2-0-plates",
+  "plate black lb": "https://www.roguefitness.com/rogue-black-training-lb-color-stripe-plates",
+  "plate black lb2": "https://www.roguefitness.com/rogue-lb-training-2-0-plates",
+  "plate echo": "https://www.roguefitness.com/rogue-echo-bumper-plates-with-white-text",
+  "plate echo color" : "https://www.roguefitness.com/rogue-color-echo-bumper-plate",
+  "plate machined" : "https://www.roguefitness.com/rogue-machined-olympic-plates",
+  "plate fleck" : "https://www.roguefitness.com/rogue-fleck-plates",
+  "plate olympic" : "https://www.roguefitness.com/rogue-olympic-plates",
+  "plate calibrated" : "https://www.roguefitness.com/rogue-calibrated-lb-steel-plates",
+  "plate change": "https://www.roguefitness.com/rogue-lb-change-plates"
+};
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
@@ -103,10 +120,10 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-function  getData(callback) {
+function getData(search_url, callback) {
   request({
     method: 'GET',
-    url: "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
+    url: search_url
   }, function(error, response, html) {
     if(error){ return callback(error) };
     if (!error && response.statusCode == 200) {
@@ -119,7 +136,6 @@ function  getData(callback) {
         items[index]['price'] = $(element).find('.price').text();
         items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
       });
-
       return callback(items);
     } 
   });
@@ -136,16 +152,32 @@ function handleMessage(sender_psid, received_message) {
     response = {
       "text": `You are searching for: "${received_message.text}".` + "\n"
     };
-    response = getData(function(data) {
+
+    var rec_msg = received_message.text;
+    if (!(rec_msg in search_urls)) {
+      response = {
+        "text": `You are searching for: "${received_message.text}".` + "\n" + 
+                "Item doesn't exist"
+      };
+      console.log(response);
+      return;
+    }
+    var search_url = search_urls[rec_msg];
+
+    response = getData(search_url, function(data) {
       let item_str = "";
       console.log(data);
       for (let i = 0; i < data.length; i++) {
-        let avail = "no";
-        if (data[i]['in_stock'].indexOf("Notify Me")) {
+        var avail = decodeURI('\u2705');
+        // Out of stock
+        if (data[i]['in_stock'].indexOf("Notify Me") > 0) {
+          // Cross emoji
           avail = decodeURI('\u274C');
         }
+        // In stock
         else {
-          avail = deocdeURI('\u2705');
+          // Check emoji
+          avail = decodeURI('\u2705');
         }
         item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
       }
