@@ -30,6 +30,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
         app = express().use(body_parser.json());
     // creates express http server
 
+    var interval_id = null;
     // Item url dictionary
     var search_urls = {
         // Plate URLs
@@ -192,13 +193,14 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
         {
             // Create the payload for a basic text message, which
             // will be added to the body of our request to the Send API
-            response = {
-                "text": `You are searching for: "${
-                    received_message.text
-                }".` + "\n"
-            };
-
             var rec_msg = received_message.text;
+
+            if (rec_msg === "stop") {
+                clearInterval(interval_id);
+                console.log("Searching stopped");
+                return;
+            }
+            // User message is invalid
             if (!(rec_msg in search_urls))
             {
                 response = {
@@ -211,16 +213,19 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
             }
             var search_url = search_urls[rec_msg];
 
+            // Previous count of item
             let prev_stock_count = 0;
 
-            var refresh_page = setInterval(function ()
+            // Interval to continous check website
+            interval_id = setInterval(function ()
             {
                 response = getData(search_url, rec_msg, function (data)
                 {
                     let item_str = "";
                     let in_stock_count = 0;
-                    console.log(data);
+                    //console.log(data);
 
+                    // Loop through each item on page
                     for (let i = 0; i < data.length; i++)
                     {
                         var avail = decodeURI('\u2705');
@@ -241,6 +246,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 
                     }
 
+                    // Set date
                     var today = new Date();
                     var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
                     var time = today.toLocaleString('en-US',
@@ -252,16 +258,23 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                     });
                     var dateTime = time + ' ' + date;
 
+                    // Response message
                     response = {
                         "text": `You are searching for: "${
                             received_message.text
-                        }".` + "\n" + item_str + "Checked On " + dateTime
+                        }".` + "\n" + item_str + 
+                        "Checked On " + dateTime
                     };
 
                     console.log("Prev stock count: " + prev_stock_count);
                     console.log("Curr stock count: " + in_stock_count);
+
+                    // If the stock amount changed from last check
+                    // Send a message on FB
                     if (in_stock_count != prev_stock_count)
                     {
+                        console.log("Response msg:");
+                        console.log(response);
                         callSendAPI(sender_psid, response);
                     }
 
