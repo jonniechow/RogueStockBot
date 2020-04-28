@@ -1,30 +1,27 @@
 {
-  "name": "messenger-quick-start",
+  "name": "RogueTracker",
   "version": "1.0.0",
-  "description": "An example webhook for Facebook Messenger quick start tutorial.",
+  "description": "",
   "main": "app.js",
-  "scripts": {
-    "start": "node app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fbsamples/messenger-platform-samples.git"
-  },
-  "author": "Facebook",
-  "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
-    "body-parser": "^1.15.0",
     "cheerio": "^1.0.0-rc.3",
-    "express": "^4.13.4",
     "moment": "^2.24.0",
     "request": "^2.88.2"
   },
-  "engines": {
-    "node": "6.0.0"
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonniechow/RogueItemTracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fbsamples/messenger-platform-samples/issues"
+    "url": "https://github.com/jonniechow/RogueItemTracker/issues"
   },
-  "homepage": "https://github.com/fbsamples/messenger-platform-samples#readme"
+  "homepage": "https://github.com/jonniechow/RogueItemTracker#readme"
 }
