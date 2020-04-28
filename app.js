@@ -33,6 +33,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
     var interval_id = null;
     var interval_id_list = [];
     var search_list = [];
+    var start_time = new Date();
 
     // Item url dictionary
     var search_urls = { // Plate URLs
@@ -47,7 +48,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
         "plate machined": "https://www.roguefitness.com/rogue-machined-olympic-plates",
         "plate fleck": "https://www.roguefitness.com/rogue-fleck-plates",
         "plate olympic": "https://www.roguefitness.com/rogue-olympic-plates",
-        "plate calibrated": "https://www.roguefitness.com/rogue-calibrated-lb-steel-plates",
+        "plate cal": "https://www.roguefitness.com/rogue-calibrated-lb-steel-plates",
         "plate change": "https://www.roguefitness.com/rogue-lb-change-plates",
         // Barbell URLs
         // Ohio Bar
@@ -214,6 +215,34 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
             callSendAPI(sender_psid, response);
                 return;
             }
+            else if (rec_msg === "status") 
+            {
+              var curr_time = new Date();
+              var time_elapsed = (curr_time - start_time) / 1000;
+              
+              var seconds = Math.round(time_elapsed % 60);
+              // remove seconds from the date
+              time_elapsed = Math.floor(time_elapsed / 60);
+
+              // get minutes
+              var minutes = Math.round(time_elapsed % 60);
+
+              // remove minutes from the date
+              time_elapsed = Math.floor(time_elapsed / 60);
+
+              // get hours
+              var hours = Math.round(time_elapsed % 24);
+
+              // remove hours from the date
+              time_elapsed = Math.floor(time_elapsed / 24);
+              var time_elapsed_str = hours + ":" + minutes +  ":" +  seconds;
+              response = {
+                "text": "Time elapsed: " + time_elapsed_str
+
+            };
+            callSendAPI(sender_psid, response);
+                return;
+            }
             // Stop checking
             else if (rec_msg === "stop")
             {
@@ -326,7 +355,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 
 
                 });
-            }, 10000);
+            }, 30000);
             // Add to list of all interval ids
             interval_id_list.push(interval_id);
 

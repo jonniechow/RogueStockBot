@@ -17,6 +17,7 @@
     "body-parser": "^1.15.0",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.13.4",
+    "moment": "^2.24.0",
     "request": "^2.88.2"
   },
   "engines": {
