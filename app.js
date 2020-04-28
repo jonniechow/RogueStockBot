@@ -65,7 +65,9 @@ var search_urls = { // Plate URLs
   "barbell opb ecoat": "https://www.roguefitness.com/rogue-ohio-power-bar-e-coat",
   "barbell opb zinc": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-black-zinc",
   "barbell opb ss": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless",
-  "barbell opb cerakote": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote"
+  "barbell opb cerakote": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote",
+  // Echo bike
+  "bike echo": "https://www.roguefitness.com/rogue-echo-bike"
 };
 
 // Sets server port and logs message on success
@@ -186,7 +188,7 @@ function getData(search_url, rec_msg, callback) {
           });
           console.log(items);
         }
-        else if (rec_msg.indexOf("plate") == 0) {
+        else if (rec_msg.indexOf("plate") == 0 || rec_msg.indexOf("bike") == 0 ) {
           $('.grouped-item').each(function (index, element) {
             items[index] = {};
             items[index]['name'] = $(element).find('.item-name').text();
@@ -217,6 +219,7 @@ function handleMessage(sender_psid, received_message) {
     // will be added to the body of our request to the Send API
     var rec_msg = received_message.text.toLowerCase();
 
+    // Help message
     if (rec_msg === "help") {
       var keys = Object.keys(search_urls);
       var key_string = "";
@@ -230,12 +233,12 @@ function handleMessage(sender_psid, received_message) {
       callSendAPI(sender_psid, response);
       return;
     }
+    // Status message
     else if (rec_msg === "status") {
       var search_str = "Currently searching for:\n";
       for (var key in search_dic) {
         search_str += search_dic[key]['product-name'] +
-          " Time elapsed: " + getTimeDiff(search_dic[key]['time-start']) + "\n";
-
+          "\nTime elapsed: " + getTimeDiff(search_dic[key]['time-start']) + "\n\n";
       }
       response = {
         "text": search_str
@@ -244,18 +247,19 @@ function handleMessage(sender_psid, received_message) {
       callSendAPI(sender_psid, response);
       return;
     }
-    // Stop checking
+    // Stop message
     else if (rec_msg === "stop") {
       interval_id_list.forEach(clearInterval);
       var search_item_str = "";
       for (var key in search_dic) {
-        search_item_str += search_dic[key]['product-name'] + "\n";
+        search_item_str += search_dic[key]['product-name'] +
+          "\nTime elapsed: " + getTimeDiff(search_dic[key]['time-start']) + "\n\n";
       }
       response = {
-        "text": "Stopped checking " + interval_id_list.length + " item(s):\n" +
+        "text": `Stopped checking ${interval_id_list.length} item(s):\n` +
           search_item_str
       };
-      console.log("Stopped checking " + interval_id_list.length + " item(s)");
+      console.log(`Stopped checking ${interval_id_list.length} item(s)`);
       callSendAPI(sender_psid, response);
       return;
     }
