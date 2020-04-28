@@ -20,7 +20,8 @@
  */
 
 'use strict';
-const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGbWHULrt5g2OUU2wrCAB3MEir7ZAbDf80hPLU0UAzuW4JwKZCZCXqTJ3WEjuMWCcRba6Iz02bvHIT2enyrpGqH9ZAy2LnF0v1rEPE7zQ8ZB6DkSZA6aj0SHyGlhEgZDZD"
+const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGbWHULrt5g2OUU2wrCAB3MEir7ZAbDf80hPLU0UAzuW4JwKZCZCXqTJ3WEjuMWCcRba6Iz02bvHIT2enyrpGqH9ZAy2LnF0v1rEPE7zQ8ZB6DkSZA6aj0SHyGlhEgZDZD";
+//const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
     // Imports dependencies and set up http server
     const request = require('request'),
         express = require('express'),
@@ -32,8 +33,10 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 
     var interval_id = null;
     var interval_id_list = [];
-    var search_list = [];
+    var search_dic = {};
     var start_time = new Date();
+    // Delay in seconds
+    var delay = 10;
 
     // Item url dictionary
     var search_urls = { // Plate URLs
@@ -153,7 +156,12 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                     console.log("Web scraping data from: " + search_url);
                     let $ = cheerio.load(html);
                     var items = [];
-                    search_list.push($('.product-title').text());
+                    if (!(rec_msg in search_dic)) {
+                      search_dic[rec_msg] = {};
+                      search_dic[rec_msg]['product-name'] = $('.product-title').text();
+                    }
+
+                    
                     if (rec_msg.indexOf("cerakote") >= 0) {
                       console.log($(".grouped-item").html())
                         $(".grouped-item").find('.swatch-item').each(function (index, element) {
@@ -248,10 +256,9 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
             {
                 interval_id_list.forEach(clearInterval);
                 var search_item_str = "";
-                for (var i = 0; i < search_list.length; i++) {
-                    search_item_str += search_list[i] + " ";
+                for (var key in search_dic) {
+                  search_item_str += search_dic[key]['product-name'] + "\n";
                 }
-                search_list = [];
                 response = {
                     "text": "Stopped checking " + interval_id_list.length + " item(s):\n" + 
                               search_item_str
@@ -264,7 +271,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
             if (!(rec_msg in search_urls))
             {
                 response = {
-                    "text": `You are searching for: "${
+                  "text": `You entered: "${
                         received_message.text
                     }".` + "\n\n" + "Item doesn't exist"
                 };
@@ -325,9 +332,11 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 
                     // Response message
                     response = {
-                        "text": `You are searching for: "${
-                            received_message.text
-                        }".` + "\n\n" + item_str + "Checked On " + dateTime + "\n" + "Link " + search_url
+                        "text": `You entered: "${ received_message.text }"\n` +  
+                                `Match found for: "${search_dic[rec_msg]['product-name']}".` + 
+                                "\n\n" + item_str + 
+                                "Checked On " + dateTime + "\n" + 
+                                "Link " + search_url
                     };
 
                     console.log("Interval count: " + interval_count);
@@ -355,7 +364,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 
 
                 });
-            }, 30000);
+            }, delay * 1000);
             // Add to list of all interval ids
             interval_id_list.push(interval_id);
 
