@@ -32,6 +32,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
 
     var interval_id = null;
     var interval_id_list = [];
+    var search_list = [];
 
     // Item url dictionary
     var search_urls = { // Plate URLs
@@ -146,11 +147,24 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                 {
                     return callback(error)
                 };
-                if (! error && response.statusCode == 200)
-                {
+                if (!error && response.statusCode == 200)
+                {   
+                    console.log("Web scraping data from: " + search_url);
                     let $ = cheerio.load(html);
                     var items = [];
-                    if (rec_msg.indexOf("plate") == 0)
+                    search_list.push($('.product-title').text());
+                    if (rec_msg.indexOf("cerakote") >= 0) {
+                      console.log($(".grouped-item").html())
+                        $(".grouped-item").find('.swatch-item').each(function (index, element) {
+                            console.log(index);
+                            items[index] = {};
+                            items[index]['name'] = $(element).find('span').text();
+                            items[index]['price'] = $('.special-price .price').text();
+                            items[index]['in_stock'] = $(element).attr('title');
+                        });
+                        console.log(items);
+                    }
+                    else if (rec_msg.indexOf("plate") == 0)
                     {
                         $('.grouped-item').each(function (index, element)
                         {
@@ -167,6 +181,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                         items[0]['price'] = $('.price').text();
                         items[0]['in_stock'] = $('.bin-stock-availability').text();
                     }
+                    //console.log(items);
                     return callback(items);
                 }
             }
@@ -203,8 +218,14 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
             else if (rec_msg === "stop")
             {
                 interval_id_list.forEach(clearInterval);
+                var search_item_str = "";
+                for (var i = 0; i < search_list.length; i++) {
+                    search_item_str += search_list[i] + " ";
+                }
+                search_list = [];
                 response = {
-                    "text": "Stopped checking " + interval_id_list.length + " item(s)"
+                    "text": "Stopped checking " + interval_id_list.length + " item(s):\n" + 
+                              search_item_str
                 };
                 console.log("Stopped checking " + interval_id_list.length + " item(s)");
                 callSendAPI(sender_psid, response);
@@ -298,7 +319,7 @@ const PAGE_ACCESS_TOKEN = "EAAUBExs02ZBQBAOK27jVxWeZAvBhXnDBiz26VOOM2L6x12ZBxpGb
                     // All items are in stock so clear interval
                     if (in_stock_count == data.length)
                     {
-                        clearInterval(refresh_page);
+                        clearInterval(interval_id);
                     }
                     // Set prev count to current stock
                     prev_stock_count = in_stock_count;
