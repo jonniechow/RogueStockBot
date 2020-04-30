@@ -74,6 +74,8 @@ var search_urls = { // Plate URLs
   "bone dead": "https://www.roguefitness.com/rogue-boneyard-ohio-deadlift-bar"
 };
 
+app.set('views', path.join(__dirname, 'views'));
+app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 // Sets server port and logs message on success
