@@ -83,7 +83,9 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 // Home screen page
 app.get('/', (req, res) => {
-  res.render('index');
+  res.sendFile('index.html', {
+  root: path.join(__dirname, '/views')
+})
 });
 
 // Accepts POST requests at /webhook endpoint
