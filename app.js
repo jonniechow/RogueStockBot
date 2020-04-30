@@ -79,7 +79,7 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 // Home screen page
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.render('index');
 });
 
 // Accepts POST requests at /webhook endpoint
