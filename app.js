@@ -73,6 +73,11 @@ var search_urls = { // Plate URLs
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
+// Home screen page
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => { // Parse the request body from the POST
   let body = req.body;
