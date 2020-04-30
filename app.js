@@ -75,7 +75,8 @@ var search_urls = { // Plate URLs
   "bone dead": "https://www.roguefitness.com/rogue-boneyard-ohio-deadlift-bar"
 };
 
-app.use(express.static())
+app.set('views', __dirname);
+app.use(express.static(__dirname));
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
