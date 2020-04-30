@@ -67,7 +67,11 @@ var search_urls = { // Plate URLs
   "barbell opb ss": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless",
   "barbell opb cerakote": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote",
   // Echo bike
-  "bike echo": "https://www.roguefitness.com/rogue-echo-bike"
+  "bike echo": "https://www.roguefitness.com/rogue-echo-bike",
+  // Boneyard
+  "bone 29": "https://www.roguefitness.com/rogue-29mm-boneyard-bars",
+  "bone 28.5": "https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars",
+  "bone dead": "https://www.roguefitness.com/rogue-boneyard-ohio-deadlift-bar"
 };
 
 // Sets server port and logs message on success
