@@ -389,7 +389,7 @@ function handleMessage(sender_psid, received_message) {
 
 
       });
-    }, delay * 1000);
+    }(), delay * 1000);
     // Add to list of all interval ids
     interval_id_list.push(interval_id);
 
