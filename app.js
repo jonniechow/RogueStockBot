@@ -60,7 +60,7 @@ var search_urls = { // Plate URLs
   },
   "plate black lb": {
     "type": "multi",
-    "link", "https://www.roguefitness.com/rogue-black-training-lb-color-stripe-plates"
+    "link": "https://www.roguefitness.com/rogue-black-training-lb-color-stripe-plates"
   },
   "plate black lb2": {
     "type": "multi",
@@ -139,7 +139,7 @@ var search_urls = { // Plate URLs
   },
   // Echo bike
   "bike echo": {
-    "type": "single",
+    "type": "multi",
     "link": "https://www.roguefitness.com/rogue-echo-bike"
   },
   // Bench
@@ -304,19 +304,8 @@ function getData(search_url, rec_msg, callback) {
           search_dic[rec_msg]['time-start'] = new Date();
         }
 
-
-        if (rec_msg.indexOf("cerakote") >= 0) {
-          console.log($(".grouped-item").html())
-          $(".grouped-item").find('.swatch-item').each(function (index, element) {
-            console.log(index);
-            items[index] = {};
-            items[index]['name'] = $(element).find('span').text();
-            items[index]['price'] = $('.special-price .price').text();
-            items[index]['in_stock'] = $(element).attr('title');
-          });
-          console.log(items);
-        }
-        else if (rec_msg.indexOf("plate") == 0 || rec_msg.indexOf("bike") == 0) {
+        // Multiple items in a page
+        if (search_urls[rec_msg]['type'] === "multi") {
           $('.grouped-item').each(function (index, element) {
             items[index] = {};
             items[index]['name'] = $(element).find('.item-name').text();
@@ -324,29 +313,14 @@ function getData(search_url, rec_msg, callback) {
             items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
           });
         }
-        else if (rec_msg.indexOf("barbell") == 0) {
+        // Just one item in a page
+        else {
           items[0] = {};
           items[0]['name'] = $('.product-title').text();
           items[0]['price'] = $('.price').text();
           items[0]['in_stock'] = $('.bin-stock-availability').text();
         }
-        else if (rec_msg.indexOf("bench") == 0) {
-          if (search_urls[rec_msg]['type'] === "multi") {
-            $('.grouped-item').each(function (index, element) {
-              items[index] = {};
-              items[index]['name'] = $(element).find('.item-name').text();
-              items[index]['price'] = $(element).find('.price').text();
-              items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
-            });
-          }
-          else {
-            items[0] = {};
-            items[0]['name'] = $('.product-title').text();
-            items[0]['price'] = $('.price').text();
-            items[0]['in_stock'] = $('.bin-stock-availability').text();
-          }
-        }
-        console.log(items);
+
         return callback(items);
       }
     }
@@ -442,9 +416,9 @@ function handleMessage(sender_psid, received_message) {
           else { // Check emoji
             avail = decodeURI('\u2705');
             in_stock_count += 1;
-            
+            item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
           }
-          item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+          //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
         }
 
         // No items found, everything sold out
