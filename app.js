@@ -193,7 +193,7 @@ function getData(search_url, rec_msg, callback) {
         return callback(error)
       };
       if (!error && response.statusCode == 200) {
-        // console.log("Web scraping data from: " + search_url);
+        console.log("Web scraping data from: " + search_url);
         let $ = cheerio.load(html);
         var items = [];
         // Check if search string already exists
@@ -302,17 +302,6 @@ function handleMessage(sender_psid, received_message) {
       return;
     }
     var search_url = search_urls[rec_msg];
-
-    if (search_dic.length >= 4) {
-      response = {
-        "text": `You have hit the max limit of: "${
-            item_limit
-          }" items.`
-      };
-      console.log(response);
-      callSendAPI(sender_psid, response);
-      return;
-    }
 
     // Previous count of item
     let prev_stock_count = 0;
