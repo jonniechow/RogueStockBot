@@ -37,6 +37,8 @@ var search_dic = {};
 var start_time = new Date();
 // Delay in seconds
 var delay = 10;
+// Limit of iteems
+var item_limit = 4;
 
 // Item url dictionary
 var search_urls = { // Plate URLs
@@ -301,6 +303,17 @@ function handleMessage(sender_psid, received_message) {
     }
     var search_url = search_urls[rec_msg];
 
+    if (search_dic.length >= 4) {
+      response = {
+        "text": `You have hit the max limit of: "${
+            item_limit
+          }" items.`
+      };
+      console.log(response);
+      callSendAPI(sender_psid, response);
+      return;
+    }
+
     // Previous count of item
     let prev_stock_count = 0;
     var interval_count = 0;
@@ -353,11 +366,11 @@ function handleMessage(sender_psid, received_message) {
             "Link " + search_url
         };
 
-        console.log("Interval count: " + interval_count);
-        console.log("Searching: " + rec_msg);
-        console.log("Searching " + interval_id_list.length + " items");
-        console.log("Prev stock count: " + prev_stock_count);
-        console.log("Curr stock count: " + in_stock_count + "\n");
+        // console.log("Interval count: " + interval_count);
+        // console.log("Searching: " + rec_msg);
+        // console.log("Searching " + interval_id_list.length + " items");
+        // console.log("Prev stock count: " + prev_stock_count);
+        // console.log("Curr stock count: " + in_stock_count + "\n");
 
         // If the stock amount changed from last check
         // Send a message on FB
