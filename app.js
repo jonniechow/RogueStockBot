@@ -174,7 +174,7 @@ function getTimeDiff(start_time) {
   time_elapsed = Math.floor(time_elapsed / 60);
 
   // get hours
-  //var hours = Math.round(time_elapsed % 24);
+  var hours = Math.round(time_elapsed % 24);
 
   // remove hours from the date
   time_elapsed = Math.floor(time_elapsed / 24);
@@ -335,8 +335,7 @@ function handleMessage(sender_psid, received_message) {
         }
 
         // Set date
-        var usaTime = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
-        var today = new Date(usaTime);
+        var today = new Date();
         var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
         var time = today.toLocaleString('en-US',
           {
