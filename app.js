@@ -27,7 +27,7 @@ const request = require('request'),
   axios = require('axios'),
   cheerio = require('cheerio'),
   body_parser = require('body-parser'),
-  path  = require('path'),
+  path = require('path'),
   app = express().use(body_parser.json());
 // creates express http server
 
@@ -42,34 +42,135 @@ var item_limit = 4;
 
 // Item url dictionary
 var search_urls = { // Plate URLs
-  "plate hi-temp": "https://www.roguefitness.com/rogue-hi-temp-bumper-plates",
-  "plate hg2": "https://www.roguefitness.com/rogue-hg-2-0-bumper-plates",
-  "plate comp lb": "https://www.roguefitness.com/rogue-competition-plates",
-  "plate comp lb2": "https://www.roguefitness.com/rogue-color-lb-training-2-0-plates",
-  "plate black lb": "https://www.roguefitness.com/rogue-black-training-lb-color-stripe-plates",
-  "plate black lb2": "https://www.roguefitness.com/rogue-lb-training-2-0-plates",
-  "plate echo": "https://www.roguefitness.com/rogue-echo-bumper-plates-with-white-text",
-  "plate echo color": "https://www.roguefitness.com/rogue-color-echo-bumper-plate",
-  "plate machined": "https://www.roguefitness.com/rogue-machined-olympic-plates",
-  "plate fleck": "https://www.roguefitness.com/rogue-fleck-plates",
-  "plate olympic": "https://www.roguefitness.com/rogue-olympic-plates",
-  "plate cal": "https://www.roguefitness.com/rogue-calibrated-lb-steel-plates",
-  "plate change": "https://www.roguefitness.com/rogue-lb-change-plates",
+  "plate hi-temp": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-hi-temp-bumper-plates"
+  },
+  "plate hg2": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-hg-2-0-bumper-plates"
+  },
+  "plate comp lb": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-competition-plates"
+  },
+  "plate comp lb2": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-color-lb-training-2-0-plates"
+  },
+  "plate black lb": {
+    "type": "multi",
+    "link", "https://www.roguefitness.com/rogue-black-training-lb-color-stripe-plates"
+  },
+  "plate black lb2": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-lb-training-2-0-plates"
+  },
+  "plate echo": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-echo-bumper-plates-with-white-text"
+  },
+  "plate echo color": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
+  },
+  "plate machined": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-machined-olympic-plates"
+  },
+  "plate fleck": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-fleck-plates"
+  },
+  "plate olympic": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-olympic-plates"
+  },
+  "plate cal": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-calibrated-lb-steel-plates"
+  },
+  "plate change": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-lb-change-plates"
+  },
   // Barbell URLs
   // Ohio Bar
-  "barbell op oxide": "https://www.roguefitness.com/rogue-ohio-bar-black-oxide",
-  "barbell op zinc": "https://www.roguefitness.com/the-ohio-bar-black-zinc",
-  "barbell op ecoat": "https://www.roguefitness.com/the-ohio-bar-2-0-e-coat",
-  "barbell op ss": "https://www.roguefitness.com/stainless-steel-ohio-bar",
-  "barbell op cerakote": "https://www.roguefitness.com/the-ohio-bar-cerakote",
+  "barbell op oxide": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/rogue-ohio-bar-black-oxide"
+  },
+  "barbell op zinc": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/the-ohio-bar-black-zinc"
+  },
+  "barbell op ecoat": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/the-ohio-bar-2-0-e-coat"
+  },
+  "barbell op ss": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/stainless-steel-ohio-bar"
+  },
+  "barbell op cerakote": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/the-ohio-bar-cerakote"
+  },
   // Ohio Power Bar
-  "barbell opb steel": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-bare-steel",
-  "barbell opb ecoat": "https://www.roguefitness.com/rogue-ohio-power-bar-e-coat",
-  "barbell opb zinc": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-black-zinc",
-  "barbell opb ss": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless",
-  "barbell opb cerakote": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote",
+  "barbell opb steel": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-bare-steel"
+  },
+  "barbell opb ecoat": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/rogue-ohio-power-bar-e-coat"
+  },
+  "barbell opb zinc": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-black-zinc"
+  },
+  "barbell opb ss": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless"
+  },
+  "barbell opb cerakote": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote"
+  },
   // Echo bike
-  "bike echo": "https://www.roguefitness.com/rogue-echo-bike",
+  "bike echo": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/rogue-echo-bike"
+  },
+  // Bench
+  "bench flat 2.0": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/rogue-flat-utility-bench"
+  },
+  "bench adj 2.0": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-adjustable-bench-2-0"
+  },
+  "bench ab2": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/ab-2-adjustable-bench"
+  },
+  "bench ab3": {
+    "type": "multi",
+    "link": "https://www.roguefitness.com/rogue-ab-3-adjustable-bench"
+  },
+  "bench thompson": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/thompson-fatpad"
+  },
+  "bench fatpad": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/rogue-competition-fat-pad"
+  },
+  "bench foldup": {
+    "type": "single",
+    "link": "https://www.roguefitness.com/rogue-fold-up-utility-bench"
+  },
   // Boneyard
   "bone 29": "https://www.roguefitness.com/rogue-29mm-boneyard-bars",
   "bone 28.5": "https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars",
@@ -84,20 +185,20 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 // Home screen page
 app.get('/', (req, res) => {
   res.sendFile('index.html', {
-  root: path.join(__dirname, '/views')
-})
+    root: path.join(__dirname, '/views')
+  })
 });
 
 app.get('/terms', (req, res) => {
   res.sendFile('terms.html', {
-  root: path.join(__dirname, '/views')
-})
+    root: path.join(__dirname, '/views')
+  })
 });
 
 app.get('/privacy-policy', (req, res) => {
   res.sendFile('privacy-policy.html', {
-  root: path.join(__dirname, '/views')
-})
+    root: path.join(__dirname, '/views')
+  })
 });
 
 // Accepts POST requests at /webhook endpoint
@@ -215,7 +316,7 @@ function getData(search_url, rec_msg, callback) {
           });
           console.log(items);
         }
-        else if (rec_msg.indexOf("plate") == 0 || rec_msg.indexOf("bike") == 0 ) {
+        else if (rec_msg.indexOf("plate") == 0 || rec_msg.indexOf("bike") == 0) {
           $('.grouped-item').each(function (index, element) {
             items[index] = {};
             items[index]['name'] = $(element).find('.item-name').text();
@@ -229,7 +330,23 @@ function getData(search_url, rec_msg, callback) {
           items[0]['price'] = $('.price').text();
           items[0]['in_stock'] = $('.bin-stock-availability').text();
         }
-        //console.log(items);
+        else if (rec_msg.indexOf("bench") == 0) {
+          if (search_urls[rec_msg]['type'] === "multi") {
+            $('.grouped-item').each(function (index, element) {
+              items[index] = {};
+              items[index]['name'] = $(element).find('.item-name').text();
+              items[index]['price'] = $(element).find('.price').text();
+              items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+            });
+          }
+          else {
+            items[0] = {};
+            items[0]['name'] = $('.product-title').text();
+            items[0]['price'] = $('.price').text();
+            items[0]['in_stock'] = $('.bin-stock-availability').text();
+          }
+        }
+        console.log(items);
         return callback(items);
       }
     }
@@ -301,7 +418,7 @@ function handleMessage(sender_psid, received_message) {
       callSendAPI(sender_psid, response);
       return;
     }
-    var search_url = search_urls[rec_msg];
+    var search_url = search_urls[rec_msg]['link'];
 
     // Previous count of item
     let prev_stock_count = 0;
@@ -325,8 +442,9 @@ function handleMessage(sender_psid, received_message) {
           else { // Check emoji
             avail = decodeURI('\u2705');
             in_stock_count += 1;
-            item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+            
           }
+          item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
         }
 
         // No items found, everything sold out
