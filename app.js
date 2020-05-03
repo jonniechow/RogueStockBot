@@ -174,11 +174,11 @@ function getTimeDiff(start_time) {
   time_elapsed = Math.floor(time_elapsed / 60);
 
   // get hours
-  var hours = Math.round(time_elapsed % 24);
+  // var hours = Math.round(time_elapsed % 24);
 
   // remove hours from the date
   time_elapsed = Math.floor(time_elapsed / 24);
-  var time_elapsed_str = hours + ":" + minutes + ":" + seconds;
+  var time_elapsed_str = time_elapsed + ":" + minutes + ":" + seconds;
   return time_elapsed_str;
 }
 
