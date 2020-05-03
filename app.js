@@ -86,6 +86,18 @@ app.get('/', (req, res) => {
 })
 });
 
+app.get('/terms', (req, res) => {
+  res.sendFile('terms.html', {
+  root: path.join(__dirname, '/views')
+})
+});
+
+app.get('/privacy-policy', (req, res) => {
+  res.sendFile('privacy-policy.html', {
+  root: path.join(__dirname, '/views')
+})
+});
+
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => { // Parse the request body from the POST
   let body = req.body;
