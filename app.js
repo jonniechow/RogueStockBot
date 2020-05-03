@@ -193,7 +193,7 @@ function getData(search_url, rec_msg, callback) {
         return callback(error)
       };
       if (!error && response.statusCode == 200) {
-        console.log("Web scraping data from: " + search_url);
+        //console.log("Web scraping data from: " + search_url);
         let $ = cheerio.load(html);
         var items = [];
         // Check if search string already exists
