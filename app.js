@@ -160,8 +160,7 @@ app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
 });
 
 function getTimeDiff(start_time) {
-  var usaTime = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
-  var curr_time = new Date(usaTime);
+  var curr_time = new Date();
   var time_elapsed = (curr_time - start_time) / 1000;
 
   var seconds = Math.round(time_elapsed % 60);
@@ -175,7 +174,7 @@ function getTimeDiff(start_time) {
   time_elapsed = Math.floor(time_elapsed / 60);
 
   // get hours
-  // var hours = Math.round(time_elapsed % 24);
+  //var hours = Math.round(time_elapsed % 24);
 
   // remove hours from the date
   time_elapsed = Math.floor(time_elapsed / 24);
@@ -336,7 +335,8 @@ function handleMessage(sender_psid, received_message) {
         }
 
         // Set date
-        var today = new Date();
+        var usaTime = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
+        var today = new Date(usaTime);
         var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
         var time = today.toLocaleString('en-US',
           {
