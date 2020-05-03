@@ -193,7 +193,7 @@ function getData(search_url, rec_msg, callback) {
         return callback(error)
       };
       if (!error && response.statusCode == 200) {
-        //console.log("Web scraping data from: " + search_url);
+        // console.log("Web scraping data from: " + search_url);
         let $ = cheerio.load(html);
         var items = [];
         // Check if search string already exists
@@ -386,10 +386,10 @@ function handleMessage(sender_psid, received_message) {
         }
         // Set prev count to current stock
         prev_stock_count = in_stock_count;
-        return;
+
 
       });
-    }(), delay * 1000);
+    }, delay * 1000);
     // Add to list of all interval ids
     interval_id_list.push(interval_id);
 
