@@ -386,7 +386,7 @@ function handleMessage(sender_psid, received_message) {
         }
         // Set prev count to current stock
         prev_stock_count = in_stock_count;
-
+        return;
 
       });
     }(), delay * 1000);
