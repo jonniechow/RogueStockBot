@@ -160,7 +160,8 @@ app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
 });
 
 function getTimeDiff(start_time) {
-  var curr_time = new Date();
+  var usaTime = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
+  var curr_time = new Date(usaTime);
   var time_elapsed = (curr_time - start_time) / 1000;
 
   var seconds = Math.round(time_elapsed % 60);
