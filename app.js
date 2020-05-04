@@ -35,6 +35,7 @@ const request = require('request'),
 var interval_id = null;
 var interval_id_list = [];
 var search_dic = {};
+var user_id_dic = {};
 var start_time = new Date();
 // Delay in seconds
 var delay = 10;
@@ -154,7 +155,7 @@ function getTimeDiff(start_time) {
   return time_elapsed_str;
 }
 
-function getData(search_url, rec_msg, callback) {
+function getData(search_url, rec_msg, sender_psid, callback) {
   request(
     {
       method: 'GET',
@@ -173,6 +174,7 @@ function getData(search_url, rec_msg, callback) {
           search_dic[rec_msg] = {};
           search_dic[rec_msg]['product-name'] = $('.product-title').text();
           search_dic[rec_msg]['time-start'] = new Date();
+          search_dic[rec_msg]['user_ids'] = [];
         }
 
         // Multiple items in a page
@@ -208,6 +210,10 @@ function handleMessage(sender_psid, received_message) {
     // will be added to the body of our request to the Send API
     var rec_msg = received_message.text.toLowerCase();
 
+    if (!(sender_psid in user_id_dic)) {
+      user_id_dic[sender_psid] = {};
+    }
+
     // Help message
     if (rec_msg === "help") {
       var keys = Object.keys(search_urls);
@@ -224,12 +230,12 @@ function handleMessage(sender_psid, received_message) {
     }
     // Status message
     else if (rec_msg === "status") {
-      var search_str = `Currently searching ${Object.keys(search_dic).length} items
-      \n SEARCHING EVERYONE'S ITEMS RIGHT NOW WILL FIX TOMORROW SORRY FOR INCONVENIENCE \n\n`;
-      for (var key in search_dic) {
-        search_str += search_dic[key]['product-name'] +
-          "\nTime elapsed: " + getTimeDiff(search_dic[key]['time-start']) + "\n\n";
-      }
+      var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]).length}/${item_limit} items
+      \n for user ${sender_psid} \n\n`;
+      // for (var key in search_dic) {
+      //   search_str += search_dic[key]['product-name'] +
+      //     "\nTime elapsed: " + getTimeDiff(search_dic[key]['time-start']) + "\n\n";
+      // }
       response = {
         "text": search_str
 
@@ -271,24 +277,38 @@ function handleMessage(sender_psid, received_message) {
     var search_url = search_urls[rec_msg]['link'];
 
     // Check current amount of items
-    // if (Object.keys(search_dic).length >= item_limit) {
-    //   response = {
-    //     "text": `You have reached max limit of "${item_limit}" items\n`
-    //   };
-    //   callSendAPI(sender_psid, response);
-    //   return;
-    // }
+    if (Object.keys(user_id_dic[sender_psid]).length >= item_limit) {
+      response = {
+        "text": `You have reached max limit of "${item_limit}" items\n`
+      };
+      callSendAPI(sender_psid, response);
+      return;
+    }
+
+    if (rec_msg in user_id_dic[sender_psid]) {
+      response = {
+        "text": `Already searching: "${
+          search_dic[rec_msg]['product-name']
+          }".\n`
+      };
+      callSendAPI(sender_psid, response);
+      return;
+    }
+    else {
+      user_id_dic[sender_psid][rec_msg] = 1;
+    }
 
     // Previous count of item
     let prev_stock_count = 0;
     var interval_count = 0;
     // Interval to continous check website
     interval_id = setInterval(function () {
-      response = getData(search_url, rec_msg, function (data) {
+      response = getData(search_url, rec_msg, sender_psid, function (data) {
         let item_str = "";
         let in_stock_count = 0;
         
-
+        
+        
         // Loop through each item on page
         for (let i = 0; i < data.length; i++) {
           var avail = decodeURI('\u2705');
