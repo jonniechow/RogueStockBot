@@ -128,10 +128,10 @@ var search_urls = { // Plate URLs
     "bench foldup": {
       "type": "single",
       "link": "https://www.roguefitness.com/rogue-fold-up-utility-bench"
-    },
+    }
     // Boneyard
-    "bone 29": "https://www.roguefitness.com/rogue-29mm-boneyard-bars",
-    "bone 28.5": "https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars",
-    "bone dead": "https://www.roguefitness.com/rogue-boneyard-ohio-deadlift-bar"
+    // "bone 29": "https://www.roguefitness.com/rogue-29mm-boneyard-bars",
+    // "bone 28.5": "https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars",
+    // "bone dead": "https://www.roguefitness.com/rogue-boneyard-ohio-deadlift-bar"
   };
 module.exports = search_urls;

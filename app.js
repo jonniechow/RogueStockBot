@@ -54,6 +54,12 @@ app.get('/', (req, res) => {
   })
 });
 
+app.get('/bot-guide', (req, res) => {
+  res.sendFile('bot-guide.html', {
+    root: path.join(__dirname, '/views')
+  })
+});
+
 app.get('/terms', (req, res) => {
   res.sendFile('terms.html', {
     root: path.join(__dirname, '/views')
