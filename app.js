@@ -240,7 +240,10 @@ function handleMessage(sender_psid, received_message) {
         "text": search_str
 
       };
+      
+      console.log("USER DIC")
       console.log(user_id_dic);
+      
       callSendAPI(sender_psid, response);
       return;
     }
@@ -258,9 +261,8 @@ function handleMessage(sender_psid, received_message) {
       };
       user_id_dic[sender_psid]['intervals'] = [];
       user_id_dic[sender_psid]['products'] = {};
-      // response = {
-      //   "text": `Stop not working for now. If msgs get annoying mute chat. Will fix in tomorrows update`
-      // };
+      delete user_id_dic[sender_psid];
+
       callSendAPI(sender_psid, response);
       return;
     }
@@ -271,7 +273,7 @@ function handleMessage(sender_psid, received_message) {
         "text": `You entered: "${
           received_message.text
           }".` + "\n\n" + 
-          "Item doesn't exist\n Try typing `help` for a list of all valid commands"
+          "Item doesn't exist\nTry typing `help` for a list of all valid commands"
       };
       //console.log(response);
       callSendAPI(sender_psid, response);
@@ -300,7 +302,7 @@ function handleMessage(sender_psid, received_message) {
     }
     else {
       user_id_dic[sender_psid]['products'][rec_msg] = new Date();
-      user_id_dic[sender_psid]['start-time'] = new Date();
+      //user_id_dic[sender_psid]['start-time'] = new Date();
     }
 
     // Previous count of item
