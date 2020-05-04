@@ -37,7 +37,7 @@ var search_dic = {};
 var user_id_dic = {};
 var start_time = new Date();
 // Delay in seconds
-var delay = 10;
+var delay = 30;
 // Limit of iteems
 var item_limit = 4;
 
@@ -377,8 +377,7 @@ function handleMessage(sender_psid, received_message) {
 
 
       });
-    }, delay * 1000)
-    .catch((e) => console.log(e));
+    }, delay * 1000);
 
     // Add to list of all interval ids based on sender_psid
     user_id_dic[sender_psid]['intervals'].push(interval_id);
