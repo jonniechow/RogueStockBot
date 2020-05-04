@@ -172,7 +172,6 @@ function getData(search_url, rec_msg, sender_psid, callback) {
         if (!(rec_msg in search_dic)) {
           search_dic[rec_msg] = {};
           search_dic[rec_msg]['product-name'] = $('.product-title').text();
-          search_dic[rec_msg]['time-start'] = new Date();
           search_dic[rec_msg]['user_ids'] = [];
         }
 
@@ -209,6 +208,7 @@ function handleMessage(sender_psid, received_message) {
     // will be added to the body of our request to the Send API
     var rec_msg = received_message.text.toLowerCase();
 
+    // Checks if user is in dict, if not creates entry
     if (!(sender_psid in user_id_dic)) {
       user_id_dic[sender_psid] = {'products': {}, 'start-date': {}, 'intervals': []};
     }
@@ -264,12 +264,14 @@ function handleMessage(sender_psid, received_message) {
       callSendAPI(sender_psid, response);
       return;
     }
+    
     // User message is invalid
     if (!(rec_msg in search_urls)) {
       response = {
         "text": `You entered: "${
           received_message.text
-          }".` + "\n\n" + "Item doesn't exist"
+          }".` + "\n\n" + 
+          "Item doesn't exist\n Try typing `help` for a list of all valid commands"
       };
       //console.log(response);
       callSendAPI(sender_psid, response);
