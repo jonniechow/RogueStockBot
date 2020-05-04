@@ -211,7 +211,7 @@ function handleMessage(sender_psid, received_message) {
     var rec_msg = received_message.text.toLowerCase();
 
     if (!(sender_psid in user_id_dic)) {
-      user_id_dic[sender_psid] = {};
+      user_id_dic[sender_psid] = {'products': {}, 'start-date': {}, 'intervals': []};
     }
 
     // Help message
@@ -230,12 +230,13 @@ function handleMessage(sender_psid, received_message) {
     }
     // Status message
     else if (rec_msg === "status") {
-      var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]).length}/${item_limit} items
+      console.log(user_id_dic);
+      var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items
       \n for user ${sender_psid} \n\n`;
-      // for (var key in search_dic) {
-      //   search_str += search_dic[key]['product-name'] +
-      //     "\nTime elapsed: " + getTimeDiff(search_dic[key]['time-start']) + "\n\n";
-      // }
+      for (var key in user_id_dic[sender_psid]['products']) {
+        search_str += search_dic[key]['product-name'] + " / " + key +
+        "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['start-time']) + "\n\n";
+      }
       response = {
         "text": search_str
 
@@ -285,7 +286,8 @@ function handleMessage(sender_psid, received_message) {
       return;
     }
 
-    if (rec_msg in user_id_dic[sender_psid]) {
+    // Check if item is already being searched for user
+    if (rec_msg in user_id_dic[sender_psid]['products']) {
       response = {
         "text": `Already searching: "${
           search_dic[rec_msg]['product-name']
@@ -295,7 +297,8 @@ function handleMessage(sender_psid, received_message) {
       return;
     }
     else {
-      user_id_dic[sender_psid][rec_msg] = 1;
+      user_id_dic[sender_psid]['products'][rec_msg] = 1;
+      user_id_dic[sender_psid]['start-time'] = new Date();
     }
 
     // Previous count of item
