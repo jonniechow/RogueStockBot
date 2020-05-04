@@ -52,6 +52,10 @@ var search_urls = { // Plate URLs
         "type": "multi",
         "link": "https://www.roguefitness.com/rogue-lb-change-plates"
     },
+    "plate 6-shooter": {
+        "type": "multi",
+        "link": "https://www.roguefitness.com/rogue-6-shooter-olympic-plates"
+    },
     // Barbell URLs
     // Ohio Bar
     "barbell op oxide": {
