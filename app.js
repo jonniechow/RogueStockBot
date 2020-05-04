@@ -232,7 +232,7 @@ function handleMessage(sender_psid, received_message) {
     else if (rec_msg === "status") {
       console.log(user_id_dic);
       var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items
-      \nFor user ${sender_psid} \n\n`;
+      \n\n`;
       for (var key in user_id_dic[sender_psid]['products']) {
         search_str += search_dic[key]['product-name'] + " / " + key +
         "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
