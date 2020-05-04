@@ -8,9 +8,11 @@ to update myself whenever an equipment is back in stock. I encountered a communi
 on reddit r/homegym where other users faced the same problem and I decided this would
 be a great tool to help others just like me. 
 
+![result](/views/images/home-demo.png)
+
 ### Commands
 | Name | Purpose | 
-|:-:|:-:|:-:|
+|:-:|:-:|
 | help | Returns all commands of items to search | 
 | status | Checks current items and how long they have been searching for | 
 | stop | Stops checking all items | 
