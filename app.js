@@ -33,7 +33,6 @@ const request = require('request'),
 // creates express http server
 
 var interval_id = null;
-var interval_id_list = [];
 var search_dic = {};
 var user_id_dic = {};
 var start_time = new Date();
@@ -166,7 +165,7 @@ function getData(search_url, rec_msg, sender_psid, callback) {
         return callback(error)
       };
       if (!error && response.statusCode == 200) {
-        // console.log("Web scraping data from: " + search_url);
+        console.log("Web scraping data from: " + search_url);
         let $ = cheerio.load(html);
         var items = [];
         // Check if search string already exists
@@ -232,35 +231,36 @@ function handleMessage(sender_psid, received_message) {
     else if (rec_msg === "status") {
       console.log(user_id_dic);
       var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items
-      \n for user ${sender_psid} \n\n`;
+      \nFor user ${sender_psid} \n\n`;
       for (var key in user_id_dic[sender_psid]['products']) {
         search_str += search_dic[key]['product-name'] + " / " + key +
-        "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['start-time']) + "\n\n";
+        "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
       response = {
         "text": search_str
 
       };
+      console.log(user_id_dic);
       callSendAPI(sender_psid, response);
       return;
     }
     // Stop message
     else if (rec_msg === "stop") {
-      // interval_id_list.forEach(clearInterval);
-      // var search_item_str = "";
-      // for (var key in search_dic) {
-      //   search_item_str += search_dic[key]['product-name'] +
-      //     "\nTime elapsed: " + getTimeDiff(search_dic[key]['time-start']) + "\n\n";
-      // }
-      // response = {
-      //   "text": `Stopped checking ${interval_id_list.length} item(s):\n` +
-      //     search_item_str
-      // };
-      // console.log(`Stopped checking ${interval_id_list.length} item(s)`);
-      // search_dic = {};
+      user_id_dic[sender_psid]['intervals'].forEach(clearInterval);
+      var search_item_str = "";
+      for (var key in user_id_dic[sender_psid]['products']) {
+        search_item_str += search_dic[key]['product-name'] +
+          "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
+      }
       response = {
-        "text": `Stop not working for now. If msgs get annoying mute chat. Will fix in tomorrows update`
+        "text": `Stopped checking ${user_id_dic[sender_psid]['intervals'].length} item(s):\n\n` +
+          search_item_str
       };
+      user_id_dic[sender_psid]['intervals'] = [];
+      user_id_dic[sender_psid]['products'] = {};
+      // response = {
+      //   "text": `Stop not working for now. If msgs get annoying mute chat. Will fix in tomorrows update`
+      // };
       callSendAPI(sender_psid, response);
       return;
     }
@@ -271,14 +271,14 @@ function handleMessage(sender_psid, received_message) {
           received_message.text
           }".` + "\n\n" + "Item doesn't exist"
       };
-      console.log(response);
+      //console.log(response);
       callSendAPI(sender_psid, response);
       return;
     }
     var search_url = search_urls[rec_msg]['link'];
 
     // Check current amount of items
-    if (Object.keys(user_id_dic[sender_psid]).length >= item_limit) {
+    if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
       response = {
         "text": `You have reached max limit of "${item_limit}" items\n`
       };
@@ -297,7 +297,7 @@ function handleMessage(sender_psid, received_message) {
       return;
     }
     else {
-      user_id_dic[sender_psid]['products'][rec_msg] = 1;
+      user_id_dic[sender_psid]['products'][rec_msg] = new Date();
       user_id_dic[sender_psid]['start-time'] = new Date();
     }
 
@@ -309,8 +309,6 @@ function handleMessage(sender_psid, received_message) {
       response = getData(search_url, rec_msg, sender_psid, function (data) {
         let item_str = "";
         let in_stock_count = 0;
-        
-        
         
         // Loop through each item on page
         for (let i = 0; i < data.length; i++) {
@@ -364,24 +362,24 @@ function handleMessage(sender_psid, received_message) {
         // If the stock amount changed from last check
         // Send a message on FB
         if (interval_count == 0 || (in_stock_count != prev_stock_count)) {
-          console.log("Response msg:");
+          console.log("Response msg: Update in stock");
           console.log(response);
           callSendAPI(sender_psid, response);
         }
         interval_count += 1;
         // All items are in stock so clear interval
-        if (in_stock_count == data.length) {
-          clearInterval(interval_id);
-        }
+        // if (in_stock_count == data.length) {
+        //   clearInterval(interval_id);
+        // }
         // Set prev count to current stock
         prev_stock_count = in_stock_count;
 
 
       });
     }, delay * 1000);
-    // Add to list of all interval ids
-    interval_id_list.push(interval_id);
 
+    // Add to list of all interval ids based on sender_psid
+    user_id_dic[sender_psid]['intervals'].push(interval_id);
   }
   else if (received_message.attachments) { // Get the URL of the message attachment
     let attachment_url = received_message.attachments[0].payload.url;
