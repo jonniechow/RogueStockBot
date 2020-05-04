@@ -224,7 +224,8 @@ function handleMessage(sender_psid, received_message) {
     }
     // Status message
     else if (rec_msg === "status") {
-      var search_str = `Currently searching ${Object.keys(search_dic).length}/${item_limit} items\n\n`;
+      var search_str = `Currently searching ${Object.keys(search_dic).length} items
+      \n SEARCHING EVERYONE'S ITEMS RIGHT NOW WILL FIX TOMORROW SORRY FOR INCONVENIENCE \n\n`;
       for (var key in search_dic) {
         search_str += search_dic[key]['product-name'] +
           "\nTime elapsed: " + getTimeDiff(search_dic[key]['time-start']) + "\n\n";
@@ -238,18 +239,21 @@ function handleMessage(sender_psid, received_message) {
     }
     // Stop message
     else if (rec_msg === "stop") {
-      interval_id_list.forEach(clearInterval);
-      var search_item_str = "";
-      for (var key in search_dic) {
-        search_item_str += search_dic[key]['product-name'] +
-          "\nTime elapsed: " + getTimeDiff(search_dic[key]['time-start']) + "\n\n";
-      }
+      // interval_id_list.forEach(clearInterval);
+      // var search_item_str = "";
+      // for (var key in search_dic) {
+      //   search_item_str += search_dic[key]['product-name'] +
+      //     "\nTime elapsed: " + getTimeDiff(search_dic[key]['time-start']) + "\n\n";
+      // }
+      // response = {
+      //   "text": `Stopped checking ${interval_id_list.length} item(s):\n` +
+      //     search_item_str
+      // };
+      // console.log(`Stopped checking ${interval_id_list.length} item(s)`);
+      // search_dic = {};
       response = {
-        "text": `Stopped checking ${interval_id_list.length} item(s):\n` +
-          search_item_str
+        "text": `Stop not working for now. If msgs get annoying mute chat. Will fix in tomorrows update`
       };
-      console.log(`Stopped checking ${interval_id_list.length} item(s)`);
-      search_dic = {};
       callSendAPI(sender_psid, response);
       return;
     }
