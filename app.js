@@ -222,7 +222,8 @@ function handleMessage(sender_psid, received_message) {
       }
       response = {
         "text": "Search for the following items: \n" + key_string +
-          "Type `stop` to stop checking all items \n"
+          "Type `stop` to stop checking all items \n" +
+          "Please type commands ONLY after bot replies to first command or it may crash"
       };
       callSendAPI(sender_psid, response);
       return;
@@ -240,7 +241,7 @@ function handleMessage(sender_psid, received_message) {
         "text": search_str
 
       };
-      
+
       console.log("USER DIC")
       console.log(user_id_dic);
       
@@ -351,7 +352,7 @@ function handleMessage(sender_psid, received_message) {
         response = {
           "text": `You entered: "${received_message.text}"\n` +
             `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
-            `Currently searching ${Object.keys(search_dic).length}/${item_limit} items` +
+            `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
             "Checked On " + dateTime + "\n" +
             "Link " + search_url
@@ -371,16 +372,13 @@ function handleMessage(sender_psid, received_message) {
           callSendAPI(sender_psid, response);
         }
         interval_count += 1;
-        // All items are in stock so clear interval
-        // if (in_stock_count == data.length) {
-        //   clearInterval(interval_id);
-        // }
         // Set prev count to current stock
         prev_stock_count = in_stock_count;
 
 
       });
-    }, delay * 1000);
+    }, delay * 1000)
+    .catch((e) => console.log(e));
 
     // Add to list of all interval ids based on sender_psid
     user_id_dic[sender_psid]['intervals'].push(interval_id);
