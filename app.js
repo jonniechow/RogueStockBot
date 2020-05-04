@@ -267,13 +267,13 @@ function handleMessage(sender_psid, received_message) {
     var search_url = search_urls[rec_msg]['link'];
 
     // Check current amount of items
-    if (Object.keys(search_dic).length >= item_limit) {
-      response = {
-        "text": `You have reached max limit of "${item_limit}" items\n`
-      };
-      callSendAPI(sender_psid, response);
-      return;
-    }
+    // if (Object.keys(search_dic).length >= item_limit) {
+    //   response = {
+    //     "text": `You have reached max limit of "${item_limit}" items\n`
+    //   };
+    //   callSendAPI(sender_psid, response);
+    //   return;
+    // }
 
     // Previous count of item
     let prev_stock_count = 0;
