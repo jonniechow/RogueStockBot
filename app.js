@@ -218,7 +218,7 @@ function handleMessage(sender_psid, received_message) {
     }
     // Status message
     else if (rec_msg === "status") {
-      var search_str = "Currently searching for:\n";
+      var search_str = `Currently searching ${Object.keys(search_dic).length}/${item_limit} items\n\n`;
       for (var key in search_dic) {
         search_str += search_dic[key]['product-name'] +
           "\nTime elapsed: " + getTimeDiff(search_dic[key]['time-start']) + "\n\n";
@@ -243,6 +243,7 @@ function handleMessage(sender_psid, received_message) {
           search_item_str
       };
       console.log(`Stopped checking ${interval_id_list.length} item(s)`);
+      search_dic = {};
       callSendAPI(sender_psid, response);
       return;
     }
@@ -259,6 +260,15 @@ function handleMessage(sender_psid, received_message) {
     }
     var search_url = search_urls[rec_msg]['link'];
 
+    // Check current amount of items
+    if (Object.keys(search_dic).length >= item_limit) {
+      response = {
+        "text": `You have reached max limit of "${item_limit}" items\n`
+      };
+      callSendAPI(sender_psid, response);
+      return;
+    }
+
     // Previous count of item
     let prev_stock_count = 0;
     var interval_count = 0;
@@ -267,8 +277,7 @@ function handleMessage(sender_psid, received_message) {
       response = getData(search_url, rec_msg, function (data) {
         let item_str = "";
         let in_stock_count = 0;
-
-        // console.log(data);
+        
 
         // Loop through each item on page
         for (let i = 0; i < data.length; i++) {
@@ -306,7 +315,8 @@ function handleMessage(sender_psid, received_message) {
         // Response message
         response = {
           "text": `You entered: "${received_message.text}"\n` +
-            `Match found for: "${search_dic[rec_msg]['product-name']}".` +
+            `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
+            `Currently searching ${Object.keys(search_dic).length}/${item_limit} items` +
             "\n\n" + item_str +
             "Checked On " + dateTime + "\n" +
             "Link " + search_url
