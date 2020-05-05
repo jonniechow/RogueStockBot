@@ -282,6 +282,20 @@ function handleMessage(sender_psid, received_message) {
     }
     var search_url = search_urls[rec_msg]['link'];
 
+    // Create dictionary for item-urls
+    // Check if sender_id dic exists for url
+    if (!("sender_ids" in search_urls[rec_msg])) {
+      // If not create a new dic
+      search_urls[rec_msg]['sender_ids'] = {};
+    }
+    else {
+      // Check if sender_psid is in dic for url
+      if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
+        search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
+      } 
+    }
+    
+
     // Check current amount of items
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
       response = {
@@ -357,12 +371,6 @@ function handleMessage(sender_psid, received_message) {
             "Checked On " + dateTime + "\n" +
             "Link " + search_url
         };
-
-        // console.log("Interval count: " + interval_count);
-        // console.log("Searching: " + rec_msg);
-        // console.log("Searching " + interval_id_list.length + " items");
-        // console.log("Prev stock count: " + prev_stock_count);
-        // console.log("Curr stock count: " + in_stock_count + "\n");
 
         // If the stock amount changed from last check
         // Send a message on FB
