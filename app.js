@@ -242,15 +242,72 @@ function getDataFromURL(search_url, callback) {
   );
 }
 
-function handleAllURLS() {
-  for(item in search_urls) {
+function handleAllURLS(callback) {
+  for(var item in search_urls) {
     if(Object.keys(search_urls[item]['sender_ids']).length > 0) {
       var item_link = search_urls[item]['link'];
-      // getDataFromURL(item_link, function() {
+      getDataFromURL(item_link, function(data) {
+        console.log(data);
+        // let item_str = "";
+        // let in_stock_count = 0;
         
-      // });
+        // // Loop through each item on page
+        // for (let i = 0; i < data.length; i++) {
+        //   var avail = decodeURI('\u2705');
+        //   // Out of stock
+        //   if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
+        //     avail = decodeURI('\u274C');
+        //   }
+        //   // In stock
+        //   else { // Check emoji
+        //     avail = decodeURI('\u2705');
+        //     in_stock_count += 1;
+        //     item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+        //   }
+        //   //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+        // }
+
+        // // No items found, everything sold out
+        // if (item_str === "") {
+        //   item_str = "Everything currently out of stock.\n\n";
+        // }
+
+        // // Set date
+        // var today = new Date();
+        // var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+        // var time = today.toLocaleString('en-US',
+        //   {
+        //     hour: 'numeric',
+        //     minute: 'numeric',
+        //     second: 'numeric',
+        //     hour12: true
+        //   });
+        // var dateTime = time + ' ' + date;
+
+        // // Response message
+        // response = {
+        //   "text": `You entered: "${received_message.text}"\n` +
+        //     `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
+        //     `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
+        //     "\n\n" + item_str +
+        //     "Checked On " + dateTime + "\n" +
+        //     "Link " + search_url
+        // };
+
+        // // If the stock amount changed from last check
+        // // Send a message on FB
+        // if (interval_count == 0 || (in_stock_count != prev_stock_count)) {
+        //   console.log("Response msg: Update in stock");
+        //   console.log(response);
+        //   callSendAPI(sender_psid, response);
+        // }
+        // interval_count += 1;
+        // // Set prev count to current stock
+        // prev_stock_count = in_stock_count;
+      });
     }
   }
+  callback();
 }
 
 function handleMessage(sender_psid, received_message) {
@@ -336,19 +393,12 @@ function handleMessage(sender_psid, received_message) {
     }
     var search_url = search_urls[rec_msg]['link'];
 
-    // Create dictionary for item-urls
-    // Check if sender_id dic exists for url
-    if (!("sender_ids" in search_urls[rec_msg])) {
-      // If not create a new dic
-      search_urls[rec_msg]['sender_ids'] = {};
-    }
     // Check if sender_psid is in dic for url
     if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
       search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
     } 
     
-    
-    console.log(search_urls);
+    //console.log(search_urls);
 
     // Check current amount of items
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
@@ -377,69 +427,77 @@ function handleMessage(sender_psid, received_message) {
     // Previous count of item
     let prev_stock_count = 0;
     var interval_count = 0;
-    // Interval to continous check website
+
+
     interval_id = setInterval(function () {
-      response = getData(search_url, rec_msg, sender_psid, function (data) {
-        let item_str = "";
-        let in_stock_count = 0;
-        
-        // Loop through each item on page
-        for (let i = 0; i < data.length; i++) {
-          var avail = decodeURI('\u2705');
-          // Out of stock
-          if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
-            avail = decodeURI('\u274C');
-          }
-          // In stock
-          else { // Check emoji
-            avail = decodeURI('\u2705');
-            in_stock_count += 1;
-            item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-          }
-          //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-        }
-
-        // No items found, everything sold out
-        if (item_str === "") {
-          item_str = "Everything currently out of stock.\n\n";
-        }
-
-        // Set date
-        var today = new Date();
-        var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
-        var time = today.toLocaleString('en-US',
-          {
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-          });
-        var dateTime = time + ' ' + date;
-
-        // Response message
-        response = {
-          "text": `You entered: "${received_message.text}"\n` +
-            `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
-            `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
-            "\n\n" + item_str +
-            "Checked On " + dateTime + "\n" +
-            "Link " + search_url
-        };
-
-        // If the stock amount changed from last check
-        // Send a message on FB
-        if (interval_count == 0 || (in_stock_count != prev_stock_count)) {
-          console.log("Response msg: Update in stock");
-          console.log(response);
-          callSendAPI(sender_psid, response);
-        }
-        interval_count += 1;
-        // Set prev count to current stock
-        prev_stock_count = in_stock_count;
-
+      handleAllURLS(function() {
 
       });
     }, delay * 1000);
+
+    // Interval to continous check website
+    // interval_id = setInterval(function () {
+    //   response = getData(search_url, rec_msg, sender_psid, function (data) {
+    //     let item_str = "";
+    //     let in_stock_count = 0;
+        
+    //     // Loop through each item on page
+    //     for (let i = 0; i < data.length; i++) {
+    //       var avail = decodeURI('\u2705');
+    //       // Out of stock
+    //       if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
+    //         avail = decodeURI('\u274C');
+    //       }
+    //       // In stock
+    //       else { // Check emoji
+    //         avail = decodeURI('\u2705');
+    //         in_stock_count += 1;
+    //         item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+    //       }
+    //       //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+    //     }
+
+    //     // No items found, everything sold out
+    //     if (item_str === "") {
+    //       item_str = "Everything currently out of stock.\n\n";
+    //     }
+
+    //     // Set date
+    //     var today = new Date();
+    //     var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+    //     var time = today.toLocaleString('en-US',
+    //       {
+    //         hour: 'numeric',
+    //         minute: 'numeric',
+    //         second: 'numeric',
+    //         hour12: true
+    //       });
+    //     var dateTime = time + ' ' + date;
+
+    //     // Response message
+    //     response = {
+    //       "text": `You entered: "${received_message.text}"\n` +
+    //         `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
+    //         `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
+    //         "\n\n" + item_str +
+    //         "Checked On " + dateTime + "\n" +
+    //         "Link " + search_url
+    //     };
+
+    //     // If the stock amount changed from last check
+    //     // Send a message on FB
+    //     if (interval_count == 0 || (in_stock_count != prev_stock_count)) {
+    //       console.log("Response msg: Update in stock");
+    //       console.log(response);
+    //       callSendAPI(sender_psid, response);
+    //     }
+    //     interval_count += 1;
+    //     // Set prev count to current stock
+    //     prev_stock_count = in_stock_count;
+
+
+    //   });
+    // }, delay * 1000);
 
     // Add to list of all interval ids based on sender_psid
     user_id_dic[sender_psid]['intervals'].push(interval_id);
