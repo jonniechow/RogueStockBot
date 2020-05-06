@@ -37,7 +37,7 @@ var search_dic = {};
 var user_id_dic = {};
 var start_time = new Date();
 // Delay in seconds
-var delay = 30;
+var delay = 10;
 // Limit of iteems
 var item_limit = 4;
 
@@ -198,7 +198,8 @@ function getData(search_url, rec_msg, sender_psid, callback) {
   );
 }
 
-function getDataFromURL(item_url_dict, callback) {
+function getDataFromURL(item, callback) {
+  var item_url_dict = search_urls[item];
   var item_link = item_url_dict['link'];
   request(
     {
@@ -217,10 +218,10 @@ function getDataFromURL(item_url_dict, callback) {
         let $ = cheerio.load(html);
         var items = [];
         // Check if search string already exists
-        if (!(rec_msg in search_dic)) {
-          search_dic[rec_msg] = {};
-          search_dic[rec_msg]['product-name'] = $('.product-title').text();
-          search_dic[rec_msg]['user_ids'] = [];
+        if (!(item in search_dic)) {
+          search_dic[item] = {};
+          search_dic[item]['product-name'] = $('.product-title').text();
+          search_dic[item]['user_ids'] = [];
         }
 
         // Multiple items in a page
@@ -246,60 +247,72 @@ function getDataFromURL(item_url_dict, callback) {
   );
 }
 
-function handleAllURLS(callback) {
+
+function handleAllURLS(received_message, callback) {
   for(var item in search_urls) {
+    console.log("Item: " + item);
     if(Object.keys(search_urls[item]['sender_ids']).length > 0) {
-      var item_url_dict = search_urls[item];
-      getDataFromURL(item_url_dict, function(data) {
-        console.log(data);
-        // let item_str = "";
-        // let in_stock_count = 0;
+      getDataFromURL(item, function(data) {
+
+        let item_str = "";
+        let in_stock_count = 0;
         
-        // // Loop through each item on page
-        // for (let i = 0; i < data.length; i++) {
-        //   var avail = decodeURI('\u2705');
-        //   // Out of stock
-        //   if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
-        //     avail = decodeURI('\u274C');
-        //   }
-        //   // In stock
-        //   else { // Check emoji
-        //     avail = decodeURI('\u2705');
-        //     in_stock_count += 1;
-        //     item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-        //   }
-        //   //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-        // }
+        // Loop through each item on page
+        for (let i = 0; i < data.length; i++) {
+          var avail = decodeURI('\u2705');
+          // Out of stock
+          if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
+            avail = decodeURI('\u274C');
+          }
+          // In stock
+          else { // Check emoji
+            avail = decodeURI('\u2705');
+            in_stock_count += 1;
+            item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+          }
+          //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+        }
 
-        // // No items found, everything sold out
-        // if (item_str === "") {
-        //   item_str = "Everything currently out of stock.\n\n";
-        // }
+        // No items found, everything sold out
+        if (item_str === "") {
+          item_str = "Everything currently out of stock.\n\n";
+        }
 
-        // // Set date
-        // var today = new Date();
-        // var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
-        // var time = today.toLocaleString('en-US',
-        //   {
-        //     hour: 'numeric',
-        //     minute: 'numeric',
-        //     second: 'numeric',
-        //     hour12: true
-        //   });
-        // var dateTime = time + ' ' + date;
+        // Set date
+        var today = new Date();
+        var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+        var time = today.toLocaleString('en-US',
+          {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+        var dateTime = time + ' ' + date;
 
-        // // Response message
-        // response = {
-        //   "text": `You entered: "${received_message.text}"\n` +
-        //     `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
-        //     `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
-        //     "\n\n" + item_str +
-        //     "Checked On " + dateTime + "\n" +
-        //     "Link " + search_url
-        // };
+        console.log(item);
+        console.log(search_urls);
+        console.log(search_dic);
 
-        // // If the stock amount changed from last check
-        // // Send a message on FB
+        // Response message
+        response = {
+          "text": `You entered: "${received_message.text}"\n` +
+            `Match found for: "${search_dic[item]['product-name']}".\n` +
+            `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
+            "\n\n" + item_str +
+            "Checked On " + dateTime + "\n" +
+            "Link " + search_url
+        };
+
+        if (!('prev_stock_count' in item_url_dict) || (in_stock_count != search_urls[item]['prev_stock_count'])) {
+          console.log("Response msg: Update in stock");
+          console.log(response);
+          callSendAPI(sender_psid, response);
+        }
+        search_urls[item]['prev_stock_count'] = in_stock_count;
+        console.log(search_urls);
+        // If the stock amount changed from last check
+        // Send a message on FB
         // if (interval_count == 0 || (in_stock_count != prev_stock_count)) {
         //   console.log("Response msg: Update in stock");
         //   console.log(response);
@@ -395,7 +408,6 @@ function handleMessage(sender_psid, received_message) {
       callSendAPI(sender_psid, response);
       return;
     }
-    var search_url = search_urls[rec_msg]['link'];
 
     // Check if sender_psid is in dic for url
     if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
@@ -434,7 +446,7 @@ function handleMessage(sender_psid, received_message) {
 
 
     interval_id = setInterval(function () {
-      handleAllURLS(function() {
+      handleAllURLS(received_message, function() {
 
       });
     }, delay * 1000);
