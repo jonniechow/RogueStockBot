@@ -150,7 +150,7 @@ function getTimeDiff(start_time) {
 
   // remove hours from the date
   time_elapsed = Math.floor(time_elapsed / 24);
-  var time_elapsed_str = time_elapsed + ":" + minutes + ":" + seconds;
+  var time_elapsed_str = hours + ":" + minutes + ":" + seconds;
   return time_elapsed_str;
 }
 
