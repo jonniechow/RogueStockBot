@@ -342,13 +342,13 @@ function handleMessage(sender_psid, received_message) {
       // If not create a new dic
       search_urls[rec_msg]['sender_ids'] = {};
     }
-    else {
-      // Check if sender_psid is in dic for url
-      if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
-        search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
-      } 
-    }
+    // Check if sender_psid is in dic for url
+    if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
+      search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
+    } 
     
+    
+    console.log(search_urls);
 
     // Check current amount of items
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
