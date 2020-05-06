@@ -198,29 +198,33 @@ function getData(search_url, rec_msg, sender_psid, callback) {
   );
 }
 
-function getDataFromURL(search_url, callback) {
+function getDataFromURL(item_url_dict, callback) {
+  var item_link = item_url_dict['link'];
   request(
     {
       method: 'GET',
-      url: search_url
+      url: item_link
     },
     function (error, response, html) {
       if (error) {
         return callback(error)
       };
       if (!error && response.statusCode == 200) {
-        console.log("Web scraping data from: " + search_url);
+        console.log("Web scraping data from: " + item_link);
+
+        var item_type = item_url_dict['type'];
+        var item_link = item_url_dict['link'];
         let $ = cheerio.load(html);
         var items = [];
         // Check if search string already exists
-        // if (!(rec_msg in search_dic)) {
-        //   search_dic[rec_msg] = {};
-        //   search_dic[rec_msg]['product-name'] = $('.product-title').text();
-        //   search_dic[rec_msg]['user_ids'] = [];
-        // }
+        if (!(rec_msg in search_dic)) {
+          search_dic[rec_msg] = {};
+          search_dic[rec_msg]['product-name'] = $('.product-title').text();
+          search_dic[rec_msg]['user_ids'] = [];
+        }
 
         // Multiple items in a page
-        if (search_urls[rec_msg]['type'] === "multi") {
+        if (item_type === "multi") {
           $('.grouped-item').each(function (index, element) {
             items[index] = {};
             items[index]['name'] = $(element).find('.item-name').text();
@@ -245,8 +249,8 @@ function getDataFromURL(search_url, callback) {
 function handleAllURLS(callback) {
   for(var item in search_urls) {
     if(Object.keys(search_urls[item]['sender_ids']).length > 0) {
-      var item_link = search_urls[item]['link'];
-      getDataFromURL(item_link, function(data) {
+      var item_url_dict = search_urls[item];
+      getDataFromURL(item_url_dict, function(data) {
         console.log(data);
         // let item_str = "";
         // let in_stock_count = 0;
