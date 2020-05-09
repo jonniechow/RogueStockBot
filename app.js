@@ -154,6 +154,7 @@ function getTimeDiff(start_time) {
   return time_elapsed_str;
 }
 
+// Parses HTML from URL and returns data structure containing relevent data
 function getDataFromURL(item, callback) {
   var item_url_dict = search_urls[item];
   var item_link = item_url_dict['link'];
@@ -203,12 +204,13 @@ function getDataFromURL(item, callback) {
   );
 }
 
-
+// Checks each URL that has people searching
 function handleAllURLS(received_message, callback) {
+  // Loop through each item
   for(let item in search_urls) {
-    // console.log("Item: " + item);
+    // Checks if there is at least 1 person searching for the item
     if(Object.keys(search_urls[item]['sender_ids']).length > 0) {
-      // console.log(item);
+      // Parse the HTML
       getDataFromURL(item, function(data) {
         let item_str = "";
         let in_stock_count = 0;
@@ -264,13 +266,11 @@ function handleAllURLS(received_message, callback) {
                 "Checked On " + dateTime + "\n" +
                 "Link " + search_urls[item]['link']
             };
-            // console.log(response);
             callSendAPI(sender_id, response);
           }
-          
         }
+        // Update prev stock to current stock
         search_urls[item]['prev_stock_count'] = in_stock_count;
-
       });
     }
   }
