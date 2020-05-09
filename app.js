@@ -28,6 +28,7 @@ const request = require('request'),
   cheerio = require('cheerio'),
   body_parser = require('body-parser'),
   path = require('path'),
+  fs = require('fs'),
   app = express().use(body_parser.json()),
   search_urls = require('./item-urls')
 // creates express http server
@@ -68,6 +69,12 @@ app.get('/terms', (req, res) => {
 
 app.get('/privacy-policy', (req, res) => {
   res.sendFile('privacy-policy.html', {
+    root: path.join(__dirname, '/views')
+  })
+});
+
+app.get('/stock-updates', (req, res) => {
+  res.sendFile('stock-updates.html', {
     root: path.join(__dirname, '/views')
   })
 });
@@ -170,7 +177,7 @@ function getDataFromURL(item, callback) {
       if (!error && response.statusCode == 200) {
         var item_type = item_url_dict['type'];
 
-        console.log(item);
+        console.log("Looking for: " + item);
         console.log("Web scraping data from: " + item_link);
         let $ = cheerio.load(html);
         var items = [];
@@ -213,6 +220,7 @@ function handleAllURLS(received_message, callback) {
       // Parse the HTML
       getDataFromURL(item, function(data) {
         let item_str = "";
+        let write_item_str = "";
         let in_stock_count = 0;
         
         // Loop through each item on page
@@ -226,6 +234,7 @@ function handleAllURLS(received_message, callback) {
           else { // Check emoji
             avail = decodeURI('\u2705');
             in_stock_count += 1;
+            write_item_str += data[i]['name'] + " " + avail + ", "
             item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
           }
           //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
@@ -268,6 +277,13 @@ function handleAllURLS(received_message, callback) {
             };
             callSendAPI(sender_id, response);
           }
+          let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str}\n`;
+          if (write_item_str != "") {
+            fs.appendFile('stock-log.txt', write_line, function (err) {
+              if (err) throw err;
+              console.log('Saved!');
+            });
+          }  
         }
         // Update prev stock to current stock
         search_urls[item]['prev_stock_count'] = in_stock_count;
@@ -308,7 +324,7 @@ function handleMessage(sender_psid, received_message) {
     }
     // Status message
     else if (rec_msg === "status") {
-      console.log(user_id_dic);
+      //console.log(user_id_dic);
       var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\n` + 
                       `There are ${Object.keys(user_id_dic).length} total users searching\n\n`;
       for (var key in user_id_dic[sender_psid]['products']) {
@@ -320,19 +336,21 @@ function handleMessage(sender_psid, received_message) {
 
       };
 
-      console.log("USER DIC")
-      console.log(user_id_dic);
+      // console.log("USER DIC")
+      // console.log(user_id_dic);
       
       callSendAPI(sender_psid, response);
       return;
     }
     // Stop message
     else if (rec_msg === "stop") {
+      console.log(search_urls);
       user_id_dic[sender_psid]['intervals'].forEach(clearInterval);
       var search_item_str = "";
       for (var key in user_id_dic[sender_psid]['products']) {
         search_item_str += search_dic[key]['product-name'] +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
+        delete search_urls[key]['sender_ids'][sender_psid];
       }
       response = {
         "text": `Stopped checking ${user_id_dic[sender_psid]['intervals'].length} item(s):\n\n` +
@@ -341,7 +359,7 @@ function handleMessage(sender_psid, received_message) {
       user_id_dic[sender_psid]['intervals'] = [];
       user_id_dic[sender_psid]['products'] = {};
       delete user_id_dic[sender_psid];
-
+      console.log(search_urls);
       callSendAPI(sender_psid, response);
       return;
     }
@@ -391,7 +409,7 @@ function handleMessage(sender_psid, received_message) {
     // Interval to check all URLs
     interval_id = setInterval(function () {
       handleAllURLS(received_message, function() {
-        console.log(search_urls);
+        //console.log(search_urls);
       });
     }, delay * 1000);
 
