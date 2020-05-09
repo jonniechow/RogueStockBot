@@ -309,8 +309,8 @@ function handleMessage(sender_psid, received_message) {
     // Status message
     else if (rec_msg === "status") {
       console.log(user_id_dic);
-      var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items
-      \n\n`;
+      var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\n` + 
+                      `There are ${Object.keys(user_id_dic).length} total users searching\n\n`;
       for (var key in user_id_dic[sender_psid]['products']) {
         search_str += search_dic[key]['product-name'] + " / " + key +
         "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
