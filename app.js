@@ -211,10 +211,10 @@ function getDataFromURL(item, callback) {
         return callback(error)
       };
       if (!error && response.statusCode == 200) {
-        console.log("Web scraping data from: " + item_link);
-
         var item_type = item_url_dict['type'];
-        var item_link = item_url_dict['link'];
+        //var item_link = item_url_dict['link'];
+        console.log(item);
+        console.log("Web scraping data from: " + item_link);
         let $ = cheerio.load(html);
         var items = [];
         // Check if search string already exists
@@ -248,12 +248,12 @@ function getDataFromURL(item, callback) {
 }
 
 
-function handleAllURLS(received_message, callback) {
-  for(var item in search_urls) {
+function handleAllURLS(received_message, sender_psid, callback) {
+  for(let item in search_urls) {
     console.log("Item: " + item);
     if(Object.keys(search_urls[item]['sender_ids']).length > 0) {
+      console.log(item);
       getDataFromURL(item, function(data) {
-
         let item_str = "";
         let in_stock_count = 0;
         
@@ -290,37 +290,28 @@ function handleAllURLS(received_message, callback) {
           });
         var dateTime = time + ' ' + date;
 
-        console.log(item);
-        console.log(search_urls);
-        console.log(search_dic);
+        // console.log(search_dic);
+        // console.log(user_id_dic);
+
 
         // Response message
-        response = {
+        var response = {
           "text": `You entered: "${received_message.text}"\n` +
             `Match found for: "${search_dic[item]['product-name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
             "Checked On " + dateTime + "\n" +
-            "Link " + search_url
+            "Link " + search_urls[item]['link']
         };
 
-        if (!('prev_stock_count' in item_url_dict) || (in_stock_count != search_urls[item]['prev_stock_count'])) {
+        if (!('prev_stock_count' in search_urls[item]) || (in_stock_count != search_urls[item]['prev_stock_count'])) {
           console.log("Response msg: Update in stock");
           console.log(response);
           callSendAPI(sender_psid, response);
         }
         search_urls[item]['prev_stock_count'] = in_stock_count;
         console.log(search_urls);
-        // If the stock amount changed from last check
-        // Send a message on FB
-        // if (interval_count == 0 || (in_stock_count != prev_stock_count)) {
-        //   console.log("Response msg: Update in stock");
-        //   console.log(response);
-        //   callSendAPI(sender_psid, response);
-        // }
-        // interval_count += 1;
-        // // Set prev count to current stock
-        // prev_stock_count = in_stock_count;
+
       });
     }
   }
@@ -446,7 +437,7 @@ function handleMessage(sender_psid, received_message) {
 
 
     interval_id = setInterval(function () {
-      handleAllURLS(received_message, function() {
+      handleAllURLS(received_message, sender_psid, function() {
 
       });
     }, delay * 1000);
