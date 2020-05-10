@@ -320,15 +320,13 @@ function handleMessage(sender_psid, received_message) {
       }
       let response = {
         "text": "Search for the following items: \n" + key_string +
-          "Type `stop` to stop checking all items \n" +
-          "Please type commands ONLY after bot replies to first command or it may crash"
+          "Type `stop` to stop checking all items \n"
       };
       callSendAPI(sender_psid, response);
       return;
     }
     // Status message
     else if (rec_msg === "status") {
-      //console.log(user_id_dic);
       let search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\n` +
         `There are ${Object.keys(user_id_dic).length} total users searching\n\n`;
       for (let key in user_id_dic[sender_psid]['products']) {
@@ -339,28 +337,30 @@ function handleMessage(sender_psid, received_message) {
         "text": search_str
       };
 
-      // console.log("USER DIC")
-      // console.log(user_id_dic);
-
       callSendAPI(sender_psid, response);
       return;
     }
     // Stop message
     else if (rec_msg === "stop") {
-      //console.log(search_urls);
+      // Clears all intervals for sender_psid
       user_id_dic[sender_psid]['intervals'].forEach(clearInterval);
       let search_item_str = "";
+      // Finds all items of sender_psid
       for (let key in user_id_dic[sender_psid]['products']) {
         search_item_str += search_dic[key]['product-name'] +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
+        // Deletes each item sender is searching
         delete search_urls[key]['sender_ids'][sender_psid];
       }
       let response = {
         "text": `Stopped checking ${user_id_dic[sender_psid]['intervals'].length} item(s):\n\n` +
           search_item_str
       };
+      // Resets intervals
       user_id_dic[sender_psid]['intervals'] = [];
+      // Resets products
       user_id_dic[sender_psid]['products'] = {};
+      // Delete sender from users_id_dic
       delete user_id_dic[sender_psid];
       callSendAPI(sender_psid, response);
       console.log(`Removing sender psid: ${sender_psid}`);
