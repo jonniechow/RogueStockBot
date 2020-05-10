@@ -207,7 +207,7 @@ async function getDataFromURL(item) {
 }
 
 // Checks each URL that has people searching
-async function handleAllURLS(received_message, callback) {
+async function handleAllURLS() {
   // Loop through each item
   for (let item in search_urls) {
     // Checks if there is at least 1 person searching for the item
@@ -259,12 +259,13 @@ async function handleAllURLS(received_message, callback) {
       // console.log(received_message.text);
       // console.log(search_urls[item]);
       // console.log("\n");
-      // if (!('prev_stock_count' in search_urls[item])) {
-      //   search_urls[item]['prev_stock_count'] = 0;
-      // }
+
+      if (!('prev_stock_count' in search_urls[item])) {
+        search_urls[item]['prev_stock_count'] = 0;
+      }
 
       // Difference in stock count
-      if (!('prev_stock_count' in search_urls[item]) || (in_stock_count != search_urls[item]['prev_stock_count'])) {
+      if ((in_stock_count != search_urls[item]['prev_stock_count'])) {
         console.log("Response msg: Update in stock");
         console.log(item_str);
         console.log(dateTime);
@@ -295,11 +296,9 @@ async function handleAllURLS(received_message, callback) {
       search_urls[item]['prev_stock_count'] = in_stock_count;
     }
   }
-  callback();
 }
 
 function handleMessage(sender_psid, received_message) {
-  let response;
 
   // Checks if the message contains text
   if (received_message.text) {
@@ -314,12 +313,12 @@ function handleMessage(sender_psid, received_message) {
 
     // Help message
     if (rec_msg === "help") {
-      var keys = Object.keys(search_urls);
-      var key_string = "";
-      for (var i = 0; i < keys.length; ++i) {
+      let keys = Object.keys(search_urls);
+      let key_string = "";
+      for (let i = 0; i < keys.length; ++i) {
         key_string += keys[i] + "\n";
       }
-      response = {
+      let response = {
         "text": "Search for the following items: \n" + key_string +
           "Type `stop` to stop checking all items \n" +
           "Please type commands ONLY after bot replies to first command or it may crash"
@@ -330,15 +329,14 @@ function handleMessage(sender_psid, received_message) {
     // Status message
     else if (rec_msg === "status") {
       //console.log(user_id_dic);
-      var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\n` +
+      let search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\n` +
         `There are ${Object.keys(user_id_dic).length} total users searching\n\n`;
-      for (var key in user_id_dic[sender_psid]['products']) {
+      for (let key in user_id_dic[sender_psid]['products']) {
         search_str += search_dic[key]['product-name'] + " / " + key +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
-      response = {
+      let response = {
         "text": search_str
-
       };
 
       // console.log("USER DIC")
@@ -351,13 +349,13 @@ function handleMessage(sender_psid, received_message) {
     else if (rec_msg === "stop") {
       //console.log(search_urls);
       user_id_dic[sender_psid]['intervals'].forEach(clearInterval);
-      var search_item_str = "";
-      for (var key in user_id_dic[sender_psid]['products']) {
+      let search_item_str = "";
+      for (let key in user_id_dic[sender_psid]['products']) {
         search_item_str += search_dic[key]['product-name'] +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
         delete search_urls[key]['sender_ids'][sender_psid];
       }
-      response = {
+      let response = {
         "text": `Stopped checking ${user_id_dic[sender_psid]['intervals'].length} item(s):\n\n` +
           search_item_str
       };
@@ -371,7 +369,7 @@ function handleMessage(sender_psid, received_message) {
 
     // User message is invalid
     if (!(rec_msg in search_urls)) {
-      response = {
+      let response = {
         "text": `You entered: "${
           received_message.text
           }".` + "\n\n" +
@@ -385,7 +383,7 @@ function handleMessage(sender_psid, received_message) {
 
     // Check if items being searched exceeds limit
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
-      response = {
+      let response = {
         "text": `You have reached max limit of "${item_limit}" items\n`
       };
       callSendAPI(sender_psid, response);
@@ -394,7 +392,7 @@ function handleMessage(sender_psid, received_message) {
 
     // Check if item is already being searched for user
     if (rec_msg in user_id_dic[sender_psid]['products']) {
-      response = {
+      let response = {
         "text": `Already searching: "${
           search_dic[rec_msg]['product-name']
           }".\n`
@@ -410,7 +408,7 @@ function handleMessage(sender_psid, received_message) {
     // Check if sender_psid is in dic for url
     if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
       search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
-      response = {
+      let response = {
         "text": `Starting search on: "${rec_msg}". \nYou will be notified everytime there is a change in stock. \n`
       };
       callSendAPI(sender_psid, response);
@@ -418,48 +416,49 @@ function handleMessage(sender_psid, received_message) {
     }
 
     // Interval to check all URLs
-    interval_id = setInterval(function () {
-      handleAllURLS(received_message, function () {
-        //console.log(search_urls);
-      });
+    interval_id = setInterval(async function () {
+      try {
+        await handleAllURLS();
+      }
+      catch (error) {
+        console.error(`Error: ${error}`);
+      }
     }, delay * 1000);
 
     // Add to list of all interval ids based on sender_psid
     user_id_dic[sender_psid]['intervals'].push(interval_id);
   }
-  else if (received_message.attachments) { // Get the URL of the message attachment
-    let attachment_url = received_message.attachments[0].payload.url;
-    response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "generic",
-          "elements": [
-            {
-              "title": "Is this the right picture?",
-              "subtitle": "Tap a button to answer.",
-              "image_url": attachment_url,
-              "buttons": [
-                {
-                  "type": "postback",
-                  "title": "Yes!",
-                  "payload": "yes"
-                },
-                {
-                  "type": "postback",
-                  "title": "No!",
-                  "payload": "no"
-                }
-              ]
-            }
-          ]
-        }
-      }
-    }
-  }
+  // else if (received_message.attachments) { // Get the URL of the message attachment
+  //   let attachment_url = received_message.attachments[0].payload.url;
+  //   let response = {
+  //     "attachment": {
+  //       "type": "template",
+  //       "payload": {
+  //         "template_type": "generic",
+  //         "elements": [
+  //           {
+  //             "title": "Is this the right picture?",
+  //             "subtitle": "Tap a button to answer.",
+  //             "image_url": attachment_url,
+  //             "buttons": [
+  //               {
+  //                 "type": "postback",
+  //                 "title": "Yes!",
+  //                 "payload": "yes"
+  //               },
+  //               {
+  //                 "type": "postback",
+  //                 "title": "No!",
+  //                 "payload": "no"
+  //               }
+  //             ]
+  //           }
+  //         ]
+  //       }
+  //     }
+  //   }
+  // }
 
-  // Send the response message
-  //callSendAPI(sender_psid, response);
 }
 
 function handlePostback(sender_psid, received_postback) {
