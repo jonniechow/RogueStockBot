@@ -77,6 +77,7 @@ app.get('/stock-updates', (req, res) => {
   res.sendFile('stock-updates.html', {
     root: path.join(__dirname, '/views')
   })
+
 });
 
 // Accepts POST requests at /webhook endpoint
@@ -88,12 +89,13 @@ app.post('/webhook', (req, res) => { // Parse the request body from the POST
 
     body.entry.forEach(function (entry) { // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
+      console.log("---MESSAGE RECEIVED---");
       console.log(webhook_event);
 
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
-      console.log('Sender ID: ' + sender_psid);
+      console.log('Sender ID: ' + sender_psid + '\n');
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
@@ -177,8 +179,8 @@ function getDataFromURL(item, callback) {
       if (!error && response.statusCode == 200) {
         var item_type = item_url_dict['type'];
 
-        console.log("Looking for: " + item);
-        console.log("Web scraping data from: " + item_link);
+        // console.log("Looking for: " + item);
+        // console.log("Web scraping data from: " + item_link);
         let $ = cheerio.load(html);
         var items = [];
         // Check if search string already exists
@@ -259,16 +261,21 @@ function handleAllURLS(received_message, callback) {
 
         // console.log(search_dic);
         // console.log(user_id_dic);
-        console.log(search_urls[item]);
+        // console.log(item);
+        // console.log(received_message.text);
+        // console.log(search_urls[item]);
+        // console.log("\n");
 
         // Difference in stock count
         if (!('prev_stock_count' in search_urls[item]) || (in_stock_count != search_urls[item]['prev_stock_count'])) {
           console.log("Response msg: Update in stock");
+          console.log(item_str);
+          console.log(dateTime);
           // Send response to every user
           for (let sender_id in search_urls[item]['sender_ids']) {
             // Response message
-            var response = {
-              "text": `You entered: "${received_message.text}"\n` +
+            let response = {
+              "text": `You entered: "${item}"\n` +
                 `Match found for: "${search_dic[item]['product-name']}".\n` +
                 `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
                 "\n\n" + item_str +
@@ -344,7 +351,7 @@ function handleMessage(sender_psid, received_message) {
     }
     // Stop message
     else if (rec_msg === "stop") {
-      console.log(search_urls);
+      //console.log(search_urls);
       user_id_dic[sender_psid]['intervals'].forEach(clearInterval);
       var search_item_str = "";
       for (var key in user_id_dic[sender_psid]['products']) {
@@ -359,8 +366,8 @@ function handleMessage(sender_psid, received_message) {
       user_id_dic[sender_psid]['intervals'] = [];
       user_id_dic[sender_psid]['products'] = {};
       delete user_id_dic[sender_psid];
-      console.log(search_urls);
       callSendAPI(sender_psid, response);
+      console.log(`Removing sender psid: ${sender_psid}`);
       return;
     }
     
@@ -380,9 +387,10 @@ function handleMessage(sender_psid, received_message) {
     // Check if sender_psid is in dic for url
     if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
       search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
+      console.log(`Adding sender psid: ${sender_psid}`);
     } 
 
-    // Check current amount of items
+    // Check if items being searched exceeds limit
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
       response = {
         "text": `You have reached max limit of "${item_limit}" items\n`
@@ -492,7 +500,7 @@ function callSendAPI(sender_psid, response) { // Construct the message body
     },
     (err, res, body) => {
       if (!err) {
-        console.log('message sent!')
+        console.log('---MESSAGE SENT!---\n')
       }
       else {
         console.error("Unable to send message:" + err);
