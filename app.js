@@ -214,86 +214,85 @@ async function handleAllURLS(received_message, callback) {
     if (Object.keys(search_urls[item]['sender_ids']).length > 0) {
       // Parse the HTML
       let data = await getDataFromURL(item);
-      console.log(data);
-      // getDataFromURL(item, function (data) {
-        let item_str = "";
-        let write_item_str = "";
-        let in_stock_count = 0;
 
-        // Loop through each item on page
-        for (let i = 0; i < data.length; i++) {
-          var avail = decodeURI('\u2705');
-          // Out of stock
-          if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
-            avail = decodeURI('\u274C');
-          }
-          // In stock
-          else { // Check emoji
-            avail = decodeURI('\u2705');
-            in_stock_count += 1;
-            write_item_str += data[i]['name'] + " " + avail + ", "
-            item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-          }
-          //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+      let item_str = "";
+      let write_item_str = "";
+      let in_stock_count = 0;
+
+      // Loop through each item on page
+      for (let i = 0; i < data.length; i++) {
+        var avail = decodeURI('\u2705');
+        // Out of stock
+        if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
+          avail = decodeURI('\u274C');
         }
-
-        // No items found, everything sold out
-        if (item_str === "") {
-          item_str = "Everything currently out of stock.\n\n";
+        // In stock
+        else { // Check emoji
+          avail = decodeURI('\u2705');
+          in_stock_count += 1;
+          write_item_str += data[i]['name'] + " " + avail + ", "
+          item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
         }
+        //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+      }
 
-        // Set date
-        var today = new Date();
-        var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
-        var time = today.toLocaleString('en-US',
-          {
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-          });
-        var dateTime = time + ' ' + date;
+      // No items found, everything sold out
+      if (item_str === "") {
+        item_str = "Everything currently out of stock.\n\n";
+      }
 
-        // console.log(search_dic);
-        // console.log(user_id_dic);
-        // console.log(item);
-        // console.log(received_message.text);
-        // console.log(search_urls[item]);
-        // console.log("\n");
-        // if (!('prev_stock_count' in search_urls[item])) {
-        //   search_urls[item]['prev_stock_count'] = 0;
-        // }
-        console.log(search_dic);
+      // Set date
+      var today = new Date();
+      var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+      var time = today.toLocaleString('en-US',
+        {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          hour12: true
+        });
+      var dateTime = time + ' ' + date;
 
-        // Difference in stock count
-        if (!('prev_stock_count' in search_urls[item]) || (in_stock_count != search_urls[item]['prev_stock_count'])) {
-          console.log("Response msg: Update in stock");
-          console.log(item_str);
-          console.log(dateTime);
-          // Send response to every user
-          for (let sender_id in search_urls[item]['sender_ids']) {
-            // Response message
-            let response = {
-              "text": `You entered: "${item}"\n` +
-                `Match found for: "${search_dic[item]['product-name']}".\n` +
-                `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
-                "\n\n" + item_str +
-                "Checked On " + dateTime + "\n" +
-                "Link " + search_urls[item]['link']
-            };
-            callSendAPI(sender_id, response);
-          }
-          let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str}\n`;
+      // console.log(search_dic);
+      // console.log(user_id_dic);
+      // console.log(item);
+      // console.log(received_message.text);
+      // console.log(search_urls[item]);
+      // console.log("\n");
+      // if (!('prev_stock_count' in search_urls[item])) {
+      //   search_urls[item]['prev_stock_count'] = 0;
+      // }
+
+      // Difference in stock count
+      if (!('prev_stock_count' in search_urls[item]) || (in_stock_count != search_urls[item]['prev_stock_count'])) {
+        console.log("Response msg: Update in stock");
+        console.log(item_str);
+        console.log(dateTime);
+        // Send response to every user
+        for (let sender_id in search_urls[item]['sender_ids']) {
+          // Response message
+          let response = {
+            "text": `You entered: "${item}"\n` +
+              `Match found for: "${search_dic[item]['product-name']}".\n` +
+              `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
+              "\n\n" + item_str +
+              "Checked On " + dateTime + "\n" +
+              "Link " + search_urls[item]['link']
+          };
+          callSendAPI(sender_id, response);
+        }
+        let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str}\n`;
+        try {
           if (write_item_str != "") {
-            fs.appendFile('stock-log.txt', write_line, function (err) {
-              if (err) throw err;
-              console.log('Saved!');
-            });
+            await fs.appendFile('stock-log.txt', write_line);
+            console.log("Wrote to file");
           }
+        } catch (error) {
+          console.error(`Could not write to file`);
         }
-        // Update prev stock to current stock
-        search_urls[item]['prev_stock_count'] = in_stock_count;
-      // });
+      }
+      // Update prev stock to current stock
+      search_urls[item]['prev_stock_count'] = in_stock_count;
     }
   }
   callback();
