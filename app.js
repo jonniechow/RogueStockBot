@@ -164,67 +164,62 @@ function getTimeDiff(start_time) {
 }
 
 // Parses HTML from URL and returns data structure containing relevent data
-function getDataFromURL(item, callback) {
+async function getDataFromURL(item) {
   var item_url_dict = search_urls[item];
   var item_link = item_url_dict['link'];
-  request(
-    {
-      method: 'GET',
-      url: item_link
-    },
-    function (error, response, html) {
-      if (error) {
-        return callback(error)
-      };
-      if (!error && response.statusCode == 200) {
-        var item_type = item_url_dict['type'];
+  try {
+    let response = await axios.get(item_link);
+    var item_type = item_url_dict['type'];
 
-        // console.log("Looking for: " + item);
-        // console.log("Web scraping data from: " + item_link);
-        let $ = cheerio.load(html);
-        var items = [];
-        // Check if search string already exists
-        if (!(item in search_dic)) {
-          search_dic[item] = {};
-          search_dic[item]['product-name'] = $('.product-title').text();
-          search_dic[item]['user_ids'] = [];
-        }
-
-        // Multiple items in a page
-        if (item_type === "multi") {
-          $('.grouped-item').each(function (index, element) {
-            items[index] = {};
-            items[index]['name'] = $(element).find('.item-name').text();
-            items[index]['price'] = $(element).find('.price').text();
-            items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
-          });
-        }
-        // Just one item in a page
-        else {
-          items[0] = {};
-          items[0]['name'] = $('.product-title').text();
-          items[0]['price'] = $('.price').text();
-          items[0]['in_stock'] = $('.bin-stock-availability').text();
-        }
-
-        return callback(items);
-      }
+    // console.log("Looking for: " + item);
+    // console.log("Web scraping data from: " + item_link);
+    let $ = cheerio.load(response.data);
+    var items = [];
+    // Check if search string already exists
+    if (!(item in search_dic)) {
+      search_dic[item] = {};
+      search_dic[item]['product-name'] = $('.product-title').text();
+      search_dic[item]['user_ids'] = [];
     }
-  );
+
+    // Multiple items in a page
+    if (item_type === "multi") {
+      $('.grouped-item').each(function (index, element) {
+        items[index] = {};
+        items[index]['name'] = $(element).find('.item-name').text();
+        items[index]['price'] = $(element).find('.price').text();
+        items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+      });
+    }
+    // Just one item in a page
+    else {
+      items[0] = {};
+      items[0]['name'] = $('.product-title').text();
+      items[0]['price'] = $('.price').text();
+      items[0]['in_stock'] = $('.bin-stock-availability').text();
+    }
+    return items;
+  }
+  catch (error) {
+    console.error(`Error: ${error}`);
+  }
+
 }
 
 // Checks each URL that has people searching
-function handleAllURLS(received_message, callback) {
+async function handleAllURLS(received_message, callback) {
   // Loop through each item
-  for(let item in search_urls) {
+  for (let item in search_urls) {
     // Checks if there is at least 1 person searching for the item
-    if(Object.keys(search_urls[item]['sender_ids']).length > 0) {
+    if (Object.keys(search_urls[item]['sender_ids']).length > 0) {
       // Parse the HTML
-      getDataFromURL(item, function(data) {
+      let data = await getDataFromURL(item);
+      console.log(data);
+      // getDataFromURL(item, function (data) {
         let item_str = "";
         let write_item_str = "";
         let in_stock_count = 0;
-        
+
         // Loop through each item on page
         for (let i = 0; i < data.length; i++) {
           var avail = decodeURI('\u2705');
@@ -265,6 +260,10 @@ function handleAllURLS(received_message, callback) {
         // console.log(received_message.text);
         // console.log(search_urls[item]);
         // console.log("\n");
+        // if (!('prev_stock_count' in search_urls[item])) {
+        //   search_urls[item]['prev_stock_count'] = 0;
+        // }
+        console.log(search_dic);
 
         // Difference in stock count
         if (!('prev_stock_count' in search_urls[item]) || (in_stock_count != search_urls[item]['prev_stock_count'])) {
@@ -290,11 +289,11 @@ function handleAllURLS(received_message, callback) {
               if (err) throw err;
               console.log('Saved!');
             });
-          }  
+          }
         }
         // Update prev stock to current stock
         search_urls[item]['prev_stock_count'] = in_stock_count;
-      });
+      // });
     }
   }
   callback();
@@ -311,7 +310,7 @@ function handleMessage(sender_psid, received_message) {
 
     // Checks if user is in dict, if not creates entry
     if (!(sender_psid in user_id_dic)) {
-      user_id_dic[sender_psid] = {'products': {}, 'start-date': {}, 'intervals': []};
+      user_id_dic[sender_psid] = { 'products': {}, 'start-date': {}, 'intervals': [] };
     }
 
     // Help message
@@ -332,11 +331,11 @@ function handleMessage(sender_psid, received_message) {
     // Status message
     else if (rec_msg === "status") {
       //console.log(user_id_dic);
-      var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\n` + 
-                      `There are ${Object.keys(user_id_dic).length} total users searching\n\n`;
+      var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\n` +
+        `There are ${Object.keys(user_id_dic).length} total users searching\n\n`;
       for (var key in user_id_dic[sender_psid]['products']) {
         search_str += search_dic[key]['product-name'] + " / " + key +
-        "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
+          "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
       response = {
         "text": search_str
@@ -345,7 +344,7 @@ function handleMessage(sender_psid, received_message) {
 
       // console.log("USER DIC")
       // console.log(user_id_dic);
-      
+
       callSendAPI(sender_psid, response);
       return;
     }
@@ -370,13 +369,13 @@ function handleMessage(sender_psid, received_message) {
       console.log(`Removing sender psid: ${sender_psid}`);
       return;
     }
-    
+
     // User message is invalid
     if (!(rec_msg in search_urls)) {
       response = {
         "text": `You entered: "${
           received_message.text
-          }".` + "\n\n" + 
+          }".` + "\n\n" +
           "Item doesn't exist\nTry typing `help` for a list of all valid commands"
       };
       //console.log(response);
@@ -384,11 +383,6 @@ function handleMessage(sender_psid, received_message) {
       return;
     }
 
-    // Check if sender_psid is in dic for url
-    if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
-      search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
-      console.log(`Adding sender psid: ${sender_psid}`);
-    } 
 
     // Check if items being searched exceeds limit
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
@@ -414,9 +408,19 @@ function handleMessage(sender_psid, received_message) {
       //user_id_dic[sender_psid]['start-time'] = new Date();
     }
 
+    // Check if sender_psid is in dic for url
+    if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
+      search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
+      response = {
+        "text": `Starting search on: "${rec_msg}". \nYou will be notified everytime there is a change in stock. \n`
+      };
+      callSendAPI(sender_psid, response);
+      console.log(`Adding sender psid: ${sender_psid}`);
+    }
+
     // Interval to check all URLs
     interval_id = setInterval(function () {
-      handleAllURLS(received_message, function() {
+      handleAllURLS(received_message, function () {
         //console.log(search_urls);
       });
     }, delay * 1000);
@@ -456,7 +460,7 @@ function handleMessage(sender_psid, received_message) {
   }
 
   // Send the response message
-  callSendAPI(sender_psid, response);
+  //callSendAPI(sender_psid, response);
 }
 
 function handlePostback(sender_psid, received_postback) {
