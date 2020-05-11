@@ -37,7 +37,7 @@ var search_dic = {};
 var user_id_dic = {};
 var start_time = new Date();
 // Delay in seconds
-var delay = 10;
+var delay = 30;
 // Limit of iteems
 var item_limit = 4;
 
@@ -374,36 +374,36 @@ function handleMessage(sender_psid, received_message) {
     // Add to list of all interval ids based on sender_psid
     user_id_dic[sender_psid]['intervals'].push(interval_id);
   }
-  else if (received_message.attachments) { // Get the URL of the message attachment
-    let attachment_url = received_message.attachments[0].payload.url;
-    response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "generic",
-          "elements": [
-            {
-              "title": "Is this the right picture?",
-              "subtitle": "Tap a button to answer.",
-              "image_url": attachment_url,
-              "buttons": [
-                {
-                  "type": "postback",
-                  "title": "Yes!",
-                  "payload": "yes"
-                },
-                {
-                  "type": "postback",
-                  "title": "No!",
-                  "payload": "no"
-                }
-              ]
-            }
-          ]
-        }
-      }
-    }
-  }
+  // else if (received_message.attachments) { // Get the URL of the message attachment
+  //   let attachment_url = received_message.attachments[0].payload.url;
+  //   response = {
+  //     "attachment": {
+  //       "type": "template",
+  //       "payload": {
+  //         "template_type": "generic",
+  //         "elements": [
+  //           {
+  //             "title": "Is this the right picture?",
+  //             "subtitle": "Tap a button to answer.",
+  //             "image_url": attachment_url,
+  //             "buttons": [
+  //               {
+  //                 "type": "postback",
+  //                 "title": "Yes!",
+  //                 "payload": "yes"
+  //               },
+  //               {
+  //                 "type": "postback",
+  //                 "title": "No!",
+  //                 "payload": "no"
+  //               }
+  //             ]
+  //           }
+  //         ]
+  //       }
+  //     }
+  //   }
+  // }
 
   // Send the response message
   callSendAPI(sender_psid, response);
