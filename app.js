@@ -171,8 +171,8 @@ async function getDataFromURL(item) {
     let response = await axios.get(item_link);
     var item_type = item_url_dict['type'];
 
-    console.log("Looking for: " + item);
-    console.log("Web scraping data from: " + item_link);
+    // console.log("Looking for: " + item);
+    // console.log("Web scraping data from: " + item_link);
     let $ = cheerio.load(response.data);
     var items = [];
     // Check if search string already exists
