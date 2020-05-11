@@ -28,9 +28,6 @@ const request = require('request'),
   cheerio = require('cheerio'),
   body_parser = require('body-parser'),
   path = require('path'),
-  fs = require('fs'),
-  util = require('util'),
-  readline = require('readline'),
   app = express().use(body_parser.json()),
   search_urls = require('./item-urls')
 // creates express http server
@@ -44,7 +41,6 @@ var delay = 10;
 // Limit of iteems
 var item_limit = 4;
 
-app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname + '/views/'));
 
@@ -76,65 +72,6 @@ app.get('/privacy-policy', (req, res) => {
   })
 });
 
-app.get('/stock-updates', (req, res) => {
-  // const readInterface = readline.createInterface({
-  //   input: fs.createReadStream('stock-log.txt'),
-  //   output: process.stdout,
-  //   console: false
-  // });
-
-  // let data_from_log = {'item_info': []};
-  // readInterface.on('line', function (line) {
-  //   let words = line.split("|")
-  //   let item_dic =  {'time': words[0], 'item': words[1], 'desc': words[2]};
-  //   data_from_log['item_info'].push(item_dic);
-  // });
-
-
-  // async function read_async() {
-  //   try {
-  //     let data_from_log = { 'item_info': [] };
-  //     let messages1 = await readFile("stock-log.txt", "utf8", function (err, data) {
-  //       if (err) throw err;
-  //       let array = data.toString().split("\n");
-  //       for (let i in array) {
-  //         let words = array[i].split("|");
-  //         let item_dic = { 'time': words[0], 'item': words[1], 'desc': words[2] };
-  //         data_from_log['item_info'].push(item_dic);
-  //         //console.log(array[i]);
-  //       }
-  //       return data_from_log;
-  //     });
-
-  //     console.log(messages1);
-  //   } catch (err) {
-  //     throw err;
-  //   }
-
-  // }
-
-  // read_async();
-
-
-
-  // let data_from_log = { 'item_info': [] };
-  // fs.readFile('stock-log.txt', function (err, data) {
-  //   if (err) throw err;
-  //   var array = data.toString().split("\n");
-  //   for (let i in array) {
-  //     let words = array[i].split("|");
-  //     let item_dic = { 'time': words[0], 'item': words[1], 'desc': words[2] };
-  //     data_from_log['item_info'].push(item_dic);
-  //     console.log(array[i]);
-  //   }
-  // });
-
-  // console.log("HERE")
-  // console.log(JSON.stringify(data_from_log));
-  res.render('stock-updates');
-
-});
-
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => { // Parse the request body from the POST
   let body = req.body;
@@ -150,7 +87,7 @@ app.post('/webhook', (req, res) => { // Parse the request body from the POST
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
-      console.log('Sender ID: ' + sender_psid + '\n');
+      console.log('Sender ID: ' + sender_psid);
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
@@ -218,172 +155,76 @@ function getTimeDiff(start_time) {
   return time_elapsed_str;
 }
 
-// Parses HTML from URL and returns data structure containing relevent data
-async function getDataFromURL(item) {
-  var item_url_dict = search_urls[item];
-  var item_link = item_url_dict['link'];
-  try {
-    let response = await axios.get(item_link);
-    var item_type = item_url_dict['type'];
+function getData(search_url, rec_msg, sender_psid, callback) {
+  request(
+    {
+      method: 'GET',
+      url: search_url
+    },
+    function (error, response, html) {
+      if (error) {
+        return callback(error)
+      };
+      if (!error && response.statusCode == 200) {
+        // console.log("Web scraping data from: " + search_url);
+        let $ = cheerio.load(html);
+        var items = [];
+        // Check if search string already exists
+        if (!(rec_msg in search_dic)) {
+          search_dic[rec_msg] = {};
+          search_dic[rec_msg]['product-name'] = $('.product-title').text();
+          search_dic[rec_msg]['user_ids'] = [];
+        }
 
-    // console.log("Looking for: " + item);
-    // console.log("Web scraping data from: " + item_link);
-    let $ = cheerio.load(response.data);
-    var items = [];
-    // Check if search string already exists
-    if (!(item in search_dic)) {
-      search_dic[item] = {};
-      search_dic[item]['product-name'] = $('.product-title').text();
-      search_dic[item]['user_ids'] = [];
-    }
+        // Multiple items in a page
+        if (search_urls[rec_msg]['type'] === "multi") {
+          $('.grouped-item').each(function (index, element) {
+            items[index] = {};
+            items[index]['name'] = $(element).find('.item-name').text();
+            items[index]['price'] = $(element).find('.price').text();
+            items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+          });
+        }
+        // Just one item in a page
+        else {
+          items[0] = {};
+          items[0]['name'] = $('.product-title').text();
+          items[0]['price'] = $('.price').text();
+          items[0]['in_stock'] = $('.bin-stock-availability').text();
+        }
 
-    // Multiple items in a page
-    if (item_type === "multi") {
-      $('.grouped-item').each(function (index, element) {
-        items[index] = {};
-        items[index]['name'] = $(element).find('.item-name').text();
-        items[index]['price'] = $(element).find('.price').text();
-        items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
-      });
+        return callback(items);
+      }
     }
-    // Just one item in a page
-    else {
-      items[0] = {};
-      items[0]['name'] = $('.product-title').text();
-      items[0]['price'] = $('.price').text();
-      items[0]['in_stock'] = $('.bin-stock-availability').text();
-    }
-    return items;
-  }
-  catch (error) {
-    console.log(`Error: ${error}`);
-  }
-
+  );
 }
 
-// Checks each URL that has people searching
-async function handleAllURLS(sender_psid) {
-  // Loop through each item
-  for (let item in search_urls) {
-    // Checks if there is at least 1 person searching for the item
-    if (Object.keys(search_urls[item]['sender_ids']).length > 0) {
-      // Parse the HTML
-      let data = await getDataFromURL(item);
-      let item_str = "";
-      let write_item_str = "";
-      let in_stock_count = 0;
-
-      // Loop through each item on page
-      for (let i = 0; i < data.length; i++) {
-        var avail = decodeURI('\u2705');
-        // Out of stock
-        if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
-          avail = decodeURI('\u274C');
-        }
-        // In stock
-        else { // Check emoji
-          avail = decodeURI('\u2705');
-          in_stock_count += 1;
-          write_item_str += data[i]['name'] + " " + avail + ", "
-          item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-        }
-        //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-      }
-
-      // No items found, everything sold out
-      if (item_str === "") {
-        item_str = "Everything currently out of stock.\n\n";
-      }
-
-      // Set date
-      var today = new Date();
-      var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
-      var time = today.toLocaleString('en-US',
-        {
-          hour: 'numeric',
-          minute: 'numeric',
-          second: 'numeric',
-          hour12: true
-        });
-      var dateTime = time + ' ' + date;
-
-      // Sends first initial message
-      if (search_urls[item]['sender_ids'][sender_psid] == 0) {
-        search_urls[item]['sender_ids'][sender_psid] = 1;
-        let response = {
-          "text": `You entered: "${item}"\n` +
-            `Match found for: "${search_dic[item]['product-name']}".\n` +
-            `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
-            "\n\n" + item_str +
-            `First initial check on ${dateTime}\n` +
-            `You will be notified everytime there is a change in stock.\n` +
-            `Will begin running in the background until "stop"\n` +
-            "Link " + search_urls[item]['link']
-        };
-        callSendAPI(sender_psid, response);
-        console.log(`Adding sender psid: ${sender_psid}`);
-      }
-      // Checks if item has been checked
-      if (!('prev_stock_count' in search_urls[item])) {
-        search_urls[item]['prev_stock_count'] = in_stock_count;
-      }
-      // Difference in stock count
-      else if ((in_stock_count != search_urls[item]['prev_stock_count'])) {
-        console.log("Response msg: Update in stock");
-        console.log(item_str);
-        console.log(dateTime);
-        // Send response to every user
-        for (let sender_id in search_urls[item]['sender_ids']) {
-          // Response message
-          let response = {
-            "text": `You entered: "${item}"\n` +
-              `Match found for: "${search_dic[item]['product-name']}".\n` +
-              `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
-              "\n\n" + item_str +
-              "Checked On " + dateTime + "\n" +
-              "Link " + search_urls[item]['link']
-          };
-          callSendAPI(sender_id, response);
-        }
-        let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str}\n`;
-        try {
-          if (write_item_str != "") {
-            await fs.appendFile('stock-log.txt', write_line);
-            console.log("Wrote to file");
-          }
-        } catch (error) {
-          console.error(`Could not write to file`);
-        }
-      }
-      // Update prev stock to current stock
-      search_urls[item]['prev_stock_count'] = in_stock_count;
-    }
-  }
-}
 
 function handleMessage(sender_psid, received_message) {
+  let response;
 
   // Checks if the message contains text
   if (received_message.text) {
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    let rec_msg = received_message.text.toLowerCase();
+    var rec_msg = received_message.text.toLowerCase();
 
     // Checks if user is in dict, if not creates entry
     if (!(sender_psid in user_id_dic)) {
-      user_id_dic[sender_psid] = { 'products': {}, 'start-date': {}, 'intervals': [] };
+      user_id_dic[sender_psid] = {'products': {}, 'start-date': {}, 'intervals': []};
     }
 
     // Help message
     if (rec_msg === "help") {
-      let keys = Object.keys(search_urls);
-      let key_string = "";
-      for (let i = 0; i < keys.length; ++i) {
+      var keys = Object.keys(search_urls);
+      var key_string = "";
+      for (var i = 0; i < keys.length; ++i) {
         key_string += keys[i] + "\n";
       }
-      let response = {
+      response = {
         "text": "Search for the following items: \n" + key_string +
-          "Type `stop` to stop checking all items \n"
+          "Type `stop` to stop checking all items \n" +
+          "Please type commands ONLY after bot replies to first command or it may crash"
       };
       callSendAPI(sender_psid, response);
       return;
@@ -400,52 +241,47 @@ function handleMessage(sender_psid, received_message) {
         "text": search_str
       };
 
+      
       callSendAPI(sender_psid, response);
       return;
     }
     // Stop message
     else if (rec_msg === "stop") {
-      // Clears all intervals for sender_psid
       user_id_dic[sender_psid]['intervals'].forEach(clearInterval);
-      let search_item_str = "";
-      // Finds all items of sender_psid
-      for (let key in user_id_dic[sender_psid]['products']) {
+      var search_item_str = "";
+      for (var key in user_id_dic[sender_psid]['products']) {
         search_item_str += search_dic[key]['product-name'] +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
-        // Deletes each item sender is searching
-        delete search_urls[key]['sender_ids'][sender_psid];
       }
-      let response = {
+      response = {
         "text": `Stopped checking ${user_id_dic[sender_psid]['intervals'].length} item(s):\n\n` +
           search_item_str
       };
-      // Resets intervals
       user_id_dic[sender_psid]['intervals'] = [];
-      // Resets products
       user_id_dic[sender_psid]['products'] = {};
-      // Delete sender from users_id_dic
       delete user_id_dic[sender_psid];
+
       callSendAPI(sender_psid, response);
-      console.log(`Removing sender psid: ${sender_psid}`);
       return;
     }
-
+    
     // User message is invalid
     if (!(rec_msg in search_urls)) {
-      let response = {
+      response = {
         "text": `You entered: "${
           received_message.text
-          }".` + "\n\n" +
+          }".` + "\n\n" + 
           "Item doesn't exist\nTry typing `help` for a list of all valid commands"
       };
       //console.log(response);
       callSendAPI(sender_psid, response);
       return;
     }
+    var search_url = search_urls[rec_msg]['link'];
 
-    // Check if items being searched exceeds limit
+    // Check current amount of items
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
-      let response = {
+      response = {
         "text": `You have reached max limit of "${item_limit}" items\n`
       };
       callSendAPI(sender_psid, response);
@@ -454,7 +290,7 @@ function handleMessage(sender_psid, received_message) {
 
     // Check if item is already being searched for user
     if (rec_msg in user_id_dic[sender_psid]['products']) {
-      let response = {
+      response = {
         "text": `Already searching: "${
           search_dic[rec_msg]['product-name']
           }".\n`
@@ -467,55 +303,110 @@ function handleMessage(sender_psid, received_message) {
       //user_id_dic[sender_psid]['start-time'] = new Date();
     }
 
-    // Check if sender_psid is in dic for url
-    if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
-      search_urls[rec_msg]['sender_ids'][sender_psid] = 0;
-    }
+    // Previous count of item
+    let prev_stock_count = 0;
+    var interval_count = 0;
+    // Interval to continous check website
+    interval_id = setInterval(function () {
+      response = getData(search_url, rec_msg, sender_psid, function (data) {
+        let item_str = "";
+        let in_stock_count = 0;
+        
+        // Loop through each item on page
+        for (let i = 0; i < data.length; i++) {
+          var avail = decodeURI('\u2705');
+          // Out of stock
+          if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
+            avail = decodeURI('\u274C');
+          }
+          // In stock
+          else { // Check emoji
+            avail = decodeURI('\u2705');
+            in_stock_count += 1;
+            item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+          }
+          //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+        }
 
-    // Interval to check all URLs
-    interval_id = setInterval(async function () {
-      try {
-        await handleAllURLS(sender_psid);
-      }
-      catch (error) {
-        console.log(`Error: ${error}`);
-      }
+        // No items found, everything sold out
+        if (item_str === "") {
+          item_str = "Everything currently out of stock.\n\n";
+        }
+
+        // Set date
+        var today = new Date();
+        var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+        var time = today.toLocaleString('en-US',
+          {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+        var dateTime = time + ' ' + date;
+
+        // Response message
+        response = {
+          "text": `You entered: "${received_message.text}"\n` +
+            `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
+            `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
+            "\n\n" + item_str +
+            "Checked On " + dateTime + "\n" +
+            "Link " + search_url
+        };
+
+
+        // If the stock amount changed from last check
+        // Send a message on FB
+        if (interval_count == 0 || (in_stock_count != prev_stock_count)) {
+          console.log("Response msg: Update in stock");
+          console.log(response);
+          callSendAPI(sender_psid, response);
+        }
+        interval_count += 1;
+        // Set prev count to current stock
+        prev_stock_count = in_stock_count;
+
+
+      });
     }, delay * 1000);
 
     // Add to list of all interval ids based on sender_psid
     user_id_dic[sender_psid]['intervals'].push(interval_id);
   }
-  // else if (received_message.attachments) { // Get the URL of the message attachment
-  //   let attachment_url = received_message.attachments[0].payload.url;
-  //   let response = {
-  //     "attachment": {
-  //       "type": "template",
-  //       "payload": {
-  //         "template_type": "generic",
-  //         "elements": [
-  //           {
-  //             "title": "Is this the right picture?",
-  //             "subtitle": "Tap a button to answer.",
-  //             "image_url": attachment_url,
-  //             "buttons": [
-  //               {
-  //                 "type": "postback",
-  //                 "title": "Yes!",
-  //                 "payload": "yes"
-  //               },
-  //               {
-  //                 "type": "postback",
-  //                 "title": "No!",
-  //                 "payload": "no"
-  //               }
-  //             ]
-  //           }
-  //         ]
-  //       }
-  //     }
-  //   }
-  // }
+  else if (received_message.attachments) { // Get the URL of the message attachment
+    let attachment_url = received_message.attachments[0].payload.url;
+    response = {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "elements": [
+            {
+              "title": "Is this the right picture?",
+              "subtitle": "Tap a button to answer.",
+              "image_url": attachment_url,
+              "buttons": [
+                {
+                  "type": "postback",
+                  "title": "Yes!",
+                  "payload": "yes"
+                },
+                {
+                  "type": "postback",
+                  "title": "No!",
+                  "payload": "no"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
 
+  // Send the response message
+  callSendAPI(sender_psid, response);
 }
 
 function handlePostback(sender_psid, received_postback) {
@@ -559,7 +450,7 @@ function callSendAPI(sender_psid, response) { // Construct the message body
     },
     (err, res, body) => {
       if (!err) {
-        console.log('---MESSAGE SENT!---\n')
+        console.log('---MESSAGE SENT!---\n');
       }
       else {
         console.error("Unable to send message:" + err);
