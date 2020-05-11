@@ -37,7 +37,7 @@ var search_dic = {};
 var user_id_dic = {};
 var start_time = new Date();
 // Delay in seconds
-var delay = 30;
+var delay = 10;
 // Limit of iteems
 var item_limit = 4;
 
@@ -81,6 +81,7 @@ app.post('/webhook', (req, res) => { // Parse the request body from the POST
 
     body.entry.forEach(function (entry) { // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
+      console.log("---MESSAGE RECEIVED---");
       console.log(webhook_event);
 
 
@@ -165,7 +166,7 @@ function getData(search_url, rec_msg, sender_psid, callback) {
         return callback(error)
       };
       if (!error && response.statusCode == 200) {
-        console.log("Web scraping data from: " + search_url);
+        // console.log("Web scraping data from: " + search_url);
         let $ = cheerio.load(html);
         var items = [];
         // Check if search string already exists
@@ -230,20 +231,16 @@ function handleMessage(sender_psid, received_message) {
     }
     // Status message
     else if (rec_msg === "status") {
-      console.log(user_id_dic);
-      var search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items
-      \n\n`;
-      for (var key in user_id_dic[sender_psid]['products']) {
+      let search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\n` +
+        `There are ${Object.keys(user_id_dic).length} total users searching\n\n`;
+      for (let key in user_id_dic[sender_psid]['products']) {
         search_str += search_dic[key]['product-name'] + " / " + key +
-        "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
+          "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
-      response = {
+      let response = {
         "text": search_str
-
       };
 
-      console.log("USER DIC")
-      console.log(user_id_dic);
       
       callSendAPI(sender_psid, response);
       return;
@@ -358,11 +355,6 @@ function handleMessage(sender_psid, received_message) {
             "Link " + search_url
         };
 
-        // console.log("Interval count: " + interval_count);
-        // console.log("Searching: " + rec_msg);
-        // console.log("Searching " + interval_id_list.length + " items");
-        // console.log("Prev stock count: " + prev_stock_count);
-        // console.log("Curr stock count: " + in_stock_count + "\n");
 
         // If the stock amount changed from last check
         // Send a message on FB
@@ -458,7 +450,7 @@ function callSendAPI(sender_psid, response) { // Construct the message body
     },
     (err, res, body) => {
       if (!err) {
-        console.log('message sent!')
+        console.log('---MESSAGE SENT!---\n');
       }
       else {
         console.error("Unable to send message:" + err);
