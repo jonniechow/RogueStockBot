@@ -171,8 +171,8 @@ async function getDataFromURL(item) {
     let response = await axios.get(item_link);
     var item_type = item_url_dict['type'];
 
-    // console.log("Looking for: " + item);
-    // console.log("Web scraping data from: " + item_link);
+    console.log("Looking for: " + item);
+    console.log("Web scraping data from: " + item_link);
     let $ = cheerio.load(response.data);
     var items = [];
     // Check if search string already exists
@@ -201,20 +201,19 @@ async function getDataFromURL(item) {
     return items;
   }
   catch (error) {
-    console.error(`Error: ${error}`);
+    console.log(`Error: ${error}`);
   }
 
 }
 
 // Checks each URL that has people searching
-async function handleAllURLS() {
+async function handleAllURLS(sender_psid) {
   // Loop through each item
   for (let item in search_urls) {
     // Checks if there is at least 1 person searching for the item
     if (Object.keys(search_urls[item]['sender_ids']).length > 0) {
       // Parse the HTML
       let data = await getDataFromURL(item);
-
       let item_str = "";
       let write_item_str = "";
       let in_stock_count = 0;
@@ -253,19 +252,28 @@ async function handleAllURLS() {
         });
       var dateTime = time + ' ' + date;
 
-      // console.log(search_dic);
-      // console.log(user_id_dic);
-      // console.log(item);
-      // console.log(received_message.text);
-      // console.log(search_urls[item]);
-      // console.log("\n");
-
-      if (!('prev_stock_count' in search_urls[item])) {
-        search_urls[item]['prev_stock_count'] = 0;
+      // Sends first initial message
+      if (search_urls[item]['sender_ids'][sender_psid] == 0) {
+        search_urls[item]['sender_ids'][sender_psid] = 1;
+        let response = {
+          "text": `You entered: "${item}"\n` +
+            `Match found for: "${search_dic[item]['product-name']}".\n` +
+            `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
+            "\n\n" + item_str +
+            `First initial check on ${dateTime}\n` +
+            `You will be notified everytime there is a change in stock.\n` + 
+            `Will begin running in the background until "stop"\n` + 
+            "Link " + search_urls[item]['link']
+        };
+        callSendAPI(sender_psid, response);
+        console.log(`Adding sender psid: ${sender_psid}`);
       }
-
+      // Checks if item has been checked
+      if (!('prev_stock_count' in search_urls[item])) {
+        search_urls[item]['prev_stock_count'] = in_stock_count;
+      }
       // Difference in stock count
-      if ((in_stock_count != search_urls[item]['prev_stock_count'])) {
+      else if ((in_stock_count != search_urls[item]['prev_stock_count'])) {
         console.log("Response msg: Update in stock");
         console.log(item_str);
         console.log(dateTime);
@@ -304,7 +312,7 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    var rec_msg = received_message.text.toLowerCase();
+    let rec_msg = received_message.text.toLowerCase();
 
     // Checks if user is in dict, if not creates entry
     if (!(sender_psid in user_id_dic)) {
@@ -380,7 +388,6 @@ function handleMessage(sender_psid, received_message) {
       return;
     }
 
-
     // Check if items being searched exceeds limit
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
       let response = {
@@ -407,21 +414,16 @@ function handleMessage(sender_psid, received_message) {
 
     // Check if sender_psid is in dic for url
     if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
-      search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
-      let response = {
-        "text": `Starting search on: "${rec_msg}". \nYou will be notified everytime there is a change in stock. \n`
-      };
-      callSendAPI(sender_psid, response);
-      console.log(`Adding sender psid: ${sender_psid}`);
+      search_urls[rec_msg]['sender_ids'][sender_psid] = 0;
     }
 
     // Interval to check all URLs
     interval_id = setInterval(async function () {
       try {
-        await handleAllURLS();
+        await handleAllURLS(sender_psid);
       }
       catch (error) {
-        console.error(`Error: ${error}`);
+        console.log(`Error: ${error}`);
       }
     }, delay * 1000);
 
