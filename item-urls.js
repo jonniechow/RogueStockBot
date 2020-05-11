@@ -70,6 +70,11 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         "link": "https://www.roguefitness.com/rogue-6-shooter-olympic-plates"
     },
+    "plate cal kg": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rogue-calibrated-kg-steel-plates"
+    },
     // Barbell URLs
     // Ohio Bar
     "barbell op oxide": {
@@ -122,6 +127,17 @@ var search_urls = { // Plate URLs
         "type": "single",
         "sender_ids": {},
         "link": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote"
+    },
+    // Other bars
+    "barbell rogue 2.0": {
+        "type": "single",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/the-rogue-bar-2-0"
+    },
+    "barbell echo 2.0": {
+        "type": "single",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rogue-echo-bar"
     },
     // Echo bike
     "bike echo": {

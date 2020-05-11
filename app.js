@@ -29,6 +29,8 @@ const request = require('request'),
   body_parser = require('body-parser'),
   path = require('path'),
   fs = require('fs'),
+  util = require('util'),
+  readline = require('readline'),
   app = express().use(body_parser.json()),
   search_urls = require('./item-urls')
 // creates express http server
@@ -42,6 +44,7 @@ var delay = 10;
 // Limit of iteems
 var item_limit = 4;
 
+app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname + '/views/'));
 
@@ -74,9 +77,61 @@ app.get('/privacy-policy', (req, res) => {
 });
 
 app.get('/stock-updates', (req, res) => {
-  res.sendFile('stock-updates.html', {
-    root: path.join(__dirname, '/views')
-  })
+  // const readInterface = readline.createInterface({
+  //   input: fs.createReadStream('stock-log.txt'),
+  //   output: process.stdout,
+  //   console: false
+  // });
+
+  // let data_from_log = {'item_info': []};
+  // readInterface.on('line', function (line) {
+  //   let words = line.split("|")
+  //   let item_dic =  {'time': words[0], 'item': words[1], 'desc': words[2]};
+  //   data_from_log['item_info'].push(item_dic);
+  // });
+
+
+  // async function read_async() {
+  //   try {
+  //     let data_from_log = { 'item_info': [] };
+  //     let messages1 = await readFile("stock-log.txt", "utf8", function (err, data) {
+  //       if (err) throw err;
+  //       let array = data.toString().split("\n");
+  //       for (let i in array) {
+  //         let words = array[i].split("|");
+  //         let item_dic = { 'time': words[0], 'item': words[1], 'desc': words[2] };
+  //         data_from_log['item_info'].push(item_dic);
+  //         //console.log(array[i]);
+  //       }
+  //       return data_from_log;
+  //     });
+
+  //     console.log(messages1);
+  //   } catch (err) {
+  //     throw err;
+  //   }
+
+  // }
+
+  // read_async();
+
+
+
+  // let data_from_log = { 'item_info': [] };
+  // fs.readFile('stock-log.txt', function (err, data) {
+  //   if (err) throw err;
+  //   var array = data.toString().split("\n");
+  //   for (let i in array) {
+  //     let words = array[i].split("|");
+  //     let item_dic = { 'time': words[0], 'item': words[1], 'desc': words[2] };
+  //     data_from_log['item_info'].push(item_dic);
+  //     console.log(array[i]);
+  //   }
+  // });
+
+  // console.log("HERE")
+  // console.log(JSON.stringify(data_from_log));
+  res.render('stock-updates');
 
 });
 
@@ -261,8 +316,8 @@ async function handleAllURLS(sender_psid) {
             `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
             `First initial check on ${dateTime}\n` +
-            `You will be notified everytime there is a change in stock.\n` + 
-            `Will begin running in the background until "stop"\n` + 
+            `You will be notified everytime there is a change in stock.\n` +
+            `Will begin running in the background until "stop"\n` +
             "Link " + search_urls[item]['link']
         };
         callSendAPI(sender_psid, response);
