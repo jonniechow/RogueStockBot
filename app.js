@@ -27,6 +27,7 @@ const request = require('request'),
   axios = require('axios'),
   cheerio = require('cheerio'),
   body_parser = require('body-parser'),
+  fs = require('fs'),
   path = require('path'),
   app = express().use(body_parser.json()),
   search_urls = require('./item-urls')
@@ -37,7 +38,7 @@ var search_dic = {};
 var user_id_dic = {};
 var start_time = new Date();
 // Delay in seconds
-var delay = 30;
+var delay = 10;
 // Limit of iteems
 var item_limit = 4;
 
@@ -211,7 +212,7 @@ function handleMessage(sender_psid, received_message) {
 
     // Checks if user is in dict, if not creates entry
     if (!(sender_psid in user_id_dic)) {
-      user_id_dic[sender_psid] = {'products': {}, 'start-date': {}, 'intervals': []};
+      user_id_dic[sender_psid] = { 'products': {}, 'start-date': {}, 'intervals': [] };
     }
 
     // Help message
@@ -241,7 +242,7 @@ function handleMessage(sender_psid, received_message) {
         "text": search_str
       };
 
-      
+
       callSendAPI(sender_psid, response);
       return;
     }
@@ -264,13 +265,13 @@ function handleMessage(sender_psid, received_message) {
       callSendAPI(sender_psid, response);
       return;
     }
-    
+
     // User message is invalid
     if (!(rec_msg in search_urls)) {
       response = {
         "text": `You entered: "${
           received_message.text
-          }".` + "\n\n" + 
+          }".` + "\n\n" +
           "Item doesn't exist\nTry typing `help` for a list of all valid commands"
       };
       //console.log(response);
@@ -303,15 +304,21 @@ function handleMessage(sender_psid, received_message) {
       //user_id_dic[sender_psid]['start-time'] = new Date();
     }
 
+    // Check if sender_psid is in dic for url
+    if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
+      search_urls[rec_msg]['sender_ids'][sender_psid] = 0;
+    }
+
     // Previous count of item
     let prev_stock_count = 0;
     var interval_count = 0;
     // Interval to continous check website
     interval_id = setInterval(function () {
-      response = getData(search_url, rec_msg, sender_psid, function (data) {
+      response = getData(search_url, rec_msg, sender_psid, async function (data) {
         let item_str = "";
         let in_stock_count = 0;
-        
+        let write_item_str = "";
+
         // Loop through each item on page
         for (let i = 0; i < data.length; i++) {
           var avail = decodeURI('\u2705');
@@ -323,6 +330,7 @@ function handleMessage(sender_psid, received_message) {
           else { // Check emoji
             avail = decodeURI('\u2705');
             in_stock_count += 1;
+            write_item_str += data[i]['name'] + " " + avail + ", "
             item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
           }
           //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
@@ -345,23 +353,56 @@ function handleMessage(sender_psid, received_message) {
           });
         var dateTime = time + ' ' + date;
 
-        // Response message
-        response = {
-          "text": `You entered: "${received_message.text}"\n` +
-            `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
-            `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
-            "\n\n" + item_str +
-            "Checked On " + dateTime + "\n" +
-            "Link " + search_url
-        };
-
-
+        // Sends first initial message
+        if (search_urls[rec_msg]['sender_ids'][sender_psid] == 0) {
+          search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
+          response = {
+            "text": `You entered: "${rec_msg}"\n` +
+              `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
+              `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
+              "\n\n" + item_str +
+              `First initial check on ${dateTime}\n` +
+              `You will be notified everytime there is a change in stock.\n` +
+              `Will begin running in the background until "stop"\n` +
+              "Link " + search_urls[rec_msg]['link']
+          };
+          callSendAPI(sender_psid, response);
+          console.log(`Adding sender psid: ${sender_psid}`);
+          let write_line = `${dateTime} | ${search_dic[rec_msg]['product-name']} | ${write_item_str}\n`;
+          try {
+            if (write_item_str != "") {
+              await fs.appendFile('stock-log.txt', write_line);
+              console.log("Wrote to file");
+            }
+          } catch (error) {
+            console.error(`Could not write to file`);
+          }
+        }
         // If the stock amount changed from last check
         // Send a message on FB
-        if (interval_count == 0 || (in_stock_count != prev_stock_count)) {
+        else if ((in_stock_count != prev_stock_count)) {
           console.log("Response msg: Update in stock");
+          // Response message
+          response = {
+            "text": `You entered: "${received_message.text}"\n` +
+              `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
+              `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
+              "\n\n" + item_str +
+              "Checked On " + dateTime + "\n" +
+              "Link " + search_url
+          };
           console.log(response);
           callSendAPI(sender_psid, response);
+
+          let write_line = `${dateTime} | ${search_dic[rec_msg]['product-name']} | ${write_item_str}\n`;
+          try {
+            if (write_item_str != "") {
+              await fs.appendFile('stock-log.txt', write_line);
+              console.log("Wrote to file");
+            }
+          } catch (error) {
+            console.error(`Could not write to file`);
+          }
         }
         interval_count += 1;
         // Set prev count to current stock
