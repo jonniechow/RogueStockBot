@@ -42,6 +42,7 @@ var delay = 10;
 // Limit of iteems
 var item_limit = 4;
 
+app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname + '/views/'));
 
@@ -50,27 +51,23 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 // Home screen page
 app.get('/', (req, res) => {
-  res.sendFile('index.html', {
-    root: path.join(__dirname, '/views')
-  })
+  res.render('index')
 });
 
 app.get('/bot-guide', (req, res) => {
-  res.sendFile('bot-guide.html', {
-    root: path.join(__dirname, '/views')
-  })
+  res.render('bot-guide')
 });
 
 app.get('/terms', (req, res) => {
-  res.sendFile('terms.html', {
-    root: path.join(__dirname, '/views')
-  })
+  res.render('terms');
 });
 
 app.get('/privacy-policy', (req, res) => {
-  res.sendFile('privacy-policy.html', {
-    root: path.join(__dirname, '/views')
-  })
+  res.render('privacy-policy');
+});
+
+app.get('/stock-updates', (req, res) => {
+  res.render('stock-updates');
 });
 
 // Accepts POST requests at /webhook endpoint
