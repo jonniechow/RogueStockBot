@@ -29,6 +29,8 @@ const request = require('request'),
   body_parser = require('body-parser'),
   fs = require('fs'),
   path = require('path'),
+  readline = require('readline'),
+  stream = require('stream'),
   app = express().use(body_parser.json()),
   search_urls = require('./item-urls')
 // creates express http server
@@ -67,7 +69,24 @@ app.get('/privacy-policy', (req, res) => {
 });
 
 app.get('/stock-updates', (req, res) => {
-  res.render('stock-updates');
+  var instream = fs.createReadStream('stock-log.txt');
+  var outstream = new stream;
+  var rl = readline.createInterface(instream, outstream);
+  let data_from_log = {'item_info': []};
+  rl.on('line', function(line) {
+    // process line here
+    let words = line.split("|");
+    let items = words[2].split(",")
+    let item_dic = { 'time': words[0], 'name': words[1], 'items': items };
+    data_from_log['item_info'].unshift(item_dic);
+  });
+  
+  rl.on('close', function() {
+    // do something on finish here
+    console.log('arr', data_from_log);
+    res.render('stock-updates', {data: data_from_log});
+  });
+  
 });
 
 // Accepts POST requests at /webhook endpoint
