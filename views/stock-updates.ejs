@@ -50,7 +50,7 @@
                                         <th>Stock</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="data_from_log">
 									<% data.item_info.forEach((entry)=>{%>
 										<tr>
 											<td><%=entry.time%></td>
@@ -89,6 +89,10 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-
+			<!-- <script>
+				setInterval(function(){
+   $('#my_div').load('/path/to/server/source');
+}, 2000) /* time in milliseconds (ie 2 seconds)*/
+			</script> -->
 	</body>
 </html>

@@ -196,15 +196,6 @@ async function handleAllURLs() {
     // Checks if item has been checked
     if (!('prev_stock_count' in search_urls[item])) {
       search_urls[item]['prev_stock_count'] = in_stock_count;
-      let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str}\n`;
-      try {
-        fs.appendFile('stock-log.txt', write_line, (error) => {
-          if (error) throw error;
-          console.log("Wrote to file");
-        });
-      } catch (error) {
-        console.error(`Could not write to file`);
-      }
     }
     // Difference in stock count
     else if ((in_stock_count != search_urls[item]['prev_stock_count'])) {
@@ -253,6 +244,7 @@ async function getDataFromURL(item) {
     // console.log("Web scraping data from: " + item_link);
     let $ = cheerio.load(response.data);
     var items = [];
+    
     // Check if search string already exists
     if (!(item in search_dic)) {
       search_dic[item] = {};
