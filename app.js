@@ -71,6 +71,10 @@ app.get('/privacy-policy', (req, res) => {
   res.render('privacy-policy');
 });
 
+app.get('/current-items', (req, res) => {
+  res.render('current-items', {data: search_urls});
+});
+
 app.get('/stock-updates', (req, res) => {
   var instream = fs.createReadStream('stock-log.txt');
   var outstream = new stream;
