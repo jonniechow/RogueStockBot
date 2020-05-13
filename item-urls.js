@@ -30,6 +30,11 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         "link": "https://www.roguefitness.com/rogue-lb-training-2-0-plates"
     },
+    "plate black kg": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rogue-black-training-kg-striped-plates"
+    },
     "plate echo": {
         "type": "multi",
         "sender_ids": {},
@@ -123,6 +128,11 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         "link": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless"
     },
+    "barbell opb ss kg": {
+        "type": "single",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rogue-20-kg-ohio-power-bar-stainless-steel"
+    },
     "barbell opb cerakote": {
         "type": "single",
         "sender_ids": {},
@@ -181,6 +191,16 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         "link": "https://www.roguefitness.com/rogue-fold-up-utility-bench"
     },
+    "bench westside 2.0": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rogue-westside-bench-2-0"
+    },
+    "bench monster westside": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rogue-monster-westside-bench"
+    },
     // Squat Stands
     "squat sml-2": {
         "type": "multi",
@@ -201,6 +221,65 @@ var search_urls = { // Plate URLs
         "type": "single",
         "sender_ids": {},
         "link": "https://www.roguefitness.com/rogue-echo-squat-stand-2-0"
+    },
+    "yoke y1": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rogue-yoke"
+    },
+    "yoke y2": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/y2-yoke"
+    },
+    // Racks
+    "rack rml-390f": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rml-390f-flat-foot-monster-lite-rack"
+    },
+    "rack rml-490": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rogue-rml-490-power-rack"
+    },
+    "rack rml-690": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rml-690-power-rack"
+    },
+    "rack r-3": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rogue-r-3-power-rack"
+    },
+    // Yoke
+    "yoke y2": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/y2-yoke"
+    },
+    "yoke y2": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/y2-yoke"
+    },
+    // Row
+    "rower pm5": {
+        "type": "single",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/black-concept-2-model-d-rower-pm5"
+    },
+    // Free weights
+    "kettlebells": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rogue-kettlebells"
+    },
+    "dumbbells": {
+        "type": "multi",
+        "sender_ids": {},
+        "link": "https://www.roguefitness.com/rogue-dumbbells"
     }
     // Boneyard
     // "bone 29": "https://www.roguefitness.com/rogue-29mm-boneyard-bars",
