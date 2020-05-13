@@ -47,7 +47,8 @@
                                     <tr>
                                         <th>Time</th>
                                         <th>Item</th>
-                                        <th>Stock</th>
+										<th>Stock</th>
+										<th>Link</th>
                                     </tr>
                                 </thead>
                                 <tbody id="data_from_log">
@@ -60,6 +61,7 @@
 													<p><%=item%></p>
 												<%});%>
 											</td>
+											<td><a href="<%=entry.link%>" target="_blank">Link</a></td>
 										</tr>
 									<%});%>
                                 </tbody>

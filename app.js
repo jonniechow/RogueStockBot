@@ -38,9 +38,9 @@ const request = require('request'),
 var interval_id = null;
 var search_dic = {};
 var user_id_dic = {};
-var start_time = new Date();
+var start_time;
 // Delay in seconds
-var delay = 10;
+var delay = 30;
 // Limit of iteems
 var item_limit = 4;
 
@@ -77,16 +77,14 @@ app.get('/stock-updates', (req, res) => {
   var rl = readline.createInterface(instream, outstream);
   let data_from_log = { 'item_info': [] };
   rl.on('line', function (line) {
-    // process line here
+    // Process line here
     let words = line.split("|");
     let items = words[2].split(",")
-    let item_dic = { 'time': words[0], 'name': words[1], 'items': items };
+    let item_dic = { 'time': words[0], 'name': words[1], 'items': items, 'link': words[3] };
     data_from_log['item_info'].unshift(item_dic);
   });
 
   rl.on('close', function () {
-    // do something on finish here
-    console.log('arr', data_from_log);
     res.render('stock-updates', { data: data_from_log });
   });
 
@@ -196,6 +194,17 @@ async function handleAllURLs() {
     // Checks if item has been checked
     if (!('prev_stock_count' in search_urls[item])) {
       search_urls[item]['prev_stock_count'] = in_stock_count;
+      let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
+      try {
+        if (write_item_str != "") {
+          fs.appendFile('stock-log.txt', write_line, (error) => {
+            if (error) throw error;
+            console.log("Wrote to file");
+          });
+        }
+      } catch (error) {
+        console.error(`Could not write to file`);
+      }
     }
     // Difference in stock count
     else if ((in_stock_count != search_urls[item]['prev_stock_count'])) {
@@ -215,7 +224,7 @@ async function handleAllURLs() {
       //   };
       //   callSendAPI(sender_id, response);
       // }
-      let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str}\n`;
+      let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
       try {
         if (write_item_str != "") {
           fs.appendFile('stock-log.txt', write_line, (error) => {
@@ -358,6 +367,20 @@ function handleMessage(sender_psid, received_message) {
       user_id_dic[sender_psid] = { 'products': {}, 'start-date': {}, 'intervals': [] };
     }
 
+    // Set start time
+    if(Object.keys(user_id_dic).length == 1) {
+      start_time = new Date();
+      var date = (start_time.getMonth() + 1) + '/' + start_time.getDate() + '/' + start_time.getFullYear();
+        var time = start_time.toLocaleString('en-US',
+          {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+        start_time = time + ' ' + date;
+    }
+
     // Help message
     if (rec_msg === "help") {
       var keys = Object.keys(search_urls);
@@ -381,6 +404,7 @@ function handleMessage(sender_psid, received_message) {
         search_str += search_dic[key]['product-name'] + " / " + key +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
+      search_str += `Last reset: ${start_time}\n`;
       let response = {
         "text": search_str
       };
@@ -534,7 +558,7 @@ function handleMessage(sender_psid, received_message) {
               "Checked On " + dateTime + "\n" +
               "Link " + search_url
           };
-          console.log(response);
+          //console.log(response);
           callSendAPI(sender_psid, response);
 
           let write_line = `${dateTime} | ${search_dic[rec_msg]['product-name']} | ${write_item_str}\n`;
