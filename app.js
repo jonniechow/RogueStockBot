@@ -72,6 +72,14 @@ app.get('/privacy-policy', (req, res) => {
 });
 
 app.get('/current-items', (req, res) => {
+  // let search_data = [];
+  // for (let item in search_urls) {
+  //   let item_link = search_urls[item]['link'];
+  //   let product_title = getProductName(item_link);
+  //   let item_dic = {'name': product_title, 'link': item_link, 'item': item};
+  //   search_data.push(item_dic);
+  // }
+  // console.log(search_data);
   res.render('current-items', { data: search_urls });
 });
 
@@ -218,7 +226,7 @@ async function handleAllURLs() {
         if (write_item_str != "") {
           fs.appendFile('stock-log.txt', write_line, (error) => {
             if (error) throw error;
-            console.log("Wrote to file");
+            console.log(`Wrote update on ${item} to file`);
           });
         }
       } catch (error) {
@@ -248,7 +256,7 @@ async function handleAllURLs() {
         if (write_item_str != "") {
           fs.appendFile('stock-log.txt', write_line, (error) => {
             if (error) throw error;
-            console.log("Wrote to file");
+            console.log(`Wrote update on ${item} to file`);
           });
         }
       } catch (error) {
@@ -257,6 +265,17 @@ async function handleAllURLs() {
     }
     // Update prev stock to current stock
     search_urls[item]['prev_stock_count'] = in_stock_count;
+  }
+}
+
+async function getProductName(item_link) {
+  try {
+    let response = await axios.get(item_link);
+    let $ = cheerio.load(response.data);
+    return $('.product-title').text();
+  }
+  catch (error) {
+    console.log(`Error: ${error}`);
   }
 }
 
