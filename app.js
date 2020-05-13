@@ -29,6 +29,8 @@ const request = require('request'),
   body_parser = require('body-parser'),
   fs = require('fs'),
   path = require('path'),
+  readline = require('readline'),
+  stream = require('stream'),
   app = express().use(body_parser.json()),
   search_urls = require('./item-urls')
 // creates express http server
@@ -36,42 +38,62 @@ const request = require('request'),
 var interval_id = null;
 var search_dic = {};
 var user_id_dic = {};
-var start_time = new Date();
+var start_time;
 // Delay in seconds
-var delay = 10;
+var delay = 30;
 // Limit of iteems
 var item_limit = 4;
 
+app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname + '/views/'));
 
 // Sets server port and logs message on success
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+app.listen(process.env.PORT || 1337, () => {
+  console.log('webhook is listening');
+  setInterval(handleAllURLs, delay * 1000);
+});
 
 // Home screen page
 app.get('/', (req, res) => {
-  res.sendFile('index.html', {
-    root: path.join(__dirname, '/views')
-  })
+  res.render('index')
 });
 
 app.get('/bot-guide', (req, res) => {
-  res.sendFile('bot-guide.html', {
-    root: path.join(__dirname, '/views')
-  })
+  res.render('bot-guide')
 });
 
 app.get('/terms', (req, res) => {
-  res.sendFile('terms.html', {
-    root: path.join(__dirname, '/views')
-  })
+  res.render('terms');
 });
 
 app.get('/privacy-policy', (req, res) => {
-  res.sendFile('privacy-policy.html', {
-    root: path.join(__dirname, '/views')
-  })
+  res.render('privacy-policy');
 });
+
+app.get('/current-items', (req, res) => {
+  res.render('current-items', {data: search_urls});
+});
+
+app.get('/stock-updates', (req, res) => {
+  var instream = fs.createReadStream('stock-log.txt');
+  var outstream = new stream;
+  var rl = readline.createInterface(instream, outstream);
+  let data_from_log = { 'item_info': [] };
+  rl.on('line', function (line) {
+    // Process line here
+    let words = line.split("|");
+    let items = words[2].split(",")
+    let item_dic = { 'time': words[0], 'name': words[1], 'items': items, 'link': words[3] };
+    data_from_log['item_info'].unshift(item_dic);
+  });
+
+  rl.on('close', function () {
+    res.render('stock-updates', { data: data_from_log });
+  });
+
+});
+
 
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => { // Parse the request body from the POST
@@ -88,7 +110,7 @@ app.post('/webhook', (req, res) => { // Parse the request body from the POST
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
-      console.log('Sender ID: ' + sender_psid);
+      console.log('Sender ID: ' + sender_psid + "\n");
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
@@ -132,6 +154,140 @@ app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
     }
   }
 });
+
+async function handleAllURLs() {
+  for (let item in search_urls) {
+    let data = await getDataFromURL(item);
+    let item_str = "";
+    let write_item_str = "";
+    let in_stock_count = 0;
+    // Loop through each item on page
+    for (let i = 0; i < data.length; i++) {
+      var avail = decodeURI('\u2705');
+      // Out of stock
+      if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
+        avail = decodeURI('\u274C');
+      }
+      // In stock
+      else { // Check emoji
+        avail = decodeURI('\u2705');
+        in_stock_count += 1;
+        write_item_str += data[i]['name'] + " " + avail + ", "
+        item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+      }
+      //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+    }
+
+    // No items found, everything sold out
+    if (item_str === "") {
+      item_str = "Everything currently out of stock.\n\n";
+    }
+
+    // Set date
+    var today = new Date();
+    var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+    var time = today.toLocaleString('en-US',
+      {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: true
+      });
+    var dateTime = time + ' ' + date;
+
+    // Checks if item has been checked
+    if (!('prev_stock_count' in search_urls[item])) {
+      search_urls[item]['prev_stock_count'] = in_stock_count;
+      let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
+      try {
+        if (write_item_str != "") {
+          fs.appendFile('stock-log.txt', write_line, (error) => {
+            if (error) throw error;
+            console.log("Wrote to file");
+          });
+        }
+      } catch (error) {
+        console.error(`Could not write to file`);
+      }
+    }
+    // Difference in stock count
+    else if ((in_stock_count != search_urls[item]['prev_stock_count'])) {
+      console.log("Response msg: Update in stock");
+      console.log(item_str);
+      console.log(dateTime);
+      // Send response to every user
+      // for (let sender_id in search_urls[item]['sender_ids']) {
+      //   // Response message
+      //   let response = {
+      //     "text": `You entered: "${item}"\n` +
+      //       `Match found for: "${search_dic[item]['product-name']}".\n` +
+      //       `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
+      //       "\n\n" + item_str +
+      //       "Checked On " + dateTime + "\n" +
+      //       "Link " + search_urls[item]['link']
+      //   };
+      //   callSendAPI(sender_id, response);
+      // }
+      let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
+      try {
+        if (write_item_str != "") {
+          fs.appendFile('stock-log.txt', write_line, (error) => {
+            if (error) throw error;
+            console.log("Wrote to file");
+          });
+        }
+      } catch (error) {
+        console.error(`Could not write to file`);
+      }
+    }
+    // Update prev stock to current stock
+    search_urls[item]['prev_stock_count'] = in_stock_count;
+  }
+}
+
+// Parses HTML from URL and returns data structure containing relevent data
+async function getDataFromURL(item) {
+  var item_url_dict = search_urls[item];
+  var item_link = item_url_dict['link'];
+  try {
+    let response = await axios.get(item_link);
+    var item_type = item_url_dict['type'];
+
+    // console.log("Looking for: " + item);
+    // console.log("Web scraping data from: " + item_link);
+    let $ = cheerio.load(response.data);
+    var items = [];
+    
+    // Check if search string already exists
+    if (!(item in search_dic)) {
+      search_dic[item] = {};
+      search_dic[item]['product-name'] = $('.product-title').text();
+      search_dic[item]['user_ids'] = [];
+    }
+
+    // Multiple items in a page
+    if (item_type === "multi") {
+      $('.grouped-item').each(function (index, element) {
+        items[index] = {};
+        items[index]['name'] = $(element).find('.item-name').text();
+        items[index]['price'] = $(element).find('.price').text();
+        items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+      });
+    }
+    // Just one item in a page
+    else {
+      items[0] = {};
+      items[0]['name'] = $('.product-title').text();
+      items[0]['price'] = $('.price').text();
+      items[0]['in_stock'] = $('.bin-stock-availability').text();
+    }
+    return items;
+  }
+  catch (error) {
+    console.log(`Error: ${error}`);
+  }
+
+}
 
 function getTimeDiff(start_time) {
   var curr_time = new Date();
@@ -215,6 +371,20 @@ function handleMessage(sender_psid, received_message) {
       user_id_dic[sender_psid] = { 'products': {}, 'start-date': {}, 'intervals': [] };
     }
 
+    // Set start time
+    if(Object.keys(user_id_dic).length == 1) {
+      start_time = new Date();
+      var date = (start_time.getMonth() + 1) + '/' + start_time.getDate() + '/' + start_time.getFullYear();
+        var time = start_time.toLocaleString('en-US',
+          {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+        start_time = time + ' ' + date;
+    }
+
     // Help message
     if (rec_msg === "help") {
       var keys = Object.keys(search_urls);
@@ -238,6 +408,7 @@ function handleMessage(sender_psid, received_message) {
         search_str += search_dic[key]['product-name'] + " / " + key +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
+      search_str += `Last reset: ${start_time}\n`;
       let response = {
         "text": search_str
       };
@@ -391,7 +562,7 @@ function handleMessage(sender_psid, received_message) {
               "Checked On " + dateTime + "\n" +
               "Link " + search_url
           };
-          console.log(response);
+          //console.log(response);
           callSendAPI(sender_psid, response);
 
           let write_line = `${dateTime} | ${search_dic[rec_msg]['product-name']} | ${write_item_str}\n`;

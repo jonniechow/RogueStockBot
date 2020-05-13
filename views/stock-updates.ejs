@@ -24,7 +24,8 @@
 								<a href="#" class="icon solid fa-angle-down">Menu</a>
 								<ul>
                                     <li><a href="bot-guide">Bot Guide</a></li>
-                                    <li><a href="stock-updates">Stock Updates</a></li>
+									<li><a href="stock-updates">Stock Updates</a></li>
+									<li><a href="current-items">Current Items</a></li>
 									<li><a href="privacy-policy">Privacy Policy</a></li>
 									<li><a href="terms">Terms and Conditions</a></li>
 								</ul>
@@ -47,39 +48,24 @@
                                     <tr>
                                         <th>Time</th>
                                         <th>Item</th>
-                                        <th>Stock</th>
+										<th>Stock</th>
+										<th>Link</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-
-		
-                                    <tr>
-                                        <td>Nothing</td>
-                                        <td>Vis ac commodo adipiscing arcu aliquet.</td>
-                                        <td>19.99</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Something</td>
-                                        <td> Morbi faucibus arcu accumsan lorem.</td>
-                                        <td>29.99</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Nothing</td>
-                                        <td>Vitae integer tempus condimentum.</td>
-                                        <td>19.99</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Something</td>
-                                        <td>Ante turpis integer aliquet porttitor.</td>
-                                        <td>29.99</td>
-                                    </tr>
+                                <tbody id="data_from_log">
+									<% data.item_info.forEach((entry)=>{%>
+										<tr>
+											<td><%=entry.time%></td>
+											<td><%=entry.name%></td>
+											<td>
+												<% entry.items.forEach((item)=>{%>
+													<p><%=item%></p>
+												<%});%>
+											</td>
+											<td><a href="<%=entry.link%>" target="_blank">Link</a></td>
+										</tr>
+									<%});%>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="2"></td>
-                                        <td>100.00</td>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
 
@@ -106,6 +92,10 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-
+			<!-- <script>
+				setInterval(function(){
+   $('#my_div').load('/path/to/server/source');
+}, 2000) /* time in milliseconds (ie 2 seconds)*/
+			</script> -->
 	</body>
 </html>
