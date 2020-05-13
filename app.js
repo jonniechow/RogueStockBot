@@ -40,7 +40,7 @@ var search_dic = {};
 var user_id_dic = {};
 var start_time;
 // Delay in seconds
-var delay = 30;
+var delay = 10;
 // Limit of iteems
 var item_limit = 4;
 
@@ -72,7 +72,7 @@ app.get('/privacy-policy', (req, res) => {
 });
 
 app.get('/current-items', (req, res) => {
-  res.render('current-items', {data: search_urls});
+  res.render('current-items', { data: search_urls });
 });
 
 app.get('/stock-updates', (req, res) => {
@@ -198,6 +198,21 @@ async function handleAllURLs() {
     // Checks if item has been checked
     if (!('prev_stock_count' in search_urls[item])) {
       search_urls[item]['prev_stock_count'] = in_stock_count;
+      // Send response to every user
+      for (let sender_id in search_urls[item]['sender_ids']) {
+        // First response message
+        let response = {
+          "text": `You entered: "${item}"\n` +
+            `Match found for: "${search_dic[item]['product-name']}".\n` +
+            `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
+            "\n\n" + item_str +
+            `First initial check on ${dateTime}\n` +
+            `You will be notified everytime there is a change in stock.\n` +
+            `Will begin running in the background until "stop"\n` +
+            "Link " + search_urls[item]['link']
+        };
+        callSendAPI(sender_id, response);
+      }
       let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
       try {
         if (write_item_str != "") {
@@ -216,18 +231,18 @@ async function handleAllURLs() {
       console.log(item_str);
       console.log(dateTime);
       // Send response to every user
-      // for (let sender_id in search_urls[item]['sender_ids']) {
-      //   // Response message
-      //   let response = {
-      //     "text": `You entered: "${item}"\n` +
-      //       `Match found for: "${search_dic[item]['product-name']}".\n` +
-      //       `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
-      //       "\n\n" + item_str +
-      //       "Checked On " + dateTime + "\n" +
-      //       "Link " + search_urls[item]['link']
-      //   };
-      //   callSendAPI(sender_id, response);
-      // }
+      for (let sender_id in search_urls[item]['sender_ids']) {
+        // Response message
+        let response = {
+          "text": `You entered: "${item}"\n` +
+            `Match found for: "${search_dic[item]['product-name']}".\n` +
+            `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
+            "\n\n" + item_str +
+            "Checked On " + dateTime + "\n" +
+            "Link " + search_urls[item]['link']
+        };
+        callSendAPI(sender_id, response);
+      }
       let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
       try {
         if (write_item_str != "") {
@@ -257,7 +272,7 @@ async function getDataFromURL(item) {
     // console.log("Web scraping data from: " + item_link);
     let $ = cheerio.load(response.data);
     var items = [];
-    
+
     // Check if search string already exists
     if (!(item in search_dic)) {
       search_dic[item] = {};
@@ -372,17 +387,17 @@ function handleMessage(sender_psid, received_message) {
     }
 
     // Set start time
-    if(Object.keys(user_id_dic).length == 1) {
+    if (Object.keys(user_id_dic).length == 1) {
       start_time = new Date();
       var date = (start_time.getMonth() + 1) + '/' + start_time.getDate() + '/' + start_time.getFullYear();
-        var time = start_time.toLocaleString('en-US',
-          {
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-          });
-        start_time = time + ' ' + date;
+      var time = start_time.toLocaleString('en-US',
+        {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          hour12: true
+        });
+      start_time = time + ' ' + date;
     }
 
     // Help message
@@ -479,112 +494,113 @@ function handleMessage(sender_psid, received_message) {
     if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
       search_urls[rec_msg]['sender_ids'][sender_psid] = 0;
     }
+    console.log(search_urls);
 
-    // Previous count of item
-    let prev_stock_count = 0;
-    var interval_count = 0;
-    // Interval to continous check website
-    interval_id = setInterval(function () {
-      response = getData(search_url, rec_msg, sender_psid, async function (data) {
-        let item_str = "";
-        let in_stock_count = 0;
-        let write_item_str = "";
+    // // Previous count of item
+    // let prev_stock_count = 0;
+    // var interval_count = 0;
+    // // Interval to continous check website
+    // interval_id = setInterval(function () {
+    //   response = getData(search_url, rec_msg, sender_psid, async function (data) {
+    //     let item_str = "";
+    //     let in_stock_count = 0;
+    //     let write_item_str = "";
 
-        // Loop through each item on page
-        for (let i = 0; i < data.length; i++) {
-          var avail = decodeURI('\u2705');
-          // Out of stock
-          if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
-            avail = decodeURI('\u274C');
-          }
-          // In stock
-          else { // Check emoji
-            avail = decodeURI('\u2705');
-            in_stock_count += 1;
-            write_item_str += data[i]['name'] + " " + avail + ", "
-            item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-          }
-          //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-        }
+    //     // Loop through each item on page
+    //     for (let i = 0; i < data.length; i++) {
+    //       var avail = decodeURI('\u2705');
+    //       // Out of stock
+    //       if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
+    //         avail = decodeURI('\u274C');
+    //       }
+    //       // In stock
+    //       else { // Check emoji
+    //         avail = decodeURI('\u2705');
+    //         in_stock_count += 1;
+    //         write_item_str += data[i]['name'] + " " + avail + ", "
+    //         item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+    //       }
+    //       //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+    //     }
 
-        // No items found, everything sold out
-        if (item_str === "") {
-          item_str = "Everything currently out of stock.\n\n";
-        }
+    //     // No items found, everything sold out
+    //     if (item_str === "") {
+    //       item_str = "Everything currently out of stock.\n\n";
+    //     }
 
-        // Set date
-        var today = new Date();
-        var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
-        var time = today.toLocaleString('en-US',
-          {
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-          });
-        var dateTime = time + ' ' + date;
+    //     // Set date
+    //     var today = new Date();
+    //     var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+    //     var time = today.toLocaleString('en-US',
+    //       {
+    //         hour: 'numeric',
+    //         minute: 'numeric',
+    //         second: 'numeric',
+    //         hour12: true
+    //       });
+    //     var dateTime = time + ' ' + date;
 
-        // Sends first initial message
-        if (search_urls[rec_msg]['sender_ids'][sender_psid] == 0) {
-          search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
-          response = {
-            "text": `You entered: "${rec_msg}"\n` +
-              `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
-              `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
-              "\n\n" + item_str +
-              `First initial check on ${dateTime}\n` +
-              `You will be notified everytime there is a change in stock.\n` +
-              `Will begin running in the background until "stop"\n` +
-              "Link " + search_urls[rec_msg]['link']
-          };
-          callSendAPI(sender_psid, response);
-          console.log(`Adding sender psid: ${sender_psid}`);
-          let write_line = `${dateTime} | ${search_dic[rec_msg]['product-name']} | ${write_item_str}\n`;
-          try {
-            if (write_item_str != "") {
-              await fs.appendFile('stock-log.txt', write_line);
-              console.log("Wrote to file");
-            }
-          } catch (error) {
-            console.error(`Could not write to file`);
-          }
-        }
-        // If the stock amount changed from last check
-        // Send a message on FB
-        else if ((in_stock_count != prev_stock_count)) {
-          console.log("Response msg: Update in stock");
-          // Response message
-          response = {
-            "text": `You entered: "${received_message.text}"\n` +
-              `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
-              `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
-              "\n\n" + item_str +
-              "Checked On " + dateTime + "\n" +
-              "Link " + search_url
-          };
-          //console.log(response);
-          callSendAPI(sender_psid, response);
+    //     // Sends first initial message
+    //     if (search_urls[rec_msg]['sender_ids'][sender_psid] == 0) {
+    //       search_urls[rec_msg]['sender_ids'][sender_psid] = 1;
+    //       response = {
+    //         "text": `You entered: "${rec_msg}"\n` +
+    //           `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
+    //           `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
+    //           "\n\n" + item_str +
+    //           `First initial check on ${dateTime}\n` +
+    //           `You will be notified everytime there is a change in stock.\n` +
+    //           `Will begin running in the background until "stop"\n` +
+    //           "Link " + search_urls[rec_msg]['link']
+    //       };
+    //       callSendAPI(sender_psid, response);
+    //       console.log(`Adding sender psid: ${sender_psid}`);
+    //       let write_line = `${dateTime} | ${search_dic[rec_msg]['product-name']} | ${write_item_str}\n`;
+    //       try {
+    //         if (write_item_str != "") {
+    //           await fs.appendFile('stock-log.txt', write_line);
+    //           console.log("Wrote to file");
+    //         }
+    //       } catch (error) {
+    //         console.error(`Could not write to file`);
+    //       }
+    //     }
+    //     // If the stock amount changed from last check
+    //     // Send a message on FB
+    //     else if ((in_stock_count != prev_stock_count)) {
+    //       console.log("Response msg: Update in stock");
+    //       // Response message
+    //       response = {
+    //         "text": `You entered: "${received_message.text}"\n` +
+    //           `Match found for: "${search_dic[rec_msg]['product-name']}".\n` +
+    //           `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items` +
+    //           "\n\n" + item_str +
+    //           "Checked On " + dateTime + "\n" +
+    //           "Link " + search_url
+    //       };
+    //       //console.log(response);
+    //       callSendAPI(sender_psid, response);
 
-          let write_line = `${dateTime} | ${search_dic[rec_msg]['product-name']} | ${write_item_str}\n`;
-          try {
-            if (write_item_str != "") {
-              await fs.appendFile('stock-log.txt', write_line);
-              console.log("Wrote to file");
-            }
-          } catch (error) {
-            console.error(`Could not write to file`);
-          }
-        }
-        interval_count += 1;
-        // Set prev count to current stock
-        prev_stock_count = in_stock_count;
+    //       let write_line = `${dateTime} | ${search_dic[rec_msg]['product-name']} | ${write_item_str}\n`;
+    //       try {
+    //         if (write_item_str != "") {
+    //           await fs.appendFile('stock-log.txt', write_line);
+    //           console.log("Wrote to file");
+    //         }
+    //       } catch (error) {
+    //         console.error(`Could not write to file`);
+    //       }
+    //     }
+    //     interval_count += 1;
+    //     // Set prev count to current stock
+    //     prev_stock_count = in_stock_count;
 
 
-      });
-    }, delay * 1000);
+    //   });
+    // }, delay * 1000);
 
-    // Add to list of all interval ids based on sender_psid
-    user_id_dic[sender_psid]['intervals'].push(interval_id);
+    // // Add to list of all interval ids based on sender_psid
+    // user_id_dic[sender_psid]['intervals'].push(interval_id);
   }
   // else if (received_message.attachments) { // Get the URL of the message attachment
   //   let attachment_url = received_message.attachments[0].payload.url;
