@@ -317,6 +317,12 @@ async function getDataFromURL(item) {
         items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
       });
     }
+    // else if (item_type === "bone") {
+    //   items[0] = {};
+    //   items[0]['name'] = $('.product-title').text();
+    //   items[0]['price'] = $('.price').text();
+    //   items[0]['in_stock'] = $('.bin-stock-availability').text();
+    // }
     // Just one item in a page
     else {
       items[0] = {};
