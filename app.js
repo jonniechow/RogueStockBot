@@ -214,7 +214,8 @@ async function handleAllURLs() {
         search_urls[item]['sender_ids'][sender_id] = 1;
         // First response message
         let response = {
-          "text": `You entered: "${item}"\n` +
+          "text": 
+            `First check message for: "${item}"\n` +
             `Match found for: "${search_dic[item]['product-name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
@@ -240,11 +241,12 @@ async function handleAllURLs() {
       for (let sender_id in search_urls[item]['sender_ids']) {
         // Response message
         let response = {
-          "text": `You entered: "${item}"\n` +
+          "text": 
+            `Restock message for "${item}"\n`+
             `Match found for: "${search_dic[item]['product-name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
-            "Checked On " + dateTime + "\n" +
+            "Checked On " + dateTime +: "\n" +
             "Link " + search_urls[item]['link']
         };
         callSendAPI(sender_id, response);
@@ -431,16 +433,17 @@ function handleMessage(sender_psid, received_message) {
         key_string += keys[i] + "\n";
       }
       response = {
-        "text": "Search for the following items: \n" + key_string +
-          "Type `stop` to stop checking all items \n" +
-          "Please type commands ONLY after bot replies to first command or it may crash"
+        "text": `Help message:\n` +
+          `Search for the following items: ${key_string} \n` +
+          "Type `stop` to stop checking all items \n"
       };
       callSendAPI(sender_psid, response);
       return;
     }
     // Status message
     else if (rec_msg === "status") {
-      let search_str = `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\n` +
+      let search_str = `Status message:\n` +
+        `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\n` +
         `There are ${Object.keys(user_id_dic).length} total users searching\n\n`;
       for (let key in user_id_dic[sender_psid]['products']) {
         search_str += search_dic[key]['product-name'] + " / " + key +
@@ -464,11 +467,13 @@ function handleMessage(sender_psid, received_message) {
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
       response = {
-        "text": `Stopped checking ${user_id_dic[sender_psid]['intervals'].length} item(s):\n\n` +
+        "text": `Stop message:` +
+          `Stopped checking ${user_id_dic[sender_psid]['intervals'].length} item(s):\n\n` +
           search_item_str
       };
       user_id_dic[sender_psid]['intervals'] = [];
       user_id_dic[sender_psid]['products'] = {};
+      delete search_urls[rec_msg]['sender_ids'];
       delete user_id_dic[sender_psid];
 
       callSendAPI(sender_psid, response);
@@ -487,7 +492,7 @@ function handleMessage(sender_psid, received_message) {
       callSendAPI(sender_psid, response);
       return;
     }
-    var search_url = search_urls[rec_msg]['link'];
+
 
     // Check current amount of items
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
