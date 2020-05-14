@@ -216,7 +216,7 @@ async function handleAllURLs() {
         let response = {
           "text": 
             `First check message for: "${item}"\n` +
-            `Match found for: "${search_dic[item]['product-name']}".\n` +
+            `Match found for: "${search_urls[item]['product_name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
             `First initial check on ${dateTime}\n` +
@@ -243,15 +243,15 @@ async function handleAllURLs() {
         let response = {
           "text": 
             `Restock message for "${item}"\n`+
-            `Match found for: "${search_dic[item]['product-name']}".\n` +
+            `Match found for: "${search_urls[item]['product_name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
-            "Checked On " + dateTime +: "\n" +
+            "Checked On " + dateTime + "\n" +
             "Link " + search_urls[item]['link']
         };
         callSendAPI(sender_id, response);
       }
-      let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
+      let write_line = `${dateTime} | ${search_urls[item]['product_name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
       try {
         if (write_item_str != "") {
           fs.appendFile('stock-log.txt', write_line, (error) => {
@@ -426,15 +426,15 @@ function handleMessage(sender_psid, received_message) {
     }
 
     // Help message
-    if (rec_msg === "help") {
+    if (rec_msg === "help") { 
       var keys = Object.keys(search_urls);
       var key_string = "";
       for (var i = 0; i < keys.length; ++i) {
         key_string += keys[i] + "\n";
       }
       response = {
-        "text": `Help message:\n` +
-          `Search for the following items: ${key_string} \n` +
+        "text": `HELP MSG:\n` +
+          `Search for the following items\n: ${key_string} \n` +
           "Type `stop` to stop checking all items \n"
       };
       callSendAPI(sender_psid, response);
@@ -442,11 +442,10 @@ function handleMessage(sender_psid, received_message) {
     }
     // Status message
     else if (rec_msg === "status") {
-      let search_str = `Status message:\n` +
-        `Currently searching ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\n` +
+      let search_str = `STATUS ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\:\n` +
         `There are ${Object.keys(user_id_dic).length} total users searching\n\n`;
       for (let key in user_id_dic[sender_psid]['products']) {
-        search_str += search_dic[key]['product-name'] + " / " + key +
+        search_str += search_urls[key]['product_name'] + " / " + key +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
       search_str += `Last reset: ${start_time}\n`;
@@ -463,11 +462,11 @@ function handleMessage(sender_psid, received_message) {
       user_id_dic[sender_psid]['intervals'].forEach(clearInterval);
       var search_item_str = "";
       for (var key in user_id_dic[sender_psid]['products']) {
-        search_item_str += search_dic[key]['product-name'] +
+        search_item_str += search_url[key]['product_name'] +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
       response = {
-        "text": `Stop message:` +
+        "text": `STOP MSG:` +
           `Stopped checking ${user_id_dic[sender_psid]['intervals'].length} item(s):\n\n` +
           search_item_str
       };
@@ -507,7 +506,7 @@ function handleMessage(sender_psid, received_message) {
     if (rec_msg in user_id_dic[sender_psid]['products']) {
       response = {
         "text": `Already searching: "${
-          search_dic[rec_msg]['product-name']
+          search_urls[rec_msg]['product_name']
           }".\n`
       };
       callSendAPI(sender_psid, response);
