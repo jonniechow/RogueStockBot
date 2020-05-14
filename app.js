@@ -176,12 +176,12 @@ async function handleAllURLs() {
     let item_str = "";
     let write_item_str = "";
     let in_stock_count = 0;
-    // console.log(item);
-    // console.log(data);
+
     // Loop through each item on page
     for (let i = 0; i < data.length; i++) {
       var avail = decodeURI('\u2705');
       
+      // Check if data returned is empty
       if (Object.keys(data[i]).length == 0) {
         continue;
       }
@@ -316,11 +316,10 @@ async function getDataFromURL(item) {
     if (item_type === "multi") {
       $('.grouped-item').each(function (index, element) {
         let item_name = $(element).find('.item-name').text();
-        // console.log(item_name);
-        // console.log(useless_items.indexOf(item_name));
         items[index] = {};
+        // Check for useless items
         if (useless_items.indexOf(item_name) >= 0) {
-          console.log(`Useless item found in ${item}: ${item_name}`);
+          // console.log(`Useless item found in ${item}: ${item_name}`);
           return;
         }
         items[index]['name'] = $(element).find('.item-name').text();
