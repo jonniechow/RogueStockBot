@@ -336,8 +336,29 @@ var search_urls = { // Plate URLs
         "link": "https://www.roguefitness.com/rogue-dumbbells"
     }
     // Boneyard
-    // "bone 29": "https://www.roguefitness.com/rogue-29mm-boneyard-bars",
-    // "bone 28.5": "https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars",
-    // "bone dead": "https://www.roguefitness.com/rogue-boneyard-ohio-deadlift-bar"
+    // "bone 29": {
+    //     "type": "bone",
+    //     "sender_ids": {},
+    //     'product_name': 'Boneyard 29mm Bars',
+    //     "link": "https://www.roguefitness.com/rogue-29mm-boneyard-bars"
+    // },
+    // "bone 28.5": {
+    //     "type": "bone",
+    //     "sender_ids": {},
+    //     'product_name': 'Boneyard 28.5mm Bars',
+    //     "link": "https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars"
+    // },
+    // "bone dead": {
+    //     "type": "bone",
+    //     "sender_ids": {},
+    //     'product_name': 'Boneyard Deadlift Bars',
+    //     "link": "https://www.roguefitness.com/rogue-boneyard-ohio-deadlift-bar"
+    // },
+    // "bone oso pro": {
+    //     "type": "bone",
+    //     "sender_ids": {},
+    //     'product_name': 'Boneyard OSO Pro Collars',
+    //     "link": "https://www.roguefitness.com/boneyard-oso-pro-collars-closeout"
+    // }
 };
 module.exports = search_urls;
