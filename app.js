@@ -32,7 +32,8 @@ const request = require('request'),
   readline = require('readline'),
   stream = require('stream'),
   app = express().use(body_parser.json()),
-  search_urls = require('./item-urls')
+  search_urls = require('./item-urls'),
+  useless_items = require('./useless-items')
 // creates express http server
 
 var interval_id = null;
@@ -51,7 +52,13 @@ app.use(express.static(__dirname + '/views/'));
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => {
   console.log('webhook is listening');
-  setInterval(handleAllURLs, delay * 1000);
+  try {
+    setInterval(handleAllURLs, delay * 1000);
+  }
+  catch (error) {
+    console.log(`Error: ${error}`);
+  }
+  
 });
 
 // Home screen page
@@ -90,7 +97,7 @@ app.get('/stock-updates', (req, res) => {
   let data_from_log = { 'item_info': [] };
   rl.on('line', function (line) {
     // Process line here
-    let words = line.split("|");
+    let words = line.split("|");  
     let items = words[2].split(",")
     let item_dic = { 'time': words[0], 'name': words[1], 'items': items, 'link': words[3] };
     data_from_log['item_info'].unshift(item_dic);
@@ -302,6 +309,13 @@ async function getDataFromURL(item) {
     // Multiple items in a page
     if (item_type === "multi") {
       $('.grouped-item').each(function (index, element) {
+        let item_name = $(element).find('.item-name').text();
+        // console.log(item_name);
+        // console.log(useless_items.indexOf(item_name));
+        if (useless_items.indexOf(item_name) >= 0) {
+          console.log(item_name);
+          return;
+        }
         items[index] = {};
         items[index]['name'] = $(element).find('.item-name').text();
         items[index]['price'] = $(element).find('.price').text();
