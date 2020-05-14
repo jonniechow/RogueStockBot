@@ -216,7 +216,7 @@ async function handleAllURLs() {
         // First response message
         let response = {
           "text": 
-            `First check message for: "${item}"\n` +
+            `FIRST CHECK: "${item}"\n` +
             `Match found for: "${search_urls[item]['product_name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
@@ -257,7 +257,7 @@ async function handleAllURLs() {
         // Response message
         let response = {
           "text": 
-            `Restock message for "${item}"\n`+
+            `RESTOCK: "${item}"\n`+
             `Match found for: "${search_urls[item]['product_name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
@@ -381,7 +381,7 @@ function handleMessage(sender_psid, received_message) {
           second: 'numeric',
           hour12: true
         });
-      start_time = time + ' ' + date;
+      start_time = time + ' EST ' + date;
     }
 
     // Help message
