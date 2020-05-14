@@ -176,9 +176,15 @@ async function handleAllURLs() {
     let item_str = "";
     let write_item_str = "";
     let in_stock_count = 0;
+    // console.log(item);
+    // console.log(data);
     // Loop through each item on page
     for (let i = 0; i < data.length; i++) {
       var avail = decodeURI('\u2705');
+      
+      if (Object.keys(data[i]).length == 0) {
+        continue;
+      }
       // Out of stock
       if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
         avail = decodeURI('\u274C');
@@ -312,11 +318,11 @@ async function getDataFromURL(item) {
         let item_name = $(element).find('.item-name').text();
         // console.log(item_name);
         // console.log(useless_items.indexOf(item_name));
+        items[index] = {};
         if (useless_items.indexOf(item_name) >= 0) {
-          console.log(item_name);
+          console.log(`Useless item found in ${item}: ${item_name}`);
           return;
         }
-        items[index] = {};
         items[index]['name'] = $(element).find('.item-name').text();
         items[index]['price'] = $(element).find('.price').text();
         items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
