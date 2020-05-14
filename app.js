@@ -79,14 +79,6 @@ app.get('/privacy-policy', (req, res) => {
 });
 
 app.get('/current-items', (req, res) => {
-  // let search_data = [];
-  // for (let item in search_urls) {
-  //   let item_link = search_urls[item]['link'];
-  //   let product_title = getProductName(item_link);
-  //   let item_dic = {'name': product_title, 'link': item_link, 'item': item};
-  //   search_data.push(item_dic);
-  // }
-  // console.log(search_data);
   res.render('current-items', { data: search_urls });
 });
 
