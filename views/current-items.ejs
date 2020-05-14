@@ -52,12 +52,14 @@
                             <thead>
                                 <tr>
                                     <th>Item</th>
+                                    <th>Command</th>
                                     <th>Link</th>
                                 </tr>
                             </thead>
                             <tbody id="data_from_log">
                                 <% Object.keys(data).forEach((entry)=>{%>
                                     <tr>
+                                        <td><%=data[entry].product_name%></td>
                                         <td><%=entry%></td>
                                         <td>
                                             <a href="<%=data[entry].link%>" target="_blank">Link</a>
