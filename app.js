@@ -295,7 +295,6 @@ async function getDataFromURL(item) {
     // Check if search string already exists
     if (!(item in search_dic)) {
       search_dic[item] = {};
-      search_dic[item]['product-name'] = $('.product-title').text();
       search_dic[item]['user_ids'] = [];
     }
 
@@ -351,51 +350,6 @@ function getTimeDiff(start_time) {
   var time_elapsed_str = hours + ":" + minutes + ":" + seconds;
   return time_elapsed_str;
 }
-
-function getData(search_url, rec_msg, sender_psid, callback) {
-  request(
-    {
-      method: 'GET',
-      url: search_url
-    },
-    function (error, response, html) {
-      if (error) {
-        return callback(error)
-      };
-      if (!error && response.statusCode == 200) {
-        // console.log("Web scraping data from: " + search_url);
-        let $ = cheerio.load(html);
-        var items = [];
-        // Check if search string already exists
-        if (!(rec_msg in search_dic)) {
-          search_dic[rec_msg] = {};
-          search_dic[rec_msg]['product-name'] = $('.product-title').text();
-          search_dic[rec_msg]['user_ids'] = [];
-        }
-
-        // Multiple items in a page
-        if (search_urls[rec_msg]['type'] === "multi") {
-          $('.grouped-item').each(function (index, element) {
-            items[index] = {};
-            items[index]['name'] = $(element).find('.item-name').text();
-            items[index]['price'] = $(element).find('.price').text();
-            items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
-          });
-        }
-        // Just one item in a page
-        else {
-          items[0] = {};
-          items[0]['name'] = $('.product-title').text();
-          items[0]['price'] = $('.price').text();
-          items[0]['in_stock'] = $('.bin-stock-availability').text();
-        }
-
-        return callback(items);
-      }
-    }
-  );
-}
-
 
 function handleMessage(sender_psid, received_message) {
   let response;
