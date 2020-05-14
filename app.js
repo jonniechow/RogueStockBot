@@ -58,7 +58,7 @@ app.listen(process.env.PORT || 1337, () => {
   catch (error) {
     console.log(`Error: ${error}`);
   }
-  
+
 });
 
 // Home screen page
@@ -89,7 +89,7 @@ app.get('/stock-updates', (req, res) => {
   let data_from_log = { 'item_info': [] };
   rl.on('line', function (line) {
     // Process line here
-    let words = line.split("|");  
+    let words = line.split("|");
     let items = words[2].split(",")
     let item_dic = { 'time': words[0], 'name': words[1], 'items': items, 'link': words[3] };
     data_from_log['item_info'].unshift(item_dic);
@@ -172,7 +172,7 @@ async function handleAllURLs() {
     // Loop through each item on page
     for (let i = 0; i < data.length; i++) {
       var avail = decodeURI('\u2705');
-      
+
       // Check if data returned is empty
       if (Object.keys(data[i]).length == 0) {
         continue;
@@ -208,11 +208,10 @@ async function handleAllURLs() {
       });
     var dateTime = time + ' ' + date;
 
-    // Checks if item has been checked
-    if (!('prev_stock_count' in search_urls[item])) {
-      search_urls[item]['prev_stock_count'] = in_stock_count;
-      // Send response to every user
-      for (let sender_id in search_urls[item]['sender_ids']) {
+    // Send response to every user
+    for (let sender_id in search_urls[item]['sender_ids']) {
+      if (search_urls[item]['sender_ids'][sender_id] == 0) {
+        search_urls[item]['sender_ids'][sender_id] = 1;
         // First response message
         let response = {
           "text": `You entered: "${item}"\n` +
@@ -226,17 +225,11 @@ async function handleAllURLs() {
         };
         callSendAPI(sender_id, response);
       }
-      let write_line = `${dateTime} | ${search_dic[item]['product-name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
-      try {
-        if (write_item_str != "") {
-          fs.appendFile('stock-log.txt', write_line, (error) => {
-            if (error) throw error;
-            console.log(`Wrote update on ${item} to file`);
-          });
-        }
-      } catch (error) {
-        console.error(`Could not write to file`);
-      }
+    }
+
+    // Checks if item has been checked
+    if (!('prev_stock_count' in search_urls[item])) {
+      search_urls[item]['prev_stock_count'] = in_stock_count;
     }
     // Difference in stock count
     else if ((in_stock_count != search_urls[item]['prev_stock_count'])) {
@@ -524,7 +517,6 @@ function handleMessage(sender_psid, received_message) {
     if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
       search_urls[rec_msg]['sender_ids'][sender_psid] = 0;
     }
-    console.log(search_urls);
 
     // // Previous count of item
     // let prev_stock_count = 0;
