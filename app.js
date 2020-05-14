@@ -194,6 +194,7 @@ async function handleAllURLs() {
     // No items found, everything sold out
     if (item_str === "") {
       item_str = "Everything currently out of stock.\n\n";
+      write_item_str = item_str;
     }
 
     // Set date
@@ -206,7 +207,7 @@ async function handleAllURLs() {
         second: 'numeric',
         hour12: true
       });
-    var dateTime = time + ' ' + date;
+    var dateTime = time + ' EST ' + date;
 
     // Send response to every user
     for (let sender_id in search_urls[item]['sender_ids']) {
@@ -231,6 +232,20 @@ async function handleAllURLs() {
     // Checks if item has been checked
     if (!('prev_stock_count' in search_urls[item])) {
       search_urls[item]['prev_stock_count'] = in_stock_count;
+    }
+    // If item was in stock, but is now out of stock
+    else if (in_stock_count == 0 && search_urls[item]['prev_stock_count'] > 0) {
+      let write_line = `${dateTime} | ${search_urls[item]['product_name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
+      try {
+        if (write_item_str != "") {
+          fs.appendFile('stock-log.txt', write_line, (error) => {
+            if (error) throw error;
+            console.log(`Wrote update on ${item} to file`);
+          });
+        }
+      } catch (error) {
+        console.error(`Could not write to file`);
+      }
     }
     // Difference in stock count
     else if ((in_stock_count != search_urls[item]['prev_stock_count'])) {
@@ -265,17 +280,6 @@ async function handleAllURLs() {
     }
     // Update prev stock to current stock
     search_urls[item]['prev_stock_count'] = in_stock_count;
-  }
-}
-
-async function getProductName(item_link) {
-  try {
-    let response = await axios.get(item_link);
-    let $ = cheerio.load(response.data);
-    return $('.product-title').text();
-  }
-  catch (error) {
-    console.log(`Error: ${error}`);
   }
 }
 
@@ -419,13 +423,13 @@ function handleMessage(sender_psid, received_message) {
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
       response = {
-        "text": `STOP MSG:` +
+        "text": `STOP MSG:\n` +
           `Stopped checking ${user_id_dic[sender_psid]['intervals'].length} item(s):\n\n` +
           search_item_str
       };
       user_id_dic[sender_psid]['intervals'] = [];
       user_id_dic[sender_psid]['products'] = {};
-      delete search_urls[rec_msg]['sender_ids'];
+      //delete search_urls[rec_msg]['sender_ids'][sender_psid];
       delete user_id_dic[sender_psid];
 
       callSendAPI(sender_psid, response);
