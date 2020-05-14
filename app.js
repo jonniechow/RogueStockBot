@@ -351,6 +351,7 @@ function getTimeDiff(start_time) {
   return time_elapsed_str;
 }
 
+// Handles messages from sender
 function handleMessage(sender_psid, received_message) {
   let response;
 
@@ -406,8 +407,6 @@ function handleMessage(sender_psid, received_message) {
       let response = {
         "text": search_str
       };
-
-
       callSendAPI(sender_psid, response);
       return;
     }
@@ -436,12 +435,11 @@ function handleMessage(sender_psid, received_message) {
     // User message is invalid
     if (!(rec_msg in search_urls)) {
       response = {
-        "text": `You entered: "${
+        "text": `INVALID\nYou entered: "${
           received_message.text
           }".` + "\n\n" +
           "Item doesn't exist\nTry typing `help` for a list of all valid commands"
       };
-      //console.log(response);
       callSendAPI(sender_psid, response);
       return;
     }
@@ -450,7 +448,7 @@ function handleMessage(sender_psid, received_message) {
     // Check current amount of items
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
       response = {
-        "text": `You have reached max limit of "${item_limit}" items\n`
+        "text": `INVALID\nYou have reached max limit of "${item_limit}" items\n`
       };
       callSendAPI(sender_psid, response);
       return;
@@ -459,7 +457,7 @@ function handleMessage(sender_psid, received_message) {
     // Check if item is already being searched for user
     if (rec_msg in user_id_dic[sender_psid]['products']) {
       response = {
-        "text": `Already searching: "${
+        "text": `INVALID\nAlready searching: "${
           search_urls[rec_msg]['product_name']
           }".\n`
       };
