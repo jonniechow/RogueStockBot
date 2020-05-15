@@ -194,7 +194,7 @@ async function handleAllURLs() {
     // No items found, everything sold out
     if (item_str === "") {
       item_str = "Everything currently out of stock.\n\n";
-      write_item_str = item_str;
+      write_item_str = "Everything currently out of stock.";
     }
 
     // Set date
