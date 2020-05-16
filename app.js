@@ -36,7 +36,6 @@ const request = require('request'),
   useless_items = require('./useless-items')
 // creates express http server
 
-var interval_id = null;
 var search_dic = {};
 var user_id_dic = {};
 var start_time;
@@ -178,7 +177,7 @@ async function handleAllURLs() {
         continue;
       }
       // Out of stock
-      if (data[i]['in_stock'].indexOf("Notify Me") > 0) { // Cross emoji
+      if (data[i]['in_stock'].indexOf("Notify Me") >= 0) { // Cross emoji
         avail = decodeURI('\u274C');
       }
       // In stock
@@ -289,9 +288,11 @@ async function getDataFromURL(item) {
   var item_link = item_url_dict['link'];
   try {
     let response = await axios.get(item_link);
+    let redirect_count = response.request._redirectable._redirectCount;
     var item_type = item_url_dict['type'];
 
     // console.log("Looking for: " + item);
+    // console.log(redirect_count);
     // console.log("Web scraping data from: " + item_link);
     let $ = cheerio.load(response.data);
     var items = [];
@@ -317,12 +318,18 @@ async function getDataFromURL(item) {
         items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
       });
     }
-    // else if (item_type === "bone") {
-    //   items[0] = {};
-    //   items[0]['name'] = $('.product-title').text();
-    //   items[0]['price'] = $('.price').text();
-    //   items[0]['in_stock'] = $('.bin-stock-availability').text();
-    // }
+    else if (item_type === "bone") {
+      items[0] = {};
+      items[0]['name'] = $('.product-title').text();
+      items[0]['price'] = $('.price').text();
+      if (redirect_count == 0) {
+        items[0]['in_stock'] = 'In stock';
+      }
+      else {
+        items[0]['in_stock'] = 'Notify Me';
+      }
+     
+    }
     // Just one item in a page
     else {
       items[0] = {};
@@ -425,19 +432,19 @@ function handleMessage(sender_psid, received_message) {
       user_id_dic[sender_psid]['intervals'].forEach(clearInterval);
       var search_item_str = "";
       for (var key in user_id_dic[sender_psid]['products']) {
-        search_item_str += search_url[key]['product_name'] +
+        delete search_urls[key]['sender_ids'][sender_psid];
+        search_item_str += search_urls[key]['product_name'] +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
       response = {
         "text": `STOP MSG:\n` +
-          `Stopped checking ${user_id_dic[sender_psid]['intervals'].length} item(s):\n\n` +
+          `Stopped checking ${Object.keys(user_id_dic[sender_psid]['products']).length} item(s):\n\n` +
           search_item_str
       };
       user_id_dic[sender_psid]['intervals'] = [];
       user_id_dic[sender_psid]['products'] = {};
-      //delete search_urls[rec_msg]['sender_ids'][sender_psid];
       delete user_id_dic[sender_psid];
-
+      console.log(search_urls);
       callSendAPI(sender_psid, response);
       return;
     }
