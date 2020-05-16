@@ -425,19 +425,19 @@ function handleMessage(sender_psid, received_message) {
       user_id_dic[sender_psid]['intervals'].forEach(clearInterval);
       var search_item_str = "";
       for (var key in user_id_dic[sender_psid]['products']) {
-        search_item_str += search_url[key]['product_name'] +
+        delete search_urls[key]['sender_ids'][sender_psid];
+        search_item_str += search_urls[key]['product_name'] +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
       response = {
         "text": `STOP MSG:\n` +
-          `Stopped checking ${user_id_dic[sender_psid]['intervals'].length} item(s):\n\n` +
+          `Stopped checking ${Object.keys(user_id_dic[sender_psid]['products']).length} item(s):\n\n` +
           search_item_str
       };
       user_id_dic[sender_psid]['intervals'] = [];
       user_id_dic[sender_psid]['products'] = {};
-      //delete search_urls[rec_msg]['sender_ids'][sender_psid];
       delete user_id_dic[sender_psid];
-
+      console.log(search_urls);
       callSendAPI(sender_psid, response);
       return;
     }
