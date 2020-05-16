@@ -96,6 +96,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Calibrated KG Steel Plates',
         "link": "https://www.roguefitness.com/rogue-calibrated-kg-steel-plates"
     },
+    "plate tree": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Vertical Plate Tree 2.0',
+        "link": "https://www.roguefitness.com/rogue-vertical-plate-tree-2-0"
+    },
     // Barbell URLs
     // Ohio Bar
     "barbell op oxide": {
@@ -165,6 +171,44 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue 45LB Ohio Power Bar - Cerakote',
         "link": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote"
     },
+    // Bella Bars
+    "bella ecoat": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'The Bella Bar 2.0 - E-Coat',
+        "link": "https://www.roguefitness.com/the-bella-bar-2-0-e-coat"
+    },
+    "bella zinc": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'The Bella Bar 2.0 - Black Zinc',
+        "link": "https://www.roguefitness.com/rogue-bella-bar-2-0-black-zinc"
+    },
+    "bella ss": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'he Bella Bar 2.0 - Stainless Steel',
+        "link": "https://www.roguefitness.com/the-bella-bar-2-0-stainless"
+    },
+    // Curl Bar
+    "curl cerakote": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Curl Bar - Cerakote',
+        "link": "https://www.roguefitness.com/rogue-curl-bar-cerakote"
+    },
+    "curl": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Curl Bar',
+        "link": "https://www.roguefitness.com/rogue-curl-bar"
+    },
+    "curl rackable": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Rackable Curl Bar',
+        "link": "https://www.roguefitness.com/rogue-rackable-curl-bar"
+    },
     // Other bars
     "barbell rogue 2.0": {
         "type": "single",
@@ -177,6 +221,12 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue Echo Bar 2.0',
         "link": "https://www.roguefitness.com/rogue-echo-bar"
+    },
+    "barbell freedom": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Freedom Bar - 28.5MM',
+        "link": "https://www.roguefitness.com/cerakote-28-5-mm-freedom-bar"
     },
     // Echo bike
     "bike echo": {
@@ -321,6 +371,25 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Black Concept 2 Model D Rower - PM5',
         "link": "https://www.roguefitness.com/black-concept-2-model-d-rower-pm5"
+    },
+    // GHD
+    "abram ghd": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Abram GHD 2.0',
+        "link": "https://www.roguefitness.com/rogue-abram-glute-ham-developer-2-0"
+    },
+    "monster ghd": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Swing Arm GHD',
+        "link": "https://www.roguefitness.com/rogue-monster-swing-arm-ghd"
+    },
+    "echo ghd": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue 3x3 Echo GHD',
+        "link": "https://www.roguefitness.com/rogue-echo-ghd"
     },
     // Free weights
     "kettlebells": {

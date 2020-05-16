@@ -12,6 +12,11 @@ var useless_items = [
     'Rogue AB-2 Decline Retro Fit Kit',
     'Squat Stand Wheel Bracket Set',
     'Yoke Conversion Kit',
-    'Yoke Conversion Kit without Side Storage'
+    'Yoke Conversion Kit without Side Storage',
+    'Echo GHD w/ Games Box',
+    'Echo GHD (Pad Only)',
+    'Echo GHD 3" Face Stabilizer Kit',
+    'Echo GHD Roller Assembly',
+    'Extra Set of Wheels'
 ];
 module.exports = useless_items;
