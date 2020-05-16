@@ -10,6 +10,14 @@ be a great tool to help others just like me.
 
 ![result](/views/images/home-demo.png)
 
+### Updates
+v 1.1
+* Included boneyard and misc used barbells. 
+    * Right now this feature only checks if the boneyard page is up
+    * Thus, have the search enabled, and it will msg you when the boneyard page shows up
+* Fixed bug where ‘stop’ would prevent user from searching again until next reset
+
+
 ### Commands
 | Name | Purpose | 
 |:-:|:-:|
