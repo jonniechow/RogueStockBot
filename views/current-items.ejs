@@ -6,6 +6,19 @@
 -->
 <html>
     <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166892917-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+
+                dataLayer.push(arguments);
+
+            }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-166892917-1');
+        </script>
         <title>Current Items</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
@@ -102,10 +115,10 @@
             <script src="assets/js/util.js"></script>
             <script src="assets/js/main.js"></script>
             <!-- <script>
-            				setInterval(function(){
-               $('#my_div').load('/path/to/server/source');
-            }, 2000) /* time in milliseconds (ie 2 seconds)*/
-            			</script> -->
+                        				setInterval(function(){
+                           $('#my_div').load('/path/to/server/source');
+                        }, 2000) /* time in milliseconds (ie 2 seconds)*/
+                        			</script> -->
         </body>
     </body>
 </html>
