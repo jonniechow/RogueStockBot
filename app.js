@@ -36,7 +36,6 @@ const request = require('request'),
   useless_items = require('./useless-items')
 // creates express http server
 
-let search_dic = {};
 // Dictionary of user_id to items they are searching
 let user_id_dic = {};
 let start_time;
@@ -293,17 +292,11 @@ async function getDataFromURL(item) {
     let redirect_count = response.request._redirectable._redirectCount;
     var item_type = item_url_dict['type'];
 
-    // console.log("Looking for: " + item);
+    console.log("Looking for: " + item);
     // console.log(redirect_count);
     // console.log("Web scraping data from: " + item_link);
     let $ = cheerio.load(response.data);
     var items = [];
-
-    // Check if search string already exists
-    if (!(item in search_dic)) {
-      search_dic[item] = {};
-      search_dic[item]['user_ids'] = [];
-    }
 
     // Multiple items in a page
     if (item_type === "multi") {
@@ -331,6 +324,12 @@ async function getDataFromURL(item) {
         items[0]['in_stock'] = 'Notify Me';
       }
      
+    }
+    else if (item_type === "options") {
+      items[0] = {};
+      items[0]['name'] = $('.product-title').text();
+      items[0]['price'] = $('.price').text();
+      items[0]['in_stock'] = $('.add-to-cart span').text();
     }
     // Just one item in a page
     else {
@@ -462,7 +461,6 @@ function handleMessage(sender_psid, received_message) {
       callSendAPI(sender_psid, response);
       return;
     }
-
 
     // Check current amount of items
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
