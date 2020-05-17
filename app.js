@@ -62,11 +62,11 @@ app.listen(process.env.PORT || 1337, () => {
 
 // Home screen page
 app.get('/', (req, res) => {
-  res.render('index')
+  res.render('index');
 });
 
 app.get('/bot-guide', (req, res) => {
-  res.render('bot-guide')
+  res.render('bot-guide');
 });
 
 app.get('/terms', (req, res) => {
@@ -169,26 +169,26 @@ async function handleAllURLs() {
     let in_stock_count = 0;
 
     // Loop through each item on page
-    for (let i = 0; i < data.length; i++) {
+    data.forEach((item) =>  {
       var avail = decodeURI('\u2705');
 
       // Check if data returned is empty
-      if (Object.keys(data[i]).length == 0) {
-        continue;
+      if (Object.keys(item).length == 0) {
+        return; 
       }
       // Out of stock
-      if (data[i]['in_stock'].indexOf("Notify Me") >= 0) { // Cross emoji
+      if (item['in_stock'].indexOf("Notify Me") >= 0) { // Cross emoji
         avail = decodeURI('\u274C');
       }
       // In stock
       else { // Check emoji
         avail = decodeURI('\u2705');
         in_stock_count += 1;
-        write_item_str += data[i]['name'] + " " + avail + ", "
-        item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+        write_item_str += item['name'] + " " + avail + ", "
+        item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
       }
       //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-    }
+    })
 
     // No items found, everything sold out
     if (item_str === "") {
