@@ -36,13 +36,14 @@ const request = require('request'),
   useless_items = require('./useless-items')
 // creates express http server
 
-var search_dic = {};
-var user_id_dic = {};
-var start_time;
+let search_dic = {};
+// Dictionary of user_id to items they are searching
+let user_id_dic = {};
+let start_time;
 // Delay in seconds
-var delay = 10;
+let delay = 10;
 // Limit of iteems
-var item_limit = 4;
+let item_limit = 4;
 
 app.set('view engine', 'ejs');
 
@@ -160,6 +161,7 @@ app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
     }
   }
 });
+
 
 async function handleAllURLs() {
   for (let item in search_urls) {
@@ -483,7 +485,6 @@ function handleMessage(sender_psid, received_message) {
     }
     else {
       user_id_dic[sender_psid]['products'][rec_msg] = new Date();
-      //user_id_dic[sender_psid]['start-time'] = new Date();
     }
 
     // Check if sender_psid is in dic for url
