@@ -40,7 +40,7 @@ const request = require('request'),
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 30;
+let delay = 10;
 // Limit of iteems
 let item_limit = 4;
 
@@ -177,9 +177,6 @@ async function handleAllURLs() {
       if (Object.keys(item).length == 0) {
         return; 
       }
-      if (item['name'] == 'The Bella Bar 2.0 - Black Zinc') {
-        console.log(item);
-      }
       
       // Out of stock
       if (item['in_stock'].indexOf("Notify Me") >= 0) { // Cross emoji
@@ -313,7 +310,7 @@ async function getDataFromURL(item) {
         }
         items[index]['name'] = $(element).find('.item-name').text();
         items[index]['price'] = $(element).find('.price').text();
-        items[index]['in_stock'] = $(element).find('.product-options-bottom button').text();
+        items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
       });
     }
     else if (item_type === "bone") {
