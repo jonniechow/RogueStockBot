@@ -171,6 +171,37 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue 45LB Ohio Power Bar - Cerakote',
         "link": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote"
     },
+    // Boneyard
+    "bone 29": {
+        "type": "bone",
+        "sender_ids": {},
+        'product_name': 'Boneyard 29mm Bars',
+        "link": "https://www.roguefitness.com/rogue-29mm-boneyard-bars"
+    },
+    "bone 28.5": {
+        "type": "bone",
+        "sender_ids": {},
+        'product_name': 'Boneyard 28.5mm Bars',
+        "link": "https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars"
+    },
+    "bone dead": {
+        "type": "bone",
+        "sender_ids": {},
+        'product_name': 'Boneyard Deadlift Bars',
+        "link": "https://www.roguefitness.com/rogue-boneyard-ohio-deadlift-bar"
+    },
+    "bone barbell": {
+        "type": "bone",
+        "sender_ids": {},
+        'product_name': 'Used Barbells',
+        "link": "https://www.roguefitness.com/miscellaneous-barbells-used"
+    },
+    "bone oso pro": {
+        "type": "bone",
+        "sender_ids": {},
+        'product_name': 'Boneyard OSO Pro Collars',
+        "link": "https://www.roguefitness.com/boneyard-oso-pro-collars-closeout"
+    },
     // Bella Bars
     "bella ecoat": {
         "type": "single",
@@ -187,7 +218,7 @@ var search_urls = { // Plate URLs
     "bella ss": {
         "type": "single",
         "sender_ids": {},
-        'product_name': 'he Bella Bar 2.0 - Stainless Steel',
+        'product_name': 'The Bella Bar 2.0 - Stainless Steel',
         "link": "https://www.roguefitness.com/the-bella-bar-2-0-stainless"
     },
     // Curl Bar
@@ -391,6 +422,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue 3x3 Echo GHD',
         "link": "https://www.roguefitness.com/rogue-echo-ghd"
     },
+    "mini dl jack": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Mini Deadlift Bar Jack',
+        "link": "https://www.roguefitness.com/mini-deadlift-bar-jack"
+    },
     // Free weights
     "kettlebells": {
         "type": "multi",
@@ -403,37 +440,7 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue Dumbbells',
         "link": "https://www.roguefitness.com/rogue-dumbbells"
-    },
-    // Boneyard
-    "bone 29": {
-        "type": "bone",
-        "sender_ids": {},
-        'product_name': 'Boneyard 29mm Bars',
-        "link": "https://www.roguefitness.com/rogue-29mm-boneyard-bars"
-    },
-    "bone 28.5": {
-        "type": "bone",
-        "sender_ids": {},
-        'product_name': 'Boneyard 28.5mm Bars',
-        "link": "https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars"
-    },
-    "bone dead": {
-        "type": "bone",
-        "sender_ids": {},
-        'product_name': 'Boneyard Deadlift Bars',
-        "link": "https://www.roguefitness.com/rogue-boneyard-ohio-deadlift-bar"
-    },
-    "bone barbell": {
-        "type": "bone",
-        "sender_ids": {},
-        'product_name': 'Used Barbells',
-        "link": "https://www.roguefitness.com/miscellaneous-barbells-used"
-    },
-    "bone oso pro": {
-        "type": "bone",
-        "sender_ids": {},
-        'product_name': 'Boneyard OSO Pro Collars',
-        "link": "https://www.roguefitness.com/boneyard-oso-pro-collars-closeout"
     }
+    
 };
 module.exports = search_urls;

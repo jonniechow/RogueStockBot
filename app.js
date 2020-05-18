@@ -36,13 +36,13 @@ const request = require('request'),
   useless_items = require('./useless-items')
 // creates express http server
 
-var search_dic = {};
-var user_id_dic = {};
-var start_time;
+// Dictionary of user_id to items they are searching
+let user_id_dic = {};
+let start_time;
 // Delay in seconds
-var delay = 10;
+let delay = 30;
 // Limit of iteems
-var item_limit = 4;
+let item_limit = 4;
 
 app.set('view engine', 'ejs');
 
@@ -62,11 +62,11 @@ app.listen(process.env.PORT || 1337, () => {
 
 // Home screen page
 app.get('/', (req, res) => {
-  res.render('index')
+  res.render('index');
 });
 
 app.get('/bot-guide', (req, res) => {
-  res.render('bot-guide')
+  res.render('bot-guide');
 });
 
 app.get('/terms', (req, res) => {
@@ -161,6 +161,7 @@ app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
   }
 });
 
+
 async function handleAllURLs() {
   for (let item in search_urls) {
     let data = await getDataFromURL(item);
@@ -169,26 +170,30 @@ async function handleAllURLs() {
     let in_stock_count = 0;
 
     // Loop through each item on page
-    for (let i = 0; i < data.length; i++) {
+    data.forEach((item) =>  {
       var avail = decodeURI('\u2705');
 
       // Check if data returned is empty
-      if (Object.keys(data[i]).length == 0) {
-        continue;
+      if (Object.keys(item).length == 0) {
+        return; 
       }
+      if (item['name'] == 'The Bella Bar 2.0 - Black Zinc') {
+        console.log(item);
+      }
+      
       // Out of stock
-      if (data[i]['in_stock'].indexOf("Notify Me") >= 0) { // Cross emoji
+      if (item['in_stock'].indexOf("Notify Me") >= 0) { // Cross emoji
         avail = decodeURI('\u274C');
       }
       // In stock
       else { // Check emoji
         avail = decodeURI('\u2705');
         in_stock_count += 1;
-        write_item_str += data[i]['name'] + " " + avail + ", "
-        item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+        write_item_str += item['name'] + " " + avail + ", "
+        item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
       }
       //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
-    }
+    })
 
     // No items found, everything sold out
     if (item_str === "") {
@@ -297,12 +302,6 @@ async function getDataFromURL(item) {
     let $ = cheerio.load(response.data);
     var items = [];
 
-    // Check if search string already exists
-    if (!(item in search_dic)) {
-      search_dic[item] = {};
-      search_dic[item]['user_ids'] = [];
-    }
-
     // Multiple items in a page
     if (item_type === "multi") {
       $('.grouped-item').each(function (index, element) {
@@ -310,12 +309,11 @@ async function getDataFromURL(item) {
         items[index] = {};
         // Check for useless items
         if (useless_items.indexOf(item_name) >= 0) {
-          // console.log(`Useless item found in ${item}: ${item_name}`);
           return;
         }
         items[index]['name'] = $(element).find('.item-name').text();
         items[index]['price'] = $(element).find('.price').text();
-        items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+        items[index]['in_stock'] = $(element).find('.product-options-bottom button').text();
       });
     }
     else if (item_type === "bone") {
@@ -328,14 +326,13 @@ async function getDataFromURL(item) {
       else {
         items[0]['in_stock'] = 'Notify Me';
       }
-     
     }
     // Just one item in a page
     else {
       items[0] = {};
       items[0]['name'] = $('.product-title').text();
       items[0]['price'] = $('.price').text();
-      items[0]['in_stock'] = $('.bin-stock-availability').text();
+      items[0]['in_stock'] = $('.product-options-bottom button').text();
     }
     return items;
   }
@@ -461,7 +458,6 @@ function handleMessage(sender_psid, received_message) {
       return;
     }
 
-
     // Check current amount of items
     if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
       response = {
@@ -483,7 +479,6 @@ function handleMessage(sender_psid, received_message) {
     }
     else {
       user_id_dic[sender_psid]['products'][rec_msg] = new Date();
-      //user_id_dic[sender_psid]['start-time'] = new Date();
     }
 
     // Check if sender_psid is in dic for url
