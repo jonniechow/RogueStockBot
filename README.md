@@ -8,9 +8,18 @@ to update myself whenever an equipment is back in stock. I encountered a communi
 on reddit r/homegym where other users faced the same problem and I decided this would
 be a great tool to help others just like me. 
 
+### What?
+* Search for your favorite Rogue Fitness equipment
+* Get notified whenever items are back in stock through FB messenger
+* Limit of 4 items
+* Checks items every 30 seconds
+
 ![result](/views/images/home-demo.png)
 
 ### Updates
+v 1.2
+* Fixed bug where some pages did not correctly indicate they were in stock
+
 v 1.1
 * Included boneyard and misc used barbells. 
     * Right now this feature only checks if the boneyard page is up
