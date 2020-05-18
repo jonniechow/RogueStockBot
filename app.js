@@ -40,7 +40,7 @@ const request = require('request'),
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 10;
+let delay = 30;
 // Limit of iteems
 let item_limit = 4;
 
@@ -177,6 +177,10 @@ async function handleAllURLs() {
       if (Object.keys(item).length == 0) {
         return; 
       }
+      if (item['name'] == 'The Bella Bar 2.0 - Black Zinc') {
+        console.log(item);
+      }
+      
       // Out of stock
       if (item['in_stock'].indexOf("Notify Me") >= 0) { // Cross emoji
         avail = decodeURI('\u274C');
@@ -292,7 +296,7 @@ async function getDataFromURL(item) {
     let redirect_count = response.request._redirectable._redirectCount;
     var item_type = item_url_dict['type'];
 
-    console.log("Looking for: " + item);
+    // console.log("Looking for: " + item);
     // console.log(redirect_count);
     // console.log("Web scraping data from: " + item_link);
     let $ = cheerio.load(response.data);
@@ -305,12 +309,11 @@ async function getDataFromURL(item) {
         items[index] = {};
         // Check for useless items
         if (useless_items.indexOf(item_name) >= 0) {
-          // console.log(`Useless item found in ${item}: ${item_name}`);
           return;
         }
         items[index]['name'] = $(element).find('.item-name').text();
         items[index]['price'] = $(element).find('.price').text();
-        items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+        items[index]['in_stock'] = $(element).find('.product-options-bottom button').text();
       });
     }
     else if (item_type === "bone") {
@@ -323,20 +326,13 @@ async function getDataFromURL(item) {
       else {
         items[0]['in_stock'] = 'Notify Me';
       }
-     
-    }
-    else if (item_type === "options") {
-      items[0] = {};
-      items[0]['name'] = $('.product-title').text();
-      items[0]['price'] = $('.price').text();
-      items[0]['in_stock'] = $('.add-to-cart span').text();
     }
     // Just one item in a page
     else {
       items[0] = {};
       items[0]['name'] = $('.product-title').text();
       items[0]['price'] = $('.price').text();
-      items[0]['in_stock'] = $('.bin-stock-availability').text();
+      items[0]['in_stock'] = $('.product-options-bottom button').text();
     }
     return items;
   }

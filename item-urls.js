@@ -197,26 +197,26 @@ var search_urls = { // Plate URLs
         "link": "https://www.roguefitness.com/miscellaneous-barbells-used"
     },
     "bone oso pro": {
-        "type": "options",
+        "type": "bone",
         "sender_ids": {},
         'product_name': 'Boneyard OSO Pro Collars',
         "link": "https://www.roguefitness.com/boneyard-oso-pro-collars-closeout"
     },
     // Bella Bars
     "bella ecoat": {
-        "type": "options",
+        "type": "single",
         "sender_ids": {},
         'product_name': 'The Bella Bar 2.0 - E-Coat',
         "link": "https://www.roguefitness.com/the-bella-bar-2-0-e-coat"
     },
     "bella zinc": {
-        "type": "options",
+        "type": "single",
         "sender_ids": {},
         'product_name': 'The Bella Bar 2.0 - Black Zinc',
         "link": "https://www.roguefitness.com/rogue-bella-bar-2-0-black-zinc"
     },
     "bella ss": {
-        "type": "options",
+        "type": "single",
         "sender_ids": {},
         'product_name': 'The Bella Bar 2.0 - Stainless Steel',
         "link": "https://www.roguefitness.com/the-bella-bar-2-0-stainless"
