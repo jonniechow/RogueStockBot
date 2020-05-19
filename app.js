@@ -179,7 +179,7 @@ async function handleAllURLs() {
       }
       
       // Out of stock
-      if (item['in_stock'].indexOf("Notify Me") >= 0) { // Cross emoji
+      if (item['in_stock'].indexOf("Notify Me") >= 0 || item['in_stock'].indexOf("Out of Stock") >= 0) { // Cross emoji
         avail = decodeURI('\u274C');
       }
       // In stock
@@ -189,7 +189,7 @@ async function handleAllURLs() {
         write_item_str += item['name'] + " " + avail + ", "
         item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
       }
-      //item_str += data[i]['name'] + "\n" + data[i]['price'] + "\nIn stock: " + avail + "\n \n"
+      //item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
     })
 
     // No items found, everything sold out
@@ -314,13 +314,22 @@ async function getDataFromURL(item) {
       });
     }
     else if (item_type === "bone") {
-      items[0] = {};
-      items[0]['name'] = $('.product-title').text();
-      items[0]['price'] = $('.price').text();
+      // Boneyard page exists
       if (redirect_count == 0) {
-        items[0]['in_stock'] = 'In stock';
+        $('.grouped-item').each(function (index, element) {
+          let item_name = $(element).find('.item-name').text();
+          items[index] = {};
+          // Check for useless items
+          if (useless_items.indexOf(item_name) >= 0) {
+            return;
+          }
+          items[index]['name'] = $(element).find('.item-name').text();
+          items[index]['price'] = $(element).find('.price').text();
+          items[index]['in_stock'] = $(element).find('.bin-stock-availability').text();
+        });
       }
       else {
+        items[0] = {};
         items[0]['in_stock'] = 'Notify Me';
       }
     }
