@@ -31,22 +31,23 @@ const request = require('request'),
   fs = require('fs'),
   readline = require('readline'),
   stream = require('stream'),
-  
+
   search_urls = require('./item-urls'),
   useless_items = require('./useless-items')
 // creates express http server
 
 const db = mysql.createConnection({
-  host  :   'localhost',
-  user  :   'root',
-  password  : 'password'
+  host: 'localhost',
+  user: 'root',
+  password: 'password',
+  database: 'rogue'
 });
 
 db.connect((err) => {
-    if(err){
-      throw err;
-    }
-    console.log("MySQL Connected")
+  if (err) {
+    throw err;
+  }
+  console.log("MySQL Connected")
 
 })
 
@@ -68,13 +69,13 @@ app.use(express.static(__dirname + '/views/'));
 // Sets server port and logs message on success
 app.listen('3000', () => {
   console.log('webhook is listening');
-  // con.query('SELECT * FROM items', (error, todos, fields) => {
-  //   if (error) {
-  //     console.error('An error occurred while executing the query')
-  //     throw error
-  //   }
-  //   console.log(todos)
-  // });
+  db.query('SELECT * FROM items', (error, todos, fields) => {
+    if (error) {
+      console.error('An error occurred while executing the query')
+      throw error
+    }
+    console.log(todos)
+  });
   try {
     setInterval(handleAllURLs, delay * 1000);
   }
@@ -189,7 +190,7 @@ app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
 
 
 async function handleAllURLs() {
-  
+
   for (let item in search_urls) {
     let data = await getDataFromURL(item);
     let item_str = "";
@@ -197,14 +198,14 @@ async function handleAllURLs() {
     let in_stock_count = 0;
 
     // Loop through each item on page
-    data.forEach((item) =>  {
+    data.forEach((item) => {
       var avail = decodeURI('\u2705');
 
       // Check if data returned is empty
       if (Object.keys(item).length == 0) {
-        return; 
+        return;
       }
-      
+
       // Out of stock
       if (item['in_stock'].indexOf("Notify Me") >= 0 || item['in_stock'].indexOf("Out of Stock") >= 0) { // Cross emoji
         avail = decodeURI('\u274C');
@@ -243,7 +244,7 @@ async function handleAllURLs() {
         search_urls[item]['sender_ids'][sender_id] = 1;
         // First response message
         let response = {
-          "text": 
+          "text":
             `FIRST CHECK: "${item}"\n` +
             `Match found for: "${search_urls[item]['product_name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
@@ -284,8 +285,8 @@ async function handleAllURLs() {
       for (let sender_id in search_urls[item]['sender_ids']) {
         // Response message
         let response = {
-          "text": 
-            `RESTOCK: "${item}"\n`+
+          "text":
+            `RESTOCK: "${item}"\n` +
             `Match found for: "${search_urls[item]['product_name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
@@ -429,7 +430,7 @@ function handleMessage(sender_psid, received_message) {
     }
 
     // Help message
-    if (rec_msg === "help") { 
+    if (rec_msg === "help") {
       var keys = Object.keys(search_urls);
       var key_string = "";
       for (var i = 0; i < keys.length; ++i) {
@@ -519,6 +520,13 @@ function handleMessage(sender_psid, received_message) {
     if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
       search_urls[rec_msg]['sender_ids'][sender_psid] = 0;
     }
+    let stmt = `INSERT INTO searches (user_id, item_name, start_time)
+               VALUES (?, ?, ?)`;
+    let todo = [sender_psid, rec_msg, new Date()];
+    db.query(stmt, todo, (err, results, fields) => {
+      if (err) throw err;
+      console.log(results);
+    });
   }
 
   // Send the response message

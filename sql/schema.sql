@@ -1,3 +1,5 @@
+USE rogue;
+
 CREATE TABLE users(
     id VARCHAR(30) NOT NULL,
     PRIMARY KEY (id)
@@ -5,7 +7,7 @@ CREATE TABLE users(
 
 CREATE TABLE items(
     short_name VARCHAR(30) NOT NULL,
-    full_name VARCHAR(30) NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
     link VARCHAR(100) NOT NULL,
     link_type VARCHAR(10) NOT NULL,
     PRIMARY KEY(short_name)
