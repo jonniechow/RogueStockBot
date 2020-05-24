@@ -23,18 +23,34 @@
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require('request'),
+  mysql = require('mysql'),
   express = require('express'),
   axios = require('axios'),
   cheerio = require('cheerio'),
   body_parser = require('body-parser'),
   fs = require('fs'),
-  path = require('path'),
   readline = require('readline'),
   stream = require('stream'),
-  app = express().use(body_parser.json()),
+  
   search_urls = require('./item-urls'),
   useless_items = require('./useless-items')
 // creates express http server
+
+const db = mysql.createConnection({
+  host  :   'localhost',
+  user  :   'root',
+  password  : 'password'
+});
+
+db.connect((err) => {
+    if(err){
+      throw err;
+    }
+    console.log("MySQL Connected")
+
+})
+
+const app = express().use(body_parser.json());
 
 // Dictionary of user_id to items they are searching
 let user_id_dic = {};
@@ -48,9 +64,17 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname + '/views/'));
 
+
 // Sets server port and logs message on success
-app.listen(process.env.PORT || 1337, () => {
+app.listen('3000', () => {
   console.log('webhook is listening');
+  // con.query('SELECT * FROM items', (error, todos, fields) => {
+  //   if (error) {
+  //     console.error('An error occurred while executing the query')
+  //     throw error
+  //   }
+  //   console.log(todos)
+  // });
   try {
     setInterval(handleAllURLs, delay * 1000);
   }
@@ -59,6 +83,8 @@ app.listen(process.env.PORT || 1337, () => {
   }
 
 });
+
+
 
 // Home screen page
 app.get('/', (req, res) => {
@@ -163,6 +189,7 @@ app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
 
 
 async function handleAllURLs() {
+  
   for (let item in search_urls) {
     let data = await getDataFromURL(item);
     let item_str = "";
@@ -282,6 +309,7 @@ async function handleAllURLs() {
     // Update prev stock to current stock
     search_urls[item]['prev_stock_count'] = in_stock_count;
   }
+
 }
 
 // Parses HTML from URL and returns data structure containing relevent data
