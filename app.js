@@ -302,7 +302,7 @@ async function handleAllURLs() {
           });
         }
         // Item is in stock
-        else if(in_stock_count != 0 && write_item_str != "") {
+        else if (in_stock_count != 0 && write_item_str != "") {
           db.query(stmt, args, (err, results, fields) => {
             if (err) throw err;
             console.log(`MySql db: restock`);
@@ -312,30 +312,6 @@ async function handleAllURLs() {
       });
 
     })
-
-
-
-    //   // // Checks if item has been checked
-    //   // if (!('prev_stock_count' in search_urls[item])) {
-    //   //   search_urls[item]['prev_stock_count'] = in_stock_count;
-    //   // }
-
-
-    //   //   let write_line = `${dateTime} | ${search_urls[item]['product_name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
-    //   //   try {
-    //   //     if (write_item_str != "") {
-    //   //       fs.appendFile('stock-log.txt', write_line, (error) => {
-    //   //         if (error) throw error;
-    //   //         console.log(`Wrote update on ${item} to file`);
-    //   //       });
-    //   //     }
-    //   //   } catch (error) {
-    //   //     console.error(`Could not write to file`);
-    //   //   }
-    //   // }
-    //   // // Update prev stock to current stock
-    //   // search_urls[item]['prev_stock_count'] = in_stock_count;
-    // }
 
   });
 
@@ -433,9 +409,9 @@ function handleMessage(sender_psid, received_message) {
 
   // Checks if the message contains text
   if (received_message.text) {
-    // Create the payload for a basic text message, which
-    // will be added to the body of our request to the Send API
+
     var rec_msg = received_message.text.toLowerCase();
+    let item_full_name = rec_msg;
 
     // Checks if user is in dict, if not creates entry
     if (!(sender_psid in user_id_dic)) {
@@ -554,55 +530,75 @@ function handleMessage(sender_psid, received_message) {
       user_id_dic[sender_psid]['intervals'] = [];
       user_id_dic[sender_psid]['products'] = {};
       delete user_id_dic[sender_psid];
-      console.log(search_urls);
-      callSendAPI(sender_psid, response);
+
       return;
     }
 
     // User message is invalid
-    if (!(rec_msg in search_urls)) {
-      response = {
-        "text": `INVALID\nYou entered: "${
-          received_message.text
-          }".` + "\n\n" +
-          "Item doesn't exist\nTry typing `help` for a list of all valid commands"
-      };
-      callSendAPI(sender_psid, response);
-      return;
-    }
+    // if (!(rec_msg in search_urls)) {
+    //   response = {
+    //     "text": `INVALID\nYou entered: "${
+    //       received_message.text
+    //       }".` + "\n\n" +
+    //       "Item doesn't exist\nTry typing `help` for a list of all valid commands"
+    //   };
+    //   callSendAPI(sender_psid, response);
+    //   return;
+    // }
 
-    // Check current amount of items
-    if (Object.keys(user_id_dic[sender_psid]['products']).length >= item_limit) {
-      response = {
-        "text": `INVALID\nYou have reached max limit of "${item_limit}" items\n`
-      };
-      callSendAPI(sender_psid, response);
-      return;
-    }
-
-    // Check if item is already being searched for user
-    if (rec_msg in user_id_dic[sender_psid]['products']) {
-      response = {
-        "text": `INVALID\nAlready searching: "${
-          search_urls[rec_msg]['product_name']
-          }".\n`
-      };
-      callSendAPI(sender_psid, response);
-      return;
-    }
-    else {
-      user_id_dic[sender_psid]['products'][rec_msg] = new Date();
-    }
-
-    // Check if sender_psid is in dic for url
-    if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
-      search_urls[rec_msg]['sender_ids'][sender_psid] = 0;
-    }
-    let stmt = `INSERT INTO searches (user_id, item_name, item_full_name, start_time, count)
-               VALUES (?, ?, ?, ?, ?)`;
-    let todo = [sender_psid, rec_msg, rec_msg, new Date(), 0];
+    // Check for invalid items
+    let stmt = `SELECT * FROM items WHERE short_name=?`;
+    let todo = [rec_msg];
     db.query(stmt, todo, (err, results, fields) => {
       if (err) throw err;
+      console.log(results);
+      if (results.length == 0) {
+        response = {
+          "text": `INVALID\nYou entered: "${
+            received_message.text
+            }".` + "\n\n" +
+            "Item doesn't exist\nTry typing `help` for a list of all valid commands"
+        };
+        callSendAPI(sender_psid, response);
+        return;
+      }
+      item_full_name = results[0]['full_name'];
+    });
+
+    // Check for item limit
+    stmt = `SELECT * FROM searches WHERE user_id=?`;
+    todo = [sender_psid];
+    db.query(stmt, todo, (err, results, fields) => {
+      if (err) throw err;
+      console.log(results);
+      if (results.length >= item_limit) {
+        response = {
+          "text": `INVALID\nYou have reached max limit of "${item_limit}" items\n`
+        };
+        callSendAPI(sender_psid, response);
+        return;
+      }
+    });
+  
+    // Check if sender_psid is in dic for url
+    // if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
+    //   search_urls[rec_msg]['sender_ids'][sender_psid] = 0;
+    // }
+    stmt = `INSERT INTO searches (user_id, item_name, item_full_name, start_time, count)
+               VALUES (?, ?, ?, ?, ?)`;
+    todo = [sender_psid, rec_msg, rec_msg, new Date(), 0];
+    db.query(stmt, todo, (err, results, fields) => {
+      // Check if item is already being searched for user
+      if (err == "ER_DUP_ENTRY") {
+        response = {
+          "text": `INVALID\nAlready searching: "${
+            item_full_name
+            }".`
+        };
+        callSendAPI(sender_psid, response);
+        return;
+      }
+      else if (err) throw err;
       console.log(results);
     });
   }
