@@ -1,7 +1,7 @@
 USE rogue;
 
 CREATE TABLE users(
-    id VARCHAR(30) NOT NULL,
+    id BIGINT NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -14,8 +14,9 @@ CREATE TABLE items(
 );
 
 CREATE TABLE searches(
-    user_id VARCHAR(30) NOT NULL,
+    user_id BIGINT NOT NULL,
     item_name VARCHAR(30) NOT NULL,
+    item_full_name VARCHAR(100) NOT NULL,
     start_time DATETIME default CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY(user_id, item_name)
 );

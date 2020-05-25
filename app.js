@@ -69,13 +69,6 @@ app.use(express.static(__dirname + '/views/'));
 // Sets server port and logs message on success
 app.listen('3000', () => {
   console.log('webhook is listening');
-  db.query('SELECT * FROM items', (error, todos, fields) => {
-    if (error) {
-      console.error('An error occurred while executing the query')
-      throw error
-    }
-    console.log(todos)
-  });
   try {
     setInterval(handleAllURLs, delay * 1000);
   }
@@ -431,32 +424,52 @@ function handleMessage(sender_psid, received_message) {
 
     // Help message
     if (rec_msg === "help") {
-      var keys = Object.keys(search_urls);
-      var key_string = "";
-      for (var i = 0; i < keys.length; ++i) {
-        key_string += keys[i] + "\n";
-      }
-      response = {
-        "text": `HELP MSG:\n` +
-          `Search for the following items\n: ${key_string} \n` +
-          "Type `stop` to stop checking all items \n"
-      };
-      callSendAPI(sender_psid, response);
+
+      let all_items_str = "";
+
+      let stmt = `SELECT * FROM items`;
+      db.query(stmt, (err, results, fields) => {
+        if (err) throw err;
+        results.forEach((row) => {
+          all_items_str += row['short_name'] + "\n";
+        })
+        response = {
+          "text": `HELP MSG:\n` +
+            `Search for the following items\n: ${all_items_str} \n` +
+            "Type `stop` to stop checking all items \n"
+        };
+        callSendAPI(sender_psid, response);
+      });
+      
       return;
     }
     // Status message
     else if (rec_msg === "status") {
-      let search_str = `STATUS ${Object.keys(user_id_dic[sender_psid]['products']).length}/${item_limit} items\:\n` +
-        `There are ${Object.keys(user_id_dic).length} total users searching\n\n`;
-      for (let key in user_id_dic[sender_psid]['products']) {
-        search_str += search_urls[key]['product_name'] + " / " + key +
-          "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
-      }
-      search_str += `Last reset: ${start_time}\n`;
-      let response = {
-        "text": search_str
-      };
-      callSendAPI(sender_psid, response);
+      let total_users = 0;
+      let stmt = 'SELECT COUNT(DISTINCT user_id) AS user_count FROM searches';
+      db.query(stmt, (err, results, fields) => {
+        if (err) throw err;
+        total_users = results[0].user_count;
+      });
+
+      
+      let adr = sender_psid;
+      stmt = `SELECT * FROM searches
+                  WHERE user_id = ?`;
+      db.query(stmt, [adr], (err, results, fields) => {
+        if (err) throw err;
+        let status_string = `STATUS ${results.length}/${item_limit} items:\n` +
+                            `There are ${total_users} total users searching\n\n`;
+        results.forEach((row) => {
+          status_string += row['item_name'] + " / " + row['item_full_name'] + 
+          "\nTime elapsed: " + getTimeDiff(row['start_time']) + "\n\n";
+        })
+        let response = {
+          "text": status_string
+        };
+        callSendAPI(sender_psid, response);
+      });
+
       return;
     }
     // Stop message
@@ -520,9 +533,9 @@ function handleMessage(sender_psid, received_message) {
     if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
       search_urls[rec_msg]['sender_ids'][sender_psid] = 0;
     }
-    let stmt = `INSERT INTO searches (user_id, item_name, start_time)
-               VALUES (?, ?, ?)`;
-    let todo = [sender_psid, rec_msg, new Date()];
+    let stmt = `INSERT INTO searches (user_id, item_name, item_full_name, start_time)
+               VALUES (?, ?, ?, ?)`;
+    let todo = [sender_psid, rec_msg, rec_msg, new Date()];
     db.query(stmt, todo, (err, results, fields) => {
       if (err) throw err;
       console.log(results);
