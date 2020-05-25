@@ -10,6 +10,7 @@ CREATE TABLE items(
     full_name VARCHAR(100) NOT NULL,
     link VARCHAR(100) NOT NULL,
     link_type VARCHAR(10) NOT NULL,
+    stock_count INT NOT NULL,
     PRIMARY KEY(short_name)
 );
 
@@ -18,5 +19,6 @@ CREATE TABLE searches(
     item_name VARCHAR(30) NOT NULL,
     item_full_name VARCHAR(100) NOT NULL,
     start_time DATETIME default CURRENT_TIMESTAMP NOT NULL,
+    count INT NOT NULL,
     PRIMARY KEY(user_id, item_name)
 );

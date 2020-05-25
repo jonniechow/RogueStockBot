@@ -184,139 +184,167 @@ app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
 
 async function handleAllURLs() {
 
-  for (let item in search_urls) {
-    let data = await getDataFromURL(item);
-    let item_str = "";
-    let write_item_str = "";
-    let in_stock_count = 0;
+  let stmt = 'SELECT * FROM items';
 
-    // Loop through each item on page
-    data.forEach((item) => {
-      var avail = decodeURI('\u2705');
+  db.query(stmt, async (err, item_results, fields) => {
+    if (err) throw err;
+    item_results.forEach(async (item) => {
 
-      // Check if data returned is empty
-      if (Object.keys(item).length == 0) {
-        return;
+      let data = await getDataFromURL(item);
+      let item_str = "";
+      let write_item_str = "";
+      let in_stock_count = 0;
+      let prev_stock_count = item['stock_count'];
+      let item_full_name = item['full_name'];
+
+      // Loop through each item on page
+      data.forEach((item) => {
+        var avail = decodeURI('\u2705');
+
+        // Check if data returned is empty
+        if (Object.keys(item).length == 0) {
+          return;
+        }
+
+        // Out of stock
+        if (item['in_stock'].indexOf("Notify Me") >= 0 || item['in_stock'].indexOf("Out of Stock") >= 0) { // Cross emoji
+          avail = decodeURI('\u274C');
+        }
+        // In stock
+        else { // Check emoji
+          avail = decodeURI('\u2705');
+          in_stock_count += 1;
+          write_item_str += item['name'] + " " + avail + ", "
+          item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
+        }
+        //item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
+      })
+
+      // No items found, everything sold out
+      if (item_str === "") {
+        item_str = "Everything currently out of stock.\n\n";
+        write_item_str = "Everything currently out of stock.";
       }
 
-      // Out of stock
-      if (item['in_stock'].indexOf("Notify Me") >= 0 || item['in_stock'].indexOf("Out of Stock") >= 0) { // Cross emoji
-        avail = decodeURI('\u274C');
-      }
-      // In stock
-      else { // Check emoji
-        avail = decodeURI('\u2705');
-        in_stock_count += 1;
-        write_item_str += item['name'] + " " + avail + ", "
-        item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
-      }
-      //item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
+      // Set date
+      var today = new Date();
+      var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+      var time = today.toLocaleString('en-US',
+        {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          hour12: true
+        });
+      var dateTime = time + ' EST ' + date;
+
+      
+
+      // SQL gets all searches with this item_name
+      stmt = `SELECT * FROM searches WHERE item_name=?`;
+      let args = item['short_name'];
+
+      db.query(stmt, [args], (err, search_results, fields) => {
+        if (err) throw err;
+
+        // Loops through each user found
+        search_results.forEach((user) => {
+          let user_id = user['user_id'];
+          let item_name = user['item_name'];
+          let count = user['count'];
+          // First message
+          if (count == 0) {
+            let response = {
+              "text":
+                `FIRST CHECK: "${item_name}"\n` +
+                `Match found for: "${item_full_name}".\n` +
+                `Currently searching ${item_limit} items` +
+                "\n\n" + item_str +
+                `First initial check on ${dateTime}\n` +
+                `You will be notified everytime there is a change in stock.\n` +
+                `Will begin running in the background until "stop"\n` +
+                `Link: ${item['link']}`
+            };
+            // SQL updates count to 1
+            stmt = `UPDATE searches SET count=? WHERE user_id=? AND item_name=?`;
+            args = [1, user_id, item_name]
+            db.query(stmt, args, (err, results, fields) => {
+              if (err) throw err;
+            });
+            callSendAPI(user_id, response);
+          }
+          // Change in stock count
+          else if (in_stock_count != prev_stock_count) {
+            // Response message
+            let response = {
+              "text":
+                `RESTOCK: "${item_name}"\n` +
+                `Match found for: "${item_full_name}".\n` +
+                `Currently searching ${item_limit} items` +
+                "\n\n" + item_str +
+                "Checked On " + dateTime + "\n" +
+                `Link: ${item['link']}`
+            };
+            callSendAPI(user_id, response);
+          }
+        });
+
+
+      });
+
     })
 
-    // No items found, everything sold out
-    if (item_str === "") {
-      item_str = "Everything currently out of stock.\n\n";
-      write_item_str = "Everything currently out of stock.";
-    }
 
-    // Set date
-    var today = new Date();
-    var date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
-    var time = today.toLocaleString('en-US',
-      {
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: true
-      });
-    var dateTime = time + ' EST ' + date;
 
-    // Send response to every user
-    for (let sender_id in search_urls[item]['sender_ids']) {
-      if (search_urls[item]['sender_ids'][sender_id] == 0) {
-        search_urls[item]['sender_ids'][sender_id] = 1;
-        // First response message
-        let response = {
-          "text":
-            `FIRST CHECK: "${item}"\n` +
-            `Match found for: "${search_urls[item]['product_name']}".\n` +
-            `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
-            "\n\n" + item_str +
-            `First initial check on ${dateTime}\n` +
-            `You will be notified everytime there is a change in stock.\n` +
-            `Will begin running in the background until "stop"\n` +
-            "Link " + search_urls[item]['link']
-        };
-        callSendAPI(sender_id, response);
-      }
-    }
+    //   // // Checks if item has been checked
+    //   // if (!('prev_stock_count' in search_urls[item])) {
+    //   //   search_urls[item]['prev_stock_count'] = in_stock_count;
+    //   // }
+    //   // // If item was in stock, but is now out of stock
+    //   // else if (in_stock_count == 0 && search_urls[item]['prev_stock_count'] > 0) {
+    //   //   let write_line = `${dateTime} | ${search_urls[item]['product_name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
+    //   //   try {
+    //   //     if (write_item_str != "") {
+    //   //       fs.appendFile('stock-log.txt', write_line, (error) => {
+    //   //         if (error) throw error;
+    //   //         console.log(`Wrote update on ${item} to file`);
+    //   //       });
+    //   //     }
+    //   //   } catch (error) {
+    //   //     console.error(`Could not write to file`);
+    //   //   }
+    //   // }
 
-    // Checks if item has been checked
-    if (!('prev_stock_count' in search_urls[item])) {
-      search_urls[item]['prev_stock_count'] = in_stock_count;
-    }
-    // If item was in stock, but is now out of stock
-    else if (in_stock_count == 0 && search_urls[item]['prev_stock_count'] > 0) {
-      let write_line = `${dateTime} | ${search_urls[item]['product_name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
-      try {
-        if (write_item_str != "") {
-          fs.appendFile('stock-log.txt', write_line, (error) => {
-            if (error) throw error;
-            console.log(`Wrote update on ${item} to file`);
-          });
-        }
-      } catch (error) {
-        console.error(`Could not write to file`);
-      }
-    }
-    // Difference in stock count
-    else if ((in_stock_count != search_urls[item]['prev_stock_count'])) {
-      console.log("Response msg: Update in stock");
-      console.log(item_str);
-      console.log(dateTime);
-      // Send response to every user
-      for (let sender_id in search_urls[item]['sender_ids']) {
-        // Response message
-        let response = {
-          "text":
-            `RESTOCK: "${item}"\n` +
-            `Match found for: "${search_urls[item]['product_name']}".\n` +
-            `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
-            "\n\n" + item_str +
-            "Checked On " + dateTime + "\n" +
-            "Link " + search_urls[item]['link']
-        };
-        callSendAPI(sender_id, response);
-      }
-      let write_line = `${dateTime} | ${search_urls[item]['product_name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
-      try {
-        if (write_item_str != "") {
-          fs.appendFile('stock-log.txt', write_line, (error) => {
-            if (error) throw error;
-            console.log(`Wrote update on ${item} to file`);
-          });
-        }
-      } catch (error) {
-        console.error(`Could not write to file`);
-      }
-    }
-    // Update prev stock to current stock
-    search_urls[item]['prev_stock_count'] = in_stock_count;
-  }
+    //   //   let write_line = `${dateTime} | ${search_urls[item]['product_name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
+    //   //   try {
+    //   //     if (write_item_str != "") {
+    //   //       fs.appendFile('stock-log.txt', write_line, (error) => {
+    //   //         if (error) throw error;
+    //   //         console.log(`Wrote update on ${item} to file`);
+    //   //       });
+    //   //     }
+    //   //   } catch (error) {
+    //   //     console.error(`Could not write to file`);
+    //   //   }
+    //   // }
+    //   // // Update prev stock to current stock
+    //   // search_urls[item]['prev_stock_count'] = in_stock_count;
+    // }
+
+  });
+
 
 }
 
 // Parses HTML from URL and returns data structure containing relevent data
 async function getDataFromURL(item) {
-  var item_url_dict = search_urls[item];
-  var item_link = item_url_dict['link'];
+  var item_link = item['link'];
   try {
     let response = await axios.get(item_link);
     let redirect_count = response.request._redirectable._redirectCount;
-    var item_type = item_url_dict['type'];
+    var item_type = item['link_type'];
 
-    // console.log("Looking for: " + item);
-    // console.log(redirect_count);
+    // console.log("Looking for: " + item['short_name']);
     // console.log("Web scraping data from: " + item_link);
     let $ = cheerio.load(response.data);
     var items = [];
@@ -440,7 +468,7 @@ function handleMessage(sender_psid, received_message) {
         };
         callSendAPI(sender_psid, response);
       });
-      
+
       return;
     }
     // Status message
@@ -452,18 +480,17 @@ function handleMessage(sender_psid, received_message) {
         total_users = results[0].user_count;
       });
 
-      
       let adr = sender_psid;
       stmt = `SELECT * FROM searches
                   WHERE user_id = ?`;
       db.query(stmt, [adr], (err, results, fields) => {
         if (err) throw err;
         let status_string = `STATUS ${results.length}/${item_limit} items:\n` +
-                            `There are ${total_users} total users searching\n\n`;
+          `There are ${total_users} total users searching\n\n`;
         results.forEach((row) => {
-          status_string += row['item_name'] + " / " + row['item_full_name'] + 
-          "\nTime elapsed: " + getTimeDiff(row['start_time']) + "\n\n";
-        })
+          status_string += row['item_name'] + " / " + row['item_full_name'] +
+            "\nTime elapsed: " + getTimeDiff(row['start_time']) + "\n\n";
+        });
         let response = {
           "text": status_string
         };
@@ -474,18 +501,50 @@ function handleMessage(sender_psid, received_message) {
     }
     // Stop message
     else if (rec_msg === "stop") {
+
+      let adr = sender_psid;
+      // Get records to make string
+      let stmt = `SELECT * FROM searches
+                  WHERE user_id = ?`;
+      let deleted_str = ``;
+      db.query(stmt, [adr], (err, results, fields) => {
+        if (err) throw err;
+        results.forEach((row) => {
+          deleted_str += row['item_name'] + " / " + row['item_full_name'] +
+            "\nTime elapsed: " + getTimeDiff(row['start_time']) + "\n\n";
+        });
+      });
+
+      // Delete records
+      stmt = `DELETE FROM searches
+                  WHERE user_id = ?`;
+      db.query(stmt, [adr], (err, results, fields) => {
+        if (err) throw err;
+        let stop_string = `STOP MSG:\n` +
+          `Stopped checking ${results.affectedRows} item(s):\n\n`;
+
+        stop_string += deleted_str;
+
+        let response = {
+          "text": stop_string
+        };
+
+        callSendAPI(sender_psid, response);
+      });
+
+
       user_id_dic[sender_psid]['intervals'].forEach(clearInterval);
-      var search_item_str = "";
-      for (var key in user_id_dic[sender_psid]['products']) {
-        delete search_urls[key]['sender_ids'][sender_psid];
-        search_item_str += search_urls[key]['product_name'] +
-          "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
-      }
-      response = {
-        "text": `STOP MSG:\n` +
-          `Stopped checking ${Object.keys(user_id_dic[sender_psid]['products']).length} item(s):\n\n` +
-          search_item_str
-      };
+      // var search_item_str = "";
+      // for (var key in user_id_dic[sender_psid]['products']) {
+      //   delete search_urls[key]['sender_ids'][sender_psid];
+      //   search_item_str += search_urls[key]['product_name'] +
+      //     "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
+      // }
+      // response = {
+      //   "text": `STOP MSG:\n` +
+      //     `Stopped checking ${Object.keys(user_id_dic[sender_psid]['products']).length} item(s):\n\n` +
+      //     search_item_str
+      // };
       user_id_dic[sender_psid]['intervals'] = [];
       user_id_dic[sender_psid]['products'] = {};
       delete user_id_dic[sender_psid];
@@ -533,9 +592,9 @@ function handleMessage(sender_psid, received_message) {
     if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
       search_urls[rec_msg]['sender_ids'][sender_psid] = 0;
     }
-    let stmt = `INSERT INTO searches (user_id, item_name, item_full_name, start_time)
-               VALUES (?, ?, ?, ?)`;
-    let todo = [sender_psid, rec_msg, rec_msg, new Date()];
+    let stmt = `INSERT INTO searches (user_id, item_name, item_full_name, start_time, count)
+               VALUES (?, ?, ?, ?, ?)`;
+    let todo = [sender_psid, rec_msg, rec_msg, new Date(), 0];
     db.query(stmt, todo, (err, results, fields) => {
       if (err) throw err;
       console.log(results);
