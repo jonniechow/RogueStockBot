@@ -102,21 +102,11 @@ app.get('/current-items', (req, res) => {
 });
 
 app.get('/stock-updates', (req, res) => {
-  var instream = fs.createReadStream('stock-log.txt');
-  var outstream = new stream;
-  var rl = readline.createInterface(instream, outstream);
-  let data_from_log = { 'item_info': [] };
-  rl.on('line', function (line) {
-    // Process line here
-    let words = line.split("|");
-    let items = words[2].split(",")
-    let item_dic = { 'time': words[0], 'name': words[1], 'items': items, 'link': words[3] };
-    data_from_log['item_info'].unshift(item_dic);
-  });
-
-  rl.on('close', function () {
-    res.render('stock-updates', { data: data_from_log });
-  });
+  let stmt = `SELECT * FROM restock`;
+  db.query(stmt, (err, results, fields) => {
+    if (err) throw err;
+    res.render('stock-updates', { data: results });
+  })
 
 });
 
@@ -238,7 +228,7 @@ async function handleAllURLs() {
         });
       var dateTime = time + ' EST ' + date;
 
-      
+
 
       // SQL gets all searches with this item_name
       stmt = `SELECT * FROM searches WHERE item_name=?`;
@@ -288,7 +278,23 @@ async function handleAllURLs() {
             callSendAPI(user_id, response);
           }
         });
-
+        args = [dateTime, item_full_name, write_item_str, item['link']];
+        stmt = `INSERT INTO restock(restock_time, full_name, restock_string, link)
+                VALUES(?,?,?,?)`;
+        // Item was in stock but is now out of stock
+        if (prev_stock_count > 0 && in_stock_count == 0) {
+          db.query(stmt, args, (err, results, fields) => {
+            if (err) throw err;
+            console.log(`MySql db: out of stock`);
+          });
+        }
+        // Item is in stock
+        else if(in_stock_count != 0 && write_item_str != "") {
+          db.query(stmt, args, (err, results, fields) => {
+            if (err) throw err;
+            console.log(`MySql db: restock`);
+          });
+        }
 
       });
 
@@ -300,20 +306,7 @@ async function handleAllURLs() {
     //   // if (!('prev_stock_count' in search_urls[item])) {
     //   //   search_urls[item]['prev_stock_count'] = in_stock_count;
     //   // }
-    //   // // If item was in stock, but is now out of stock
-    //   // else if (in_stock_count == 0 && search_urls[item]['prev_stock_count'] > 0) {
-    //   //   let write_line = `${dateTime} | ${search_urls[item]['product_name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
-    //   //   try {
-    //   //     if (write_item_str != "") {
-    //   //       fs.appendFile('stock-log.txt', write_line, (error) => {
-    //   //         if (error) throw error;
-    //   //         console.log(`Wrote update on ${item} to file`);
-    //   //       });
-    //   //     }
-    //   //   } catch (error) {
-    //   //     console.error(`Could not write to file`);
-    //   //   }
-    //   // }
+
 
     //   //   let write_line = `${dateTime} | ${search_urls[item]['product_name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
     //   //   try {
