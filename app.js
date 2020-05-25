@@ -53,8 +53,6 @@ db.connect((err) => {
 
 const app = express().use(body_parser.json());
 
-// Dictionary of user_id to items they are searching
-let user_id_dic = {};
 let start_time;
 // Delay in seconds
 let delay = 10;
@@ -187,12 +185,24 @@ app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
 
 async function handleAllURLs() {
 
-  let stmt = 'SELECT * FROM items';
+  // Set start time
+  start_time = new Date();
+  var date = (start_time.getMonth() + 1) + '/' + start_time.getDate() + '/' + start_time.getFullYear();
+  var time = start_time.toLocaleString('en-US',
+    {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    });
+  start_time = time + ' EST ' + date;
 
+  // Select all items to search for
+  let stmt = 'SELECT * FROM items';
   db.query(stmt, async (err, item_results, fields) => {
     if (err) throw err;
     item_results.forEach(async (item) => {
-
+      // Get data from item url
       let data = await getDataFromURL(item);
       let item_str = "";
       let write_item_str = "";
@@ -201,24 +211,24 @@ async function handleAllURLs() {
       let item_full_name = item['full_name'];
 
       // Loop through each item on page
-      data.forEach((item) => {
+      data.forEach((single_item) => {
         var avail = decodeURI('\u2705');
 
         // Check if data returned is empty
-        if (Object.keys(item).length == 0) {
+        if (Object.keys(single_item).length == 0) {
           return;
         }
 
         // Out of stock
-        if (item['in_stock'].indexOf("Notify Me") >= 0 || item['in_stock'].indexOf("Out of Stock") >= 0) { // Cross emoji
+        if (single_item['in_stock'].indexOf("Notify Me") >= 0 || single_item['in_stock'].indexOf("Out of Stock") >= 0) { // Cross emoji
           avail = decodeURI('\u274C');
         }
         // In stock
         else { // Check emoji
           avail = decodeURI('\u2705');
           in_stock_count += 1;
-          write_item_str += item['name'] + " " + avail + ", "
-          item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
+          write_item_str += single_item['name'] + " " + avail + ", "
+          item_str += single_item['name'] + "\n" + single_item['price'] + "\nIn stock: " + avail + "\n \n"
         }
         //item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
       })
@@ -261,7 +271,7 @@ async function handleAllURLs() {
               "text":
                 `FIRST CHECK: "${item_name}"\n` +
                 `Match found for: "${item_full_name}".\n` +
-                `Currently searching ${item_limit} items` +
+                `Currently searching ${search_results.length}/${item_limit} items` +
                 "\n\n" + item_str +
                 `First initial check on ${dateTime}\n` +
                 `You will be notified everytime there is a change in stock.\n` +
@@ -308,11 +318,8 @@ async function handleAllURLs() {
             console.log(`MySql db: restock`);
           });
         }
-
       });
-
     })
-
   });
 
 
@@ -321,10 +328,10 @@ async function handleAllURLs() {
 // Parses HTML from URL and returns data structure containing relevent data
 async function getDataFromURL(item) {
   var item_link = item['link'];
+  var item_type = item['link_type'];
   try {
     let response = await axios.get(item_link);
     let redirect_count = response.request._redirectable._redirectCount;
-    var item_type = item['link_type'];
 
     // console.log("Looking for: " + item['short_name']);
     // console.log("Web scraping data from: " + item_link);
@@ -413,25 +420,6 @@ function handleMessage(sender_psid, received_message) {
     var rec_msg = received_message.text.toLowerCase();
     let item_full_name = rec_msg;
 
-    // Checks if user is in dict, if not creates entry
-    if (!(sender_psid in user_id_dic)) {
-      user_id_dic[sender_psid] = { 'products': {}, 'start-date': {}, 'intervals': [] };
-    }
-
-    // Set start time
-    if (Object.keys(user_id_dic).length == 1) {
-      start_time = new Date();
-      var date = (start_time.getMonth() + 1) + '/' + start_time.getDate() + '/' + start_time.getFullYear();
-      var time = start_time.toLocaleString('en-US',
-        {
-          hour: 'numeric',
-          minute: 'numeric',
-          second: 'numeric',
-          hour12: true
-        });
-      start_time = time + ' EST ' + date;
-    }
-
     // Help message
     if (rec_msg === "help") {
 
@@ -504,47 +492,15 @@ function handleMessage(sender_psid, received_message) {
         if (err) throw err;
         let stop_string = `STOP MSG:\n` +
           `Stopped checking ${results.affectedRows} item(s):\n\n`;
-
         stop_string += deleted_str;
-
         let response = {
           "text": stop_string
         };
-
         callSendAPI(sender_psid, response);
       });
-
-
-      user_id_dic[sender_psid]['intervals'].forEach(clearInterval);
-      // var search_item_str = "";
-      // for (var key in user_id_dic[sender_psid]['products']) {
-      //   delete search_urls[key]['sender_ids'][sender_psid];
-      //   search_item_str += search_urls[key]['product_name'] +
-      //     "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
-      // }
-      // response = {
-      //   "text": `STOP MSG:\n` +
-      //     `Stopped checking ${Object.keys(user_id_dic[sender_psid]['products']).length} item(s):\n\n` +
-      //     search_item_str
-      // };
-      user_id_dic[sender_psid]['intervals'] = [];
-      user_id_dic[sender_psid]['products'] = {};
-      delete user_id_dic[sender_psid];
-
       return;
     }
 
-    // User message is invalid
-    // if (!(rec_msg in search_urls)) {
-    //   response = {
-    //     "text": `INVALID\nYou entered: "${
-    //       received_message.text
-    //       }".` + "\n\n" +
-    //       "Item doesn't exist\nTry typing `help` for a list of all valid commands"
-    //   };
-    //   callSendAPI(sender_psid, response);
-    //   return;
-    // }
 
     // Check for invalid items
     let stmt = `SELECT * FROM items WHERE short_name=?`;
@@ -579,11 +535,7 @@ function handleMessage(sender_psid, received_message) {
         return;
       }
     });
-  
-    // Check if sender_psid is in dic for url
-    // if (!(sender_psid in search_urls[rec_msg]['sender_ids'])) {
-    //   search_urls[rec_msg]['sender_ids'][sender_psid] = 0;
-    // }
+
     stmt = `INSERT INTO searches (user_id, item_name, item_full_name, start_time, count)
                VALUES (?, ?, ?, ?, ?)`;
     todo = [sender_psid, rec_msg, rec_msg, new Date(), 0];
