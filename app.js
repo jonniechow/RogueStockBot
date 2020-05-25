@@ -102,10 +102,23 @@ app.get('/current-items', (req, res) => {
 });
 
 app.get('/stock-updates', (req, res) => {
-  let stmt = `SELECT * FROM restock`;
+  let stmt = `SELECT * FROM restock ORDER BY restock_id DESC`;
+  let data_results = [];
   db.query(stmt, (err, results, fields) => {
     if (err) throw err;
-    res.render('stock-updates', { data: results });
+    results.forEach((row) => {
+      let restock_string = row['restock_string'];
+      let str_split = restock_string.split(',');
+      let new_row = {};
+      new_row['restock_id'] = row['restock_id'];
+      new_row['restock_time'] = row['restock_time'];
+      new_row['full_name'] = row['full_name'];
+      new_row['restock_string'] = str_split;
+      new_row['link'] = row['link'];
+      data_results.push(new_row);
+    })
+    console.log(data_results)
+    res.render('stock-updates', { data: data_results });
   })
 
 });

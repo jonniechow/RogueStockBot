@@ -76,7 +76,9 @@
                                         <td><%=entry.restock_time%></td>
                                         <td><%=entry.full_name%></td>
                                         <td>
-                                            <%=entry.restock_string%>
+                                            <% entry.restock_string.forEach((item)=>{%>
+                                                <p><%=item%></p>
+                                            <%});%>
                                         </td>
                                         <td>
                                             <a href="<%=entry.link%>" target="_blank">Link</a>
