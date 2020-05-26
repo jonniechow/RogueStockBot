@@ -206,9 +206,12 @@ async function handleAllURLs() {
       let data = await getDataFromURL(item);
       let item_str = "";
       let write_item_str = "";
+      // Stock count of current search
       let in_stock_count = 0;
+      // Stock count of item previously in DB
       let prev_stock_count = item['stock_count'];
       let item_full_name = item['full_name'];
+      let item_short_name = item['short_name'];
 
       // Loop through each item on page
       data.forEach((single_item) => {
@@ -255,7 +258,7 @@ async function handleAllURLs() {
 
       // SQL gets all searches with this item_name
       stmt = `SELECT * FROM searches WHERE item_name=?`;
-      let args = item['short_name'];
+      let args = [item_short_name];
 
       db.query(stmt, [args], (err, search_results, fields) => {
         if (err) throw err;
@@ -278,7 +281,7 @@ async function handleAllURLs() {
                 `Will begin running in the background until "stop"\n` +
                 `Link: ${item['link']}`
             };
-            // SQL updates count to 1
+            // SQL updates searches count to 1
             stmt = `UPDATE searches SET count=? WHERE user_id=? AND item_name=?`;
             args = [1, user_id, item_name]
             db.query(stmt, args, (err, results, fields) => {
@@ -301,9 +304,18 @@ async function handleAllURLs() {
             callSendAPI(user_id, response);
           }
         });
-        args = [dateTime, item_full_name, write_item_str, item['link']];
+
+        // SQL updates item stock count to current stock count
+        stmt = `UPDATE items SET stock_count=? WHERE short_name=?`;
+        args = [in_stock_count, item_short_name];
+        db.query(stmt, args, (err, results, fields) => {
+          if (err) throw err;
+        });
+        
+        // Add items to restock log
         stmt = `INSERT INTO restock(restock_time, full_name, restock_string, link)
                 VALUES(?,?,?,?)`;
+        args = [dateTime, item_full_name, write_item_str, item['link']];
         // Item was in stock but is now out of stock
         if (prev_stock_count > 0 && in_stock_count == 0) {
           db.query(stmt, args, (err, results, fields) => {
@@ -311,8 +323,8 @@ async function handleAllURLs() {
             console.log(`MySql db: out of stock`);
           });
         }
-        // Item is in stock
-        else if (in_stock_count != 0 && write_item_str != "") {
+        // Difference in stock count
+        else if (in_stock_count != prev_stock_count) {
           db.query(stmt, args, (err, results, fields) => {
             if (err) throw err;
             console.log(`MySql db: restock`);
