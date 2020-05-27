@@ -453,7 +453,8 @@ async function handleMessage(sender_psid, received_message) {
         })
         response = {
           "text": `HELP MSG:\n` +
-            `Search for the following items: \n\n${all_items_str} \n` +
+            `For commands check out\n` +
+            `roguestockbot.com/current-items \n` +
             "Type `stop` to stop checking all items \n"
         };
         callSendAPI(sender_psid, response);
