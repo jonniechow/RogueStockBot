@@ -256,10 +256,12 @@ async function handleAllURLs() {
         });
       var dateTime = time + ' EST ' + date;
 
-
-
       // SQL gets all searches with this item_name
-      stmt = `SELECT * FROM searches WHERE item_name=?`;
+      stmt = `SELECT C.num_searches, S.* FROM searches S, 
+              (SELECT COUNT(*) num_searches 
+              FROM searches
+              GROUP BY user_id) C
+              WHERE item_name=?`;
       let args = [item_short_name];
 
       db.query(stmt, [args], (err, search_results, fields) => {
@@ -270,13 +272,14 @@ async function handleAllURLs() {
           let user_id = user['user_id'];
           let item_name = user['item_name'];
           let count = user['count'];
+          let item_count = user['num_searches'];
           // First message
           if (count == 0) {
             let response = {
               "text":
                 `FIRST CHECK: "${item_name}"\n` +
                 `Match found for: "${item_full_name}".\n` +
-                `Currently searching ${search_results.length}/${item_limit} items` +
+                `Currently searching ${item_count}/${item_limit} items` +
                 "\n\n" + item_str +
                 `First initial check on ${dateTime}\n` +
                 `You will be notified everytime there is a change in stock.\n` +
@@ -335,8 +338,6 @@ async function handleAllURLs() {
       });
     })
   });
-
-
 }
 
 // Parses HTML from URL and returns data structure containing relevent data
