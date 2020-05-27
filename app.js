@@ -78,8 +78,6 @@ app.listen('3000', () => {
 
 });
 
-
-
 // Home screen page
 app.get('/', (req, res) => {
   res.render('index');
@@ -426,7 +424,7 @@ function getTimeDiff(start_time) {
 
   // remove hours from the date
   time_elapsed = Math.floor(time_elapsed / 24);
-  var time_elapsed_str = hours + ":" + minutes + ":" + seconds;
+  var time_elapsed_str = `${time_elapsed} days ${hours}:${minutes}:${seconds}`;
   return time_elapsed_str;
 }
 
