@@ -558,17 +558,22 @@ async function handleMessage(sender_psid, received_message) {
                VALUES (?, ?, ?, ?, ?)`;
     todo = [sender_psid, rec_msg, item_full_name, new Date(), 0];
     db.query(stmt, todo, (err, results, fields) => {
-      // Check if item is already being searched for user
-      if (err.code == "ER_DUP_ENTRY") {
-        response = {
-          "text": `INVALID\nAlready searching: "${
-            item_full_name
-            }".`
-        };
-        callSendAPI(sender_psid, response);
-        return;
+      if (err) {
+        // Check if item is already being searched for user
+        if (err.code == "ER_DUP_ENTRY") {
+          response = {
+            "text": `INVALID\nAlready searching: "${
+              item_full_name
+              }".`
+          };
+          callSendAPI(sender_psid, response);
+          return;
+        }
+        // Other errors
+        else {
+          throw err;
+        }
       }
-      else if (err) throw err;
     });
   }
 
