@@ -543,39 +543,38 @@ async function handleMessage(sender_psid, received_message) {
     // Check for item limit
     stmt = `SELECT * FROM searches WHERE user_id=?`;
     todo = [sender_psid];
-    db.query(stmt, todo, (err, results, fields) => {
-      if (err) throw err;
-      console.log(results);
-      if (results.length >= item_limit) {
-        response = {
-          "text": `INVALID\nYou have reached max limit of "${item_limit}" items\n`
-        };
-        callSendAPI(sender_psid, response);
-        return;
-      }
-    });
+    const search_results = await query(stmt, todo);
+    if (search_results.length >= item_limit) {
+      response = {
+        "text": `INVALID\nYou have reached max limit of "${item_limit}" items\n`
+      };
+      callSendAPI(sender_psid, response);
+      return;
+    }
+
 
     stmt = `INSERT INTO searches (user_id, item_name, item_full_name, start_time, count)
                VALUES (?, ?, ?, ?, ?)`;
     todo = [sender_psid, rec_msg, item_full_name, new Date(), 0];
-    db.query(stmt, todo, (err, results, fields) => {
-      if (err) {
-        // Check if item is already being searched for user
-        if (err.code == "ER_DUP_ENTRY") {
-          response = {
-            "text": `INVALID\nAlready searching: "${
-              item_full_name
-              }".`
-          };
-          callSendAPI(sender_psid, response);
-          return;
-        }
-        // Other errors
-        else {
-          throw err;
-        }
+    try {
+      await query(stmt, todo);
+    }
+    catch (err) {
+      // Check if item is already being searched for user
+      if (err.code == "ER_DUP_ENTRY") {
+        response = {
+          "text": `INVALID\nAlready searching: "${
+            item_full_name
+            }".`
+        };
+        callSendAPI(sender_psid, response);
+        return;
       }
-    });
+      // Other errors
+      else {
+        throw err;
+      }
+    }
   }
 
   // Send the response message
