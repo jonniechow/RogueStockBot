@@ -346,18 +346,6 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Echo Squat Stand 2.0',
         "link": "https://www.roguefitness.com/rogue-echo-squat-stand-2-0"
     },
-    "yoke y1": {
-        "type": "multi",
-        "sender_ids": {},
-        'product_name': 'Y-1 Rogue Yoke',
-        "link": "https://www.roguefitness.com/rogue-yoke"
-    },
-    "yoke y2": {
-        "type": "multi",
-        "sender_ids": {},
-        'product_name': 'Y-2 Rogue Yoke', 
-        "link": "https://www.roguefitness.com/y2-yoke"
-    },
     // Racks
     "rack rml-390f": {
         "type": "multi",

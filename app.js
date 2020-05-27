@@ -31,6 +31,7 @@ const request = require('request'),
   fs = require('fs'),
   readline = require('readline'),
   stream = require('stream'),
+  util = require('util'),
 
   search_urls = require('./item-urls'),
   useless_items = require('./useless-items')
@@ -52,6 +53,7 @@ db.connect((err) => {
 })
 
 const app = express().use(body_parser.json());
+const query = util.promisify(db.query).bind(db);
 
 let start_time;
 // Delay in seconds
@@ -311,7 +313,7 @@ async function handleAllURLs() {
         db.query(stmt, args, (err, results, fields) => {
           if (err) throw err;
         });
-        
+
         // Add items to restock log
         stmt = `INSERT INTO restock(restock_time, full_name, restock_string, link)
                 VALUES(?,?,?,?)`;
@@ -423,13 +425,13 @@ function getTimeDiff(start_time) {
 }
 
 // Handles messages from sender
-function handleMessage(sender_psid, received_message) {
+async function handleMessage(sender_psid, received_message) {
   let response;
 
   // Checks if the message contains text
   if (received_message.text) {
 
-    var rec_msg = received_message.text.toLowerCase();
+    let rec_msg = received_message.text.toLowerCase();
     let item_full_name = rec_msg;
 
     // Help message
@@ -517,9 +519,8 @@ function handleMessage(sender_psid, received_message) {
     // Check for invalid items
     let stmt = `SELECT * FROM items WHERE short_name=?`;
     let todo = [rec_msg];
-    db.query(stmt, todo, (err, results, fields) => {
-      if (err) throw err;
-      console.log(results);
+    try {
+      const results = await query(stmt, todo);
       if (results.length == 0) {
         response = {
           "text": `INVALID\nYou entered: "${
@@ -530,8 +531,13 @@ function handleMessage(sender_psid, received_message) {
         callSendAPI(sender_psid, response);
         return;
       }
-      item_full_name = results[0]['full_name'];
-    });
+      else {
+        item_full_name = results[0]['full_name'];
+      }
+    }
+    catch (err) {
+      console.log(`Error in checking item database: ${err}`);
+    }
 
     // Check for item limit
     stmt = `SELECT * FROM searches WHERE user_id=?`;
@@ -550,10 +556,10 @@ function handleMessage(sender_psid, received_message) {
 
     stmt = `INSERT INTO searches (user_id, item_name, item_full_name, start_time, count)
                VALUES (?, ?, ?, ?, ?)`;
-    todo = [sender_psid, rec_msg, rec_msg, new Date(), 0];
+    todo = [sender_psid, rec_msg, item_full_name, new Date(), 0];
     db.query(stmt, todo, (err, results, fields) => {
       // Check if item is already being searched for user
-      if (err == "ER_DUP_ENTRY") {
+      if (err.code == "ER_DUP_ENTRY") {
         response = {
           "text": `INVALID\nAlready searching: "${
             item_full_name
@@ -563,7 +569,6 @@ function handleMessage(sender_psid, received_message) {
         return;
       }
       else if (err) throw err;
-      console.log(results);
     });
   }
 
