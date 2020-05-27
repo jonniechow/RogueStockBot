@@ -28,12 +28,7 @@ const request = require('request'),
   axios = require('axios'),
   cheerio = require('cheerio'),
   body_parser = require('body-parser'),
-  fs = require('fs'),
-  readline = require('readline'),
-  stream = require('stream'),
   util = require('util'),
-
-  search_urls = require('./item-urls'),
   useless_items = require('./useless-items')
 // creates express http server
 
