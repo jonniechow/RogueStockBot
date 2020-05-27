@@ -98,7 +98,12 @@ app.get('/privacy-policy', (req, res) => {
 });
 
 app.get('/current-items', (req, res) => {
-  res.render('current-items', { data: search_urls });
+  let stmt = `SELECT * FROM items`;
+  db.query(stmt, (err, results, fields) => {
+    if (err) throw err;
+    res.render('current-items', { data: results });
+  })
+
 });
 
 app.get('/stock-updates', (req, res) => {
@@ -117,7 +122,6 @@ app.get('/stock-updates', (req, res) => {
       new_row['link'] = row['link'];
       data_results.push(new_row);
     })
-    console.log(data_results)
     res.render('stock-updates', { data: data_results });
   })
 
@@ -184,6 +188,7 @@ app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
   }
 });
 
+// Functions start
 
 async function handleAllURLs() {
 
@@ -448,12 +453,11 @@ async function handleMessage(sender_psid, received_message) {
         })
         response = {
           "text": `HELP MSG:\n` +
-            `Search for the following items\n: ${all_items_str} \n` +
+            `Search for the following items: \n\n${all_items_str} \n` +
             "Type `stop` to stop checking all items \n"
         };
         callSendAPI(sender_psid, response);
       });
-
       return;
     }
     // Status message
@@ -481,7 +485,6 @@ async function handleMessage(sender_psid, received_message) {
         };
         callSendAPI(sender_psid, response);
       });
-
       return;
     }
     // Stop message
@@ -552,7 +555,7 @@ async function handleMessage(sender_psid, received_message) {
       return;
     }
 
-
+    // Insert valid search into database
     stmt = `INSERT INTO searches (user_id, item_name, item_full_name, start_time, count)
                VALUES (?, ?, ?, ?, ?)`;
     todo = [sender_psid, rec_msg, item_full_name, new Date(), 0];
