@@ -57,7 +57,6 @@ let delay = 10;
 let item_limit = 4;
 
 app.set('view engine', 'ejs');
-
 app.use(express.static(__dirname + '/views/'));
 
 

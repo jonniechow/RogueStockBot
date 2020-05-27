@@ -1,10 +1,5 @@
 USE rogue;
 
-CREATE TABLE users(
-    id BIGINT NOT NULL,
-    PRIMARY KEY (id)
-);
-
 CREATE TABLE items(
     short_name VARCHAR(30) NOT NULL,
     full_name VARCHAR(100) NOT NULL,
