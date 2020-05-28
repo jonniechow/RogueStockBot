@@ -8,6 +8,10 @@ to update myself whenever an equipment is back in stock. I encountered a communi
 on reddit r/homegym where other users faced the same problem and I decided this would
 be a great tool to help others just like me. 
 
+### Donate
+Has this project helped you? Consider donating!
+[Donate!](paypal.me/roguestockbot)
+
 ### What?
 * Search for your favorite Rogue Fitness equipment
 * Get notified whenever items are back in stock through FB messenger
