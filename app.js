@@ -40,6 +40,8 @@ require('dotenv').config();
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
+  encoding: 'utf8',
+  charset: 'utf8mb4',
   password: process.env.DB_PASS,
   database: process.env.DB_NAME
 });
@@ -507,7 +509,7 @@ async function handleMessage(sender_psid, received_message) {
       db.query(stmt, [adr], (err, results, fields) => {
         if (err) throw err;
         let status_string = `STATUS ${results.length}/${item_limit} items:\n` +
-          `There are ${total_users} total users searching\n\n` + 
+          `There are ${total_users} total users searching\n\n` +
           `Currenty searching:\n\n`;
         results.forEach((row) => {
           status_string += row['item_name'] + " / " + row['item_full_name'] +
