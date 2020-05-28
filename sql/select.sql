@@ -1,5 +1,7 @@
 SELECT * FROM `rogue`.`searches`;
 
+SELECT * FROM `rogue`.`restock`;
+
 SELECT * FROM `rogue`.`items`;
 
 DELETE FROM `rogue`.`searches` ;

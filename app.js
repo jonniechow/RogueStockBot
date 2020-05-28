@@ -29,6 +29,9 @@ const request = require('request'),
   cheerio = require('cheerio'),
   body_parser = require('body-parser'),
   util = require('util'),
+  afterLoad = require('after-load'),
+  Nightmare = require('nightmare'),
+  nightmare = Nightmare({ show: true }),
   useless_items = require('./useless-items')
 // creates express http server
 
@@ -56,7 +59,7 @@ let start_time;
 // Delay in seconds
 let delay = 10;
 // Limit of iteems
-let item_limit = 4;
+let item_limit = 10;
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/views/'));
@@ -214,28 +217,34 @@ async function handleAllURLs() {
       let item_full_name = item['full_name'];
       let item_short_name = item['short_name'];
 
-      // Loop through each item on page
-      data.forEach((single_item) => {
-        var avail = decodeURI('\u2705');
+      try {
+        // Loop through each item on page
+        data.forEach((single_item) => {
+          var avail = decodeURI('\u2705');
 
-        // Check if data returned is empty
-        if (Object.keys(single_item).length == 0) {
-          return;
-        }
+          // Check if data returned is empty
+          if (Object.keys(single_item).length == 0) {
+            return;
+          }
 
-        // Out of stock
-        if (single_item['in_stock'].indexOf("Notify Me") >= 0 || single_item['in_stock'].indexOf("Out of Stock") >= 0) { // Cross emoji
-          avail = decodeURI('\u274C');
-        }
-        // In stock
-        else { // Check emoji
-          avail = decodeURI('\u2705');
-          in_stock_count += 1;
-          write_item_str += single_item['name'] + " " + avail + ", "
-          item_str += single_item['name'] + "\n" + single_item['price'] + "\nIn stock: " + avail + "\n \n"
-        }
-        //item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
-      })
+          // Out of stock
+          if (single_item['in_stock'].indexOf("Notify Me") >= 0 || single_item['in_stock'].indexOf("Out of Stock") >= 0) { // Cross emoji
+            avail = decodeURI('\u274C');
+          }
+          // In stock
+          else { // Check emoji
+            avail = decodeURI('\u2705');
+            in_stock_count += 1;
+            write_item_str += single_item['name'] + " " + avail + ", "
+            item_str += single_item['name'] + "\n" + single_item['price'] + "\nIn stock: " + avail + "\n \n"
+          }
+          //item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
+        })
+      }
+      catch (err) {
+        console.log("Error: No items")
+      }
+
 
       // No items found, everything sold out
       if (item_str === "") {
@@ -344,12 +353,40 @@ async function getDataFromURL(item) {
   var item_link = item['link'];
   var item_type = item['link_type'];
   try {
-    let response = await axios.get(item_link);
-    let redirect_count = response.request._redirectable._redirectCount;
-
     // console.log("Looking for: " + item['short_name']);
-    // console.log("Web scraping data from: " + item_link);
+
+    let redirect_count = 0;
+
+    // let response = await axios.get(item_link);
+    // redirect_count = response.request._redirectable._redirectCount;
+    // let $ = cheerio.load(response.data);
+    // let $;
+
+    // if (item_type == "custom") {
+    //   console.log("here")
+    //   nightmare
+    //     .goto(item_link)
+    //     .wait(15000)
+    //     .evaluate(() => {
+    //       return document.body.innerHTML;
+    //     })
+    //     .end()
+    //     .then((body) => {
+    //       console.log(body);
+    //       // $ = cheerio.load(body);
+    //       // console.log($('.product-options-bottom button').text());
+    //     });
+    // }
+    // else {
+    //   let response = await axios.get(item_link);
+    //   redirect_count = response.request._redirectable._redirectCount;
+    //   $ = cheerio.load(response.data);
+    // }
+
+    let response = await axios.get(item_link);
+    redirect_count = response.request._redirectable._redirectCount;
     let $ = cheerio.load(response.data);
+
     var items = [];
 
     // Multiple items in a page
@@ -473,7 +510,8 @@ async function handleMessage(sender_psid, received_message) {
           `There are ${total_users} total users searching\n\n`;
         results.forEach((row) => {
           status_string += row['item_name'] + " / " + row['item_full_name'] +
-            "\nTime elapsed: " + getTimeDiff(row['start_time']) + "\n\n";
+            "\nTime elapsed: " + getTimeDiff(row['start_time']) + "\n\n"  + 
+            `If this bot has helped you get your items please consider donating!\n paypal.me/roguestockbot`;
         });
         let response = {
           "text": status_string
