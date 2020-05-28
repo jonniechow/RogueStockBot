@@ -20,7 +20,7 @@
  */
 
 'use strict';
-const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require('request'),
   mysql = require('mysql'),
@@ -140,7 +140,6 @@ app.post('/webhook', (req, res) => { // Parse the request body from the POST
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
       console.log(`---MESSAGE RECEIVED FROM ${sender_psid}---`);
-      console.log(`${webhook_event.message.text}\n`);
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhook_event.message) {
@@ -483,8 +482,7 @@ async function handleMessage(sender_psid, received_message) {
         })
         response = {
           "text": `HELP MSG:\n` +
-            `For commands check out\n` +
-            `roguestockbot.com/current-items \n` +
+            `${all_items_str}\n` +
             "Type `stop` to stop checking all items \n"
         };
         callSendAPI(sender_psid, response);
