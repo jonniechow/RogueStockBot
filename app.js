@@ -263,11 +263,13 @@ async function handleAllURLs() {
       var dateTime = time + ' EST ' + date;
 
       // SQL gets all searches with this item_name
-      stmt = `SELECT C.num_searches, S.* FROM searches S,
-              (SELECT COUNT(*) num_searches
-              FROM searches
-              GROUP BY user_id) C
-              WHERE item_name=?`;
+      stmt = `SELECT S2.num_searches, S1.* FROM
+      (SELECT * FROM searches WHERE item_name=?) AS S1
+      JOIN
+      (SELECT COUNT(*) num_searches, user_id
+                    FROM searches
+                    GROUP BY user_id) AS S2
+      ON S1.user_id = S2.user_id;`;
       let args = [item_short_name];
 
       db.query(stmt, [args], (err, search_results, fields) => {
@@ -313,7 +315,7 @@ async function handleAllURLs() {
                 "Checked On " + dateTime + "\n" +
                 `Link: ${item['link']}`
             };
-            console.log(`RESTOCK: ${item_name}` )
+            console.log(`RESTOCK: ${item_name}`)
             callSendAPI(user_id, response);
           }
         });
