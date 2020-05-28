@@ -10,7 +10,8 @@ be a great tool to help others just like me.
 
 ### Donate
 Has this project helped you? Consider donating!
-[Donate!](paypal.me/roguestockbot)
+
+[Donate!](https:/paypal.me/roguestockbot)
 
 ### What?
 * Search for your favorite Rogue Fitness equipment
