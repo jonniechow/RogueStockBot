@@ -265,8 +265,8 @@ async function handleAllURLs() {
       var dateTime = time + ' EST ' + date;
 
       // SQL gets all searches with this item_name
-      stmt = `SELECT C.num_searches, S.* FROM searches S, 
-              (SELECT COUNT(*) num_searches 
+      stmt = `SELECT C.num_searches, S.* FROM searches S,
+              (SELECT COUNT(*) num_searches
               FROM searches
               GROUP BY user_id) C
               WHERE item_name=?`;
@@ -507,12 +507,13 @@ async function handleMessage(sender_psid, received_message) {
       db.query(stmt, [adr], (err, results, fields) => {
         if (err) throw err;
         let status_string = `STATUS ${results.length}/${item_limit} items:\n` +
-          `There are ${total_users} total users searching\n\n`;
+          `There are ${total_users} total users searching\n\n` + 
+          `Currenty searching:\n\n`;
         results.forEach((row) => {
           status_string += row['item_name'] + " / " + row['item_full_name'] +
-            "\nTime elapsed: " + getTimeDiff(row['start_time']) + "\n\n"  + 
-            `If this bot has helped you get your items please consider donating!\n paypal.me/roguestockbot`;
+            `\nTime elapsed: ${getTimeDiff(row['start_time'])}\n\n`;
         });
+        status_string += `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`;
         let response = {
           "text": status_string
         };
@@ -551,7 +552,6 @@ async function handleMessage(sender_psid, received_message) {
       });
       return;
     }
-
 
     // Check for invalid items
     let stmt = `SELECT * FROM items WHERE short_name=?`;
