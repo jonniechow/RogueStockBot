@@ -8,6 +8,11 @@ to update myself whenever an equipment is back in stock. I encountered a communi
 on reddit r/homegym where other users faced the same problem and I decided this would
 be a great tool to help others just like me. 
 
+### Donate
+Has this project helped you? Consider donating!
+
+[Donate!](https://paypal.me/roguestockbot)
+
 ### What?
 * Search for your favorite Rogue Fitness equipment
 * Get notified whenever items are back in stock through FB messenger
@@ -17,6 +22,13 @@ be a great tool to help others just like me.
 ![result](/views/images/home-demo.png)
 
 ### Updates
+v 2.0
+* No longer forgets searches, migrated to MySQL Database
+* Increased item limit to 10
+* Stock updates loads should load instantly now
+* Bot speed in responses is more quick and reliable
+* Added days into date
+
 v 1.2
 * Fixed bug where some pages did not correctly indicate they were in stock
 
