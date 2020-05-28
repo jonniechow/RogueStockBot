@@ -17,6 +17,13 @@ be a great tool to help others just like me.
 ![result](/views/images/home-demo.png)
 
 ### Updates
+v 2.0
+* No longer forgets searches, migrated to MySQL Database
+* Increased item limit to 10
+* Stock updates loads should load instantly now
+* Bot speed in responses is more quick and reliable
+* Added days into date
+
 v 1.2
 * Fixed bug where some pages did not correctly indicate they were in stock
 
