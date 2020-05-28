@@ -298,6 +298,7 @@ async function handleAllURLs() {
             db.query(stmt, args, (err, results, fields) => {
               if (err) throw err;
             });
+            console.log(`FIRST CHECK: ${item_name}`)
             callSendAPI(user_id, response);
           }
           // Change in stock count
@@ -312,6 +313,7 @@ async function handleAllURLs() {
                 "Checked On " + dateTime + "\n" +
                 `Link: ${item['link']}`
             };
+            console.log(`RESTOCK: ${item_name}` )
             callSendAPI(user_id, response);
           }
         });
@@ -655,7 +657,7 @@ function callSendAPI(sender_psid, response) { // Construct the message body
     },
     (err, res, body) => {
       if (!err) {
-        console.log(`---MESSAGE SENT TO ${sender_psid}---\n`);
+        console.log(`---MESSAGE SENT TO ${sender_psid}---`);
       }
       else {
         console.error("Unable to send message:" + err);
