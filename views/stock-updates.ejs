@@ -71,12 +71,12 @@
                                 </tr>
                             </thead>
                             <tbody id="data_from_log">
-                                <% data.item_info.forEach((entry)=>{%>
+                                <% data.forEach((entry)=>{%>
                                     <tr>
-                                        <td><%=entry.time%></td>
-                                        <td><%=entry.name%></td>
+                                        <td><%=entry.restock_time%></td>
+                                        <td><%=entry.full_name%></td>
                                         <td>
-                                            <% entry.items.forEach((item)=>{%>
+                                            <% entry.restock_string.forEach((item)=>{%>
                                                 <p><%=item%></p>
                                             <%});%>
                                         </td>
