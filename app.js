@@ -20,7 +20,7 @@
  */
 
 'use strict';
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require('request'),
   mysql = require('mysql'),
@@ -50,9 +50,8 @@ db.connect((err) => {
   if (err) {
     throw err;
   }
-  console.log("MySQL Connected")
-
-})
+  console.log("MySQL Connected");
+});
 
 const app = express().use(body_parser.json());
 const query = util.promisify(db.query).bind(db);
@@ -68,7 +67,7 @@ app.use(express.static(__dirname + '/views/'));
 
 
 // Sets server port and logs message on success
-app.listen('3000', () => {
+app.listen(process.env.PORT, () => {
   console.log('webhook is listening');
   try {
     setInterval(handleAllURLs, delay * 1000);
@@ -136,14 +135,12 @@ app.post('/webhook', (req, res) => { // Parse the request body from the POST
 
     body.entry.forEach(function (entry) { // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
-      console.log("---MESSAGE RECEIVED---");
-      console.log(webhook_event);
-
+      // console.log(webhook_event);
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
-      console.log('Sender ID: ' + sender_psid + "\n");
-
+      console.log(`---MESSAGE RECEIVED FROM ${sender_psid}---`);
+      console.log(`${webhook_event.message.text}\n`);
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhook_event.message) {
@@ -335,14 +332,14 @@ async function handleAllURLs() {
         if (prev_stock_count > 0 && in_stock_count == 0) {
           db.query(stmt, args, (err, results, fields) => {
             if (err) throw err;
-            console.log(`MySql db: out of stock`);
+            console.log(`MySql db: out of stock for ${item_short_name}`);
           });
         }
         // Difference in stock count
         else if (in_stock_count != prev_stock_count) {
           db.query(stmt, args, (err, results, fields) => {
             if (err) throw err;
-            console.log(`MySql db: restock`);
+            console.log(`MySql db: restock ${item_short_name}`);
           });
         }
       });
@@ -660,7 +657,7 @@ function callSendAPI(sender_psid, response) { // Construct the message body
     },
     (err, res, body) => {
       if (!err) {
-        console.log('---MESSAGE SENT!---\n');
+        console.log(`---MESSAGE SENT TO ${sender_psid}---\n`);
       }
       else {
         console.error("Unable to send message:" + err);
