@@ -4,10 +4,10 @@
 <!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html lang="en" class="ie9"> <![endif]-->
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"VgcCWVdUGwAEUlBSDwI=",licenseKey:"776f0c0f83",applicationID:"3461083"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o||e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(t,e,n){function r(t){try{s.console&&console.log(t)}catch(e){}}var o,i=t("ee"),a=t(25),s={};try{o=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,o.indexOf("dev")!==-1&&(s.dev=!0),o.indexOf("nr_dev")!==-1&&(s.nrDev=!0))}catch(c){}s.nrDev&&i.on("internal-error",function(t){r(t.stack)}),s.dev&&i.on("fn-err",function(t,e,n){r(n.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,s){try{l?l-=1:o(s||new UncaughtException(t,e,n),!0)}catch(f){try{i("ierr",[f,c.now(),!0])}catch(d){}}return"function"==typeof u&&u.apply(this,a(arguments))}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function o(t,e){var n=e?null:c.now();i("err",[t,n])}var i=t("handle"),a=t(26),s=t("ee"),c=t("loader"),f=t("gos"),u=window.onerror,d=!1,p="nr@seenError",l=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(h){"stack"in h&&(t(13),t(12),"addEventListener"in window&&t(6),c.xhrWrappable&&t(14),d=!0)}s.on("fn-start",function(t,e,n){d&&(l+=1)}),s.on("fn-err",function(t,e,n){d&&!n[p]&&(f(n,p,function(){return!0}),this.thrown=!0,o(n))}),s.on("fn-end",function(){d&&!this.thrown&&l>0&&(l-=1)}),s.on("internal-error",function(t){i("ierr",[t,c.now(),!0])})},{}],3:[function(t,e,n){t("loader").features.ins=!0},{}],4:[function(t,e,n){function r(){L++,C=g.hash,this[u]=y.now()}function o(){L--,g.hash!==C&&i(0,!0);var t=y.now();this[h]=~~this[h]+t-this[u],this[d]=t}function i(t,e){E.emit("newURL",[""+g,e])}function a(t,e){t.on(e,function(){this[e]=y.now()})}var s="-start",c="-end",f="-body",u="fn"+s,d="fn"+c,p="cb"+s,l="cb"+c,h="jsTime",m="fetch",v="addEventListener",w=window,g=w.location,y=t("loader");if(w[v]&&y.xhrWrappable){var x=t(10),b=t(11),E=t(8),O=t(6),R=t(13),P=t(7),T=t(14),N=t(9),M=t("ee"),S=M.get("tracer");t(16),y.features.spa=!0;var C,L=0;M.on(u,r),M.on(p,r),M.on(d,o),M.on(l,o),M.buffer([u,d,"xhr-done","xhr-resolved"]),O.buffer([u]),R.buffer(["setTimeout"+c,"clearTimeout"+s,u]),T.buffer([u,"new-xhr","send-xhr"+s]),P.buffer([m+s,m+"-done",m+f+s,m+f+c]),E.buffer(["newURL"]),x.buffer([u]),b.buffer(["propagate",p,l,"executor-err","resolve"+s]),S.buffer([u,"no-"+u]),N.buffer(["new-jsonp","cb-start","jsonp-error","jsonp-end"]),a(T,"send-xhr"+s),a(M,"xhr-resolved"),a(M,"xhr-done"),a(P,m+s),a(P,m+"-done"),a(N,"new-jsonp"),a(N,"jsonp-end"),a(N,"cb-start"),E.on("pushState-end",i),E.on("replaceState-end",i),w[v]("hashchange",i,!0),w[v]("load",i,!0),w[v]("popstate",function(){i(0,L>1)},!0)}},{}],5:[function(t,e,n){function r(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var o=t("ee"),i=t("handle"),a=t(13),s=t(12),c="learResourceTimings",f="addEventListener",u="resourcetimingbufferfull",d="bstResource",p="resource",l="-start",h="-end",m="fn"+l,v="fn"+h,w="bstTimer",g="pushState",y=t("loader");y.features.stn=!0,t(8),"addEventListener"in window&&t(6);var x=NREUM.o.EV;o.on(m,function(t,e){var n=t[0];n instanceof x&&(this.bstStart=y.now())}),o.on(v,function(t,e){var n=t[0];n instanceof x&&i("bst",[n,e,this.bstStart,y.now()])}),a.on(m,function(t,e,n){this.bstStart=y.now(),this.bstType=n}),a.on(v,function(t,e){i(w,[e,this.bstStart,y.now(),this.bstType])}),s.on(m,function(){this.bstStart=y.now()}),s.on(v,function(t,e){i(w,[e,this.bstStart,y.now(),"requestAnimationFrame"])}),o.on(g+l,function(t){this.time=y.now(),this.startPath=location.pathname+location.hash}),o.on(g+h,function(t){i("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),f in window.performance&&(window.performance["c"+c]?window.performance[f](u,function(t){i(d,[window.performance.getEntriesByType(p)]),window.performance["c"+c]()},!1):window.performance[f]("webkit"+u,function(t){i(d,[window.performance.getEntriesByType(p)]),window.performance["webkitC"+c]()},!1)),document[f]("scroll",r,{passive:!0}),document[f]("keypress",r,!1),document[f]("click",r,!1)}},{}],6:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&o(e)}function o(t){s.inPlace(t,[u,d],"-",i)}function i(t,e){return t[1]}var a=t("ee").get("events"),s=t("wrap-function")(a,!0),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(o(window),o(f.prototype)),a.on(u+"-start",function(t,e){var n=t[1],r=c(n,"nr@wrapped",function(){function t(){if("function"==typeof n.handleEvent)return n.handleEvent.apply(n,arguments)}var e={object:t,"function":n}[typeof n];return e?s(e,"fn-",null,e.name||"anonymous"):n});this.wrapped=t[1]=r}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],7:[function(t,e,n){function r(t,e,n){var r=t[e];"function"==typeof r&&(t[e]=function(){var t=i(arguments),e={};o.emit(n+"before-start",[t],e);var a;e[m]&&e[m].dt&&(a=e[m].dt);var s=r.apply(this,t);return o.emit(n+"start",[t,a],s),s.then(function(t){return o.emit(n+"end",[null,t],s),t},function(t){throw o.emit(n+"end",[t],s),t})})}var o=t("ee").get("fetch"),i=t(26),a=t(25);e.exports=o;var s=window,c="fetch-",f=c+"body-",u=["arrayBuffer","blob","json","text","formData"],d=s.Request,p=s.Response,l=s.fetch,h="prototype",m="nr@context";d&&p&&l&&(a(u,function(t,e){r(d[h],e,f),r(p[h],e,f)}),r(s,"fetch",c),o.on(c+"end",function(t,e){var n=this;if(e){var r=e.headers.get("content-length");null!==r&&(n.rxSize=r),o.emit(c+"done",[null,e],n)}else o.emit(c+"done",[t],n)}))},{}],8:[function(t,e,n){var r=t("ee").get("history"),o=t("wrap-function")(r);e.exports=r;var i=window.history&&window.history.constructor&&window.history.constructor.prototype,a=window.history;i&&i.pushState&&i.replaceState&&(a=i),o.inPlace(a,["pushState","replaceState"],"-")},{}],9:[function(t,e,n){function r(t){function e(){c.emit("jsonp-end",[],p),t.removeEventListener("load",e,!1),t.removeEventListener("error",n,!1)}function n(){c.emit("jsonp-error",[],p),c.emit("jsonp-end",[],p),t.removeEventListener("load",e,!1),t.removeEventListener("error",n,!1)}var r=t&&"string"==typeof t.nodeName&&"script"===t.nodeName.toLowerCase();if(r){var o="function"==typeof t.addEventListener;if(o){var a=i(t.src);if(a){var u=s(a),d="function"==typeof u.parent[u.key];if(d){var p={};f.inPlace(u.parent,[u.key],"cb-",p),t.addEventListener("load",e,!1),t.addEventListener("error",n,!1),c.emit("new-jsonp",[t.src],p)}}}}}function o(){return"addEventListener"in window}function i(t){var e=t.match(u);return e?e[1]:null}function a(t,e){var n=t.match(p),r=n[1],o=n[3];return o?a(o,e[r]):e[r]}function s(t){var e=t.match(d);return e&&e.length>=3?{key:e[2],parent:a(e[1],window)}:{key:t,parent:window}}var c=t("ee").get("jsonp"),f=t("wrap-function")(c);if(e.exports=c,o()){var u=/[?&](?:callback|cb)=([^&#]+)/,d=/(.*)\.([^.]+)/,p=/^(\w+)(\.|$)(.*)$/,l=["appendChild","insertBefore","replaceChild"];Node&&Node.prototype&&Node.prototype.appendChild?f.inPlace(Node.prototype,l,"dom-"):(f.inPlace(HTMLElement.prototype,l,"dom-"),f.inPlace(HTMLHeadElement.prototype,l,"dom-"),f.inPlace(HTMLBodyElement.prototype,l,"dom-")),c.on("dom-start",function(t){r(t[0])})}},{}],10:[function(t,e,n){var r=t("ee").get("mutation"),o=t("wrap-function")(r),i=NREUM.o.MO;e.exports=r,i&&(window.MutationObserver=function(t){return this instanceof i?new i(o(t,"fn-")):i.apply(this,arguments)},MutationObserver.prototype=i.prototype)},{}],11:[function(t,e,n){function r(t){var e=a.context(),n=s(t,"executor-",e),r=new f(n);return a.context(r).getCtx=function(){return e},a.emit("new-promise",[r,e],e),r}function o(t,e){return e}var i=t("wrap-function"),a=t("ee").get("promise"),s=i(a),c=t(25),f=NREUM.o.PR;e.exports=a,f&&(window.Promise=r,["all","race"].forEach(function(t){var e=f[t];f[t]=function(n){function r(t){return function(){a.emit("propagate",[null,!o],i),o=o||!t}}var o=!1;c(n,function(e,n){Promise.resolve(n).then(r("all"===t),r(!1))});var i=e.apply(f,arguments),s=f.resolve(i);return s}}),["resolve","reject"].forEach(function(t){var e=f[t];f[t]=function(t){var n=e.apply(f,arguments);return t!==n&&a.emit("propagate",[t,!0],n),n}}),f.prototype["catch"]=function(t){return this.then(null,t)},f.prototype=Object.create(f.prototype,{constructor:{value:r}}),c(Object.getOwnPropertyNames(f),function(t,e){try{r[e]=f[e]}catch(n){}}),a.on("executor-start",function(t){t[0]=s(t[0],"resolve-",this),t[1]=s(t[1],"resolve-",this)}),a.on("executor-err",function(t,e,n){t[1](n)}),s.inPlace(f.prototype,["then"],"then-",o),a.on("then-start",function(t,e){this.promise=e,t[0]=s(t[0],"cb-",this),t[1]=s(t[1],"cb-",this)}),a.on("then-end",function(t,e,n){this.nextPromise=n;var r=this.promise;a.emit("propagate",[r,!0],n)}),a.on("cb-end",function(t,e,n){a.emit("propagate",[n,!0],this.nextPromise)}),a.on("propagate",function(t,e,n){this.getCtx&&!e||(this.getCtx=function(){if(t instanceof Promise)var e=a.context(t);return e&&e.getCtx?e.getCtx():this})}),r.toString=function(){return""+f})},{}],12:[function(t,e,n){var r=t("ee").get("raf"),o=t("wrap-function")(r),i="equestAnimationFrame";e.exports=r,o.inPlace(window,["r"+i,"mozR"+i,"webkitR"+i,"msR"+i],"raf-"),r.on("raf-start",function(t){t[0]=o(t[0],"fn-")})},{}],13:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function o(t,e,n){this.method=n,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,n)}var i=t("ee").get("timer"),a=t("wrap-function")(i),s="setTimeout",c="setInterval",f="clearTimeout",u="-start",d="-";e.exports=i,a.inPlace(window,[s,"setImmediate"],s+d),a.inPlace(window,[c],c+d),a.inPlace(window,[f,"clearImmediate"],f+d),i.on(c+u,r),i.on(s+u,o)},{}],14:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",s)}function o(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,g,"fn-",s)}function i(t){y.push(t),h&&(b?b.then(a):v?v(a):(E=-E,O.data=E))}function a(){for(var t=0;t<y.length;t++)r([],y[t]);y.length&&(y=[])}function s(t,e){return e}function c(t,e){for(var n in t)e[n]=t[n];return e}t(6);var f=t("ee"),u=f.get("xhr"),d=t("wrap-function")(u),p=NREUM.o,l=p.XHR,h=p.MO,m=p.PR,v=p.SI,w="readystatechange",g=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],y=[];e.exports=u;var x=window.XMLHttpRequest=function(t){var e=new l(t);try{u.emit("new-xhr",[e],e),e.addEventListener(w,o,!1)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(c(l,x),x.prototype=l.prototype,d.inPlace(x.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,e){r(t,e),i(e)}),u.on("open-xhr-start",r),h){var b=m&&m.resolve();if(!v&&!m){var E=1,O=document.createTextNode(E);new h(a).observe(O,{characterData:!0})}}else f.on("fn-end",function(t){t[0]&&t[0].type===w||a()})},{}],15:[function(t,e,n){function r(t){if(!i(t))return null;var e=window.NREUM;if(!e.loader_config)return null;var n=(e.loader_config.accountID||"").toString()||null,r=(e.loader_config.agentID||"").toString()||null,s=(e.loader_config.trustKey||"").toString()||null;if(!n||!r)return null;var c=a.generateCatId(),f=a.generateCatId(),u=Date.now(),d=o(c,f,u,n,r,s);return{header:d,guid:c,traceId:f,timestamp:u}}function o(t,e,n,r,o,i){var a="btoa"in window&&"function"==typeof window.btoa;if(!a)return null;var s={v:[0,1],d:{ty:"Browser",ac:r,ap:o,id:t,tr:e,ti:n}};return i&&r!==i&&(s.d.tk=i),btoa(JSON.stringify(s))}function i(t){var e=!1,n=!1,r={};if("init"in NREUM&&"distributed_tracing"in NREUM.init&&(r=NREUM.init.distributed_tracing,n=!!r.enabled),n)if(t.sameOrigin)e=!0;else if(r.allowed_origins instanceof Array)for(var o=0;o<r.allowed_origins.length;o++){var i=s(r.allowed_origins[o]);if(t.hostname===i.hostname&&t.protocol===i.protocol&&t.port===i.port){e=!0;break}}return n&&e}var a=t(23),s=t(17);e.exports={generateTracePayload:r,shouldGenerateTrace:i}},{}],16:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<p;r++)t.removeEventListener(d[r],this.listener,!1);e.aborted||(n.duration=a.now()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==e.status&&(e.status=0):i(this,t),n.cbTime=this.cbTime,u.emit("xhr-done",[t],t),s("xhr",[e,n,this.startTime]))}}function o(t,e){var n=c(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.parsedOrigin=c(e),t.sameOrigin=t.parsedOrigin.sameOrigin}function i(t,e){t.params.status=e.status;var n=v(e,t.lastSize);if(n&&(t.metrics.rxSize=n),t.sameOrigin){var r=e.getResponseHeader("X-NewRelic-App-Data");r&&(t.params.cat=r.split(", ").pop())}t.loadCaptureCalled=!0}var a=t("loader");if(a.xhrWrappable){var s=t("handle"),c=t(17),f=t(15).generateTracePayload,u=t("ee"),d=["load","error","abort","timeout"],p=d.length,l=t("id"),h=t(21),m=t(20),v=t(18),w=window.XMLHttpRequest;a.features.xhr=!0,t(14),t(7),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,e.loadCaptureCalled=!1,t.addEventListener("load",function(n){i(e,t)},!1),h&&(h>34||h<10)||window.opera||t.addEventListener("progress",function(t){e.lastSize=t.loaded},!1)}),u.on("open-xhr-start",function(t){this.params={method:t[0]},o(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid);var n=f(this.parsedOrigin);n&&n.header&&(e.setRequestHeader("newrelic",n.header),this.dt=n)}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],o=this;if(n&&r){var i=m(r);i&&(n.txSize=i)}this.startTime=a.now(),this.listener=function(t){try{"abort"!==t.type||o.loadCaptureCalled||(o.params.aborted=!0),("load"!==t.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof e.onload))&&o.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var s=0;s<p;s++)e.addEventListener(d[s],this.listener,!1)}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+l(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+l(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("addEventListener-end",function(t,e){e instanceof w&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof w&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof w&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,e],e)}),u.on("fetch-before-start",function(t){var e,n=t[1]||{};"string"==typeof t[0]?e=t[0]:t[0]&&t[0].url&&(e=t[0].url),e&&(this.parsedOrigin=c(e),this.sameOrigin=this.parsedOrigin.sameOrigin);var r=f(this.parsedOrigin);if(r&&r.header){var o=r.header;if("string"==typeof t[0]){var i={};for(var a in n)i[a]=n[a];i.headers=new Headers(n.headers||{}),i.headers.set("newrelic",o),this.dt=r,t.length>1?t[1]=i:t.push(i)}else t[0]&&t[0].headers&&(t[0].headers.append("newrelic",o),this.dt=r)}})}},{}],17:[function(t,e,n){var r={};e.exports=function(t){if(t in r)return r[t];var e=document.createElement("a"),n=window.location,o={};e.href=t,o.port=e.port;var i=e.href.split("://");!o.port&&i[1]&&(o.port=i[1].split("/")[0].split("@").pop().split(":")[1]),o.port&&"0"!==o.port||(o.port="https"===i[0]?"443":"80"),o.hostname=e.hostname||n.hostname,o.pathname=e.pathname,o.protocol=i[0],"/"!==o.pathname.charAt(0)&&(o.pathname="/"+o.pathname);var a=!e.protocol||":"===e.protocol||e.protocol===n.protocol,s=e.hostname===document.domain&&e.port===n.port;return o.sameOrigin=a&&(!e.hostname||s),"/"===o.pathname&&(r[t]=o),o}},{}],18:[function(t,e,n){function r(t,e){var n=t.responseType;return"json"===n&&null!==e?e:"arraybuffer"===n||"blob"===n||"json"===n?o(t.response):"text"===n||"document"===n||""===n||void 0===n?o(t.responseText):void 0}var o=t(20);e.exports=r},{}],19:[function(t,e,n){function r(){}function o(t,e,n){return function(){return i(t,[f.now()].concat(s(arguments)),e?null:this,n),e?void 0:this}}var i=t("handle"),a=t(25),s=t(26),c=t("ee").get("tracer"),f=t("loader"),u=NREUM;"undefined"==typeof window.newrelic&&(newrelic=u);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],p="api-",l=p+"ixn-";a(d,function(t,e){u[e]=o(p+e,!0,"api")}),u.addPageAction=o(p+"addPageAction",!0),u.setCurrentRouteName=o(p+"routeName",!0),e.exports=newrelic,u.interaction=function(){return(new r).get()};var h=r.prototype={createTracer:function(t,e){var n={},r=this,o="function"==typeof e;return i(l+"tracer",[f.now(),t,n],r),function(){if(c.emit((o?"":"no-")+"fn-start",[f.now(),r,o],n),o)try{return e.apply(this,arguments)}catch(t){throw c.emit("fn-err",[arguments,this,t],n),t}finally{c.emit("fn-end",[f.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){h[e]=o(l+e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),i("err",[t,f.now(),!1,e])}},{}],20:[function(t,e,n){e.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}},{}],21:[function(t,e,n){var r=0,o=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);o&&(r=+o[1]),e.exports=r},{}],22:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?c("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&c("timing",["fcp",Math.floor(t.startTime)])})}function o(t,e){var n=t.getEntries();n.length>0&&c("lcp",[n[n.length-1]])}function i(t){if(t instanceof u&&!p){var e,n=Math.round(t.timeStamp);e=n>1e12?Date.now()-n:f.now()-n,p=!0,c("timing",["fi",n,{type:t.type,fid:e}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var a,s,c=t("handle"),f=t("loader"),u=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){a=new PerformanceObserver(r),s=new PerformanceObserver(o);try{a.observe({entryTypes:["paint"]}),s.observe({entryTypes:["largest-contentful-paint"]})}catch(d){}}if("addEventListener"in document){var p=!1,l=["click","keydown","mousedown","pointerdown","touchstart"];l.forEach(function(t){document.addEventListener(t,i,!1)})}}},{}],23:[function(t,e,n){function r(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var o,i="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",a="",s=0;s<i.length;s++)o=i[s],"x"===o?a+=t().toString(16):"y"===o?(o=3&t()|8,a+=o.toString(16)):a+=o;return a}function o(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&Uint8Array&&(e=r.getRandomValues(new Uint8Array(31)));for(var o=[],i=0;i<16;i++)o.push(t().toString(16));return o.join("")}e.exports={generateUuid:r,generateCatId:o}},{}],24:[function(t,e,n){function r(t,e){if(!o)return!1;if(t!==o)return!1;if(!e)return!0;if(!i)return!1;for(var n=i.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var o=null,i=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var s=navigator.userAgent,c=s.match(a);c&&s.indexOf("Chrome")===-1&&s.indexOf("Chromium")===-1&&(o="Safari",i=c[1])}e.exports={agent:o,version:i,match:r}},{}],25:[function(t,e,n){function r(t,e){var n=[],r="",i=0;for(r in t)o.call(t,r)&&(n[i]=e(r,t[r]),i+=1);return n}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],26:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(o<0?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=r},{}],27:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function o(t){function e(t){return t&&t instanceof r?t:t?c(t,s,i):i()}function n(n,r,o,i){if(!p.aborted||i){t&&t(n,r,o);for(var a=e(o),s=m(n),c=s.length,f=0;f<c;f++)s[f].apply(a,r);var d=u[y[n]];return d&&d.push([x,n,r,a]),a}}function l(t,e){g[t]=m(t).concat(e)}function h(t,e){var n=g[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return g[t]||[]}function v(t){return d[t]=d[t]||o(n)}function w(t,e){f(t,function(t,n){e=e||"feature",y[n]=e,e in u||(u[e]=[])})}var g={},y={},x={on:l,addEventListener:l,removeEventListener:h,emit:n,get:v,listeners:m,context:e,buffer:w,abort:a,aborted:!1};return x}function i(){return new r}function a(){(u.api||u.feature)&&(p.aborted=!0,u=p.backlog={})}var s="nr@context",c=t("gos"),f=t(25),u={},d={},p=e.exports=o();p.backlog=u},{}],gos:[function(t,e,n){function r(t,e,n){if(o.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return t[e]=r,r}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){o.buffer([t],r),o.emit(t,e,n)}var o=t("ee").get("handle");e.exports=r,r.ee=o},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,i,function(){return o++})}var o=1,i="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!E++){var t=b.info=NREUM.info,e=l.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return u.abort();f(y,function(e,n){t[e]||(t[e]=n)}),c("mark",["onload",a()+b.offset],null,"api");var n=l.createElement("script");n.src="https://"+t.agent,e.parentNode.insertBefore(n,e)}}function o(){"complete"===l.readyState&&i()}function i(){c("mark",["domContent",a()+b.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(s=Math.max((new Date).getTime(),s))-b.offset}var s=(new Date).getTime(),c=t("handle"),f=t(25),u=t("ee"),d=t(24),p=window,l=p.document,h="addEventListener",m="attachEvent",v=p.XMLHttpRequest,w=v&&v.prototype;NREUM.o={ST:setTimeout,SI:p.setImmediate,CT:clearTimeout,XHR:v,REQ:p.Request,EV:p.Event,PR:p.Promise,MO:p.MutationObserver};var g=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-spa-1167.min.js"},x=v&&w&&w[h]&&!/CriOS/.test(navigator.userAgent),b=e.exports={offset:s,now:a,origin:g,features:{},xhrWrappable:x,userAgent:d};t(19),t(22),l[h]?(l[h]("DOMContentLoaded",i,!1),p[h]("load",r,!1)):(l[m]("onreadystatechange",o),p[m]("onload",r)),c("mark",["firstbyte",s],null,"api");var E=0,O=t(27)},{}],"wrap-function":[function(t,e,n){function r(t){return!(t&&t instanceof Function&&t.apply&&!t[a])}var o=t("ee"),i=t(26),a="nr@original",s=Object.prototype.hasOwnProperty,c=!1;e.exports=function(t,e){function n(t,e,n,o){function nrWrapper(){var r,a,s,c;try{a=this,r=i(arguments),s="function"==typeof n?n(r,a):n||{}}catch(f){p([f,"",[r,a,o],s])}u(e+"start",[r,a,o],s);try{return c=t.apply(a,r)}catch(d){throw u(e+"err",[r,a,d],s),d}finally{u(e+"end",[r,a,c],s)}}return r(t)?t:(e||(e=""),nrWrapper[a]=t,d(t,nrWrapper),nrWrapper)}function f(t,e,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<e.length;c++)s=e[c],a=t[s],r(a)||(t[s]=n(a,f?s+o:o,i,s))}function u(n,r,o){if(!c||e){var i=c;c=!0;try{t.emit(n,r,o,e)}catch(a){p([a,n,r,o])}c=i}}function d(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){p([r])}for(var o in t)s.call(t,o)&&(e[o]=t[o]);return e}function p(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=o),n.inPlace=f,n.flag=a,n}},{}]},{},["loader",2,16,5,3,4]);</script>
-<title>Rogue 28.5MM Boneyard Bars | Rogue Fitness</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"VgcCWVdUGwsBU1BUAwkP",licenseKey:"776f0c0f83",applicationID:"81716488"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o||e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(t,e,n){function r(t){try{s.console&&console.log(t)}catch(e){}}var o,i=t("ee"),a=t(25),s={};try{o=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,o.indexOf("dev")!==-1&&(s.dev=!0),o.indexOf("nr_dev")!==-1&&(s.nrDev=!0))}catch(c){}s.nrDev&&i.on("internal-error",function(t){r(t.stack)}),s.dev&&i.on("fn-err",function(t,e,n){r(n.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,s){try{l?l-=1:o(s||new UncaughtException(t,e,n),!0)}catch(f){try{i("ierr",[f,c.now(),!0])}catch(d){}}return"function"==typeof u&&u.apply(this,a(arguments))}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function o(t,e){var n=e?null:c.now();i("err",[t,n])}var i=t("handle"),a=t(26),s=t("ee"),c=t("loader"),f=t("gos"),u=window.onerror,d=!1,p="nr@seenError",l=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(h){"stack"in h&&(t(13),t(12),"addEventListener"in window&&t(6),c.xhrWrappable&&t(14),d=!0)}s.on("fn-start",function(t,e,n){d&&(l+=1)}),s.on("fn-err",function(t,e,n){d&&!n[p]&&(f(n,p,function(){return!0}),this.thrown=!0,o(n))}),s.on("fn-end",function(){d&&!this.thrown&&l>0&&(l-=1)}),s.on("internal-error",function(t){i("ierr",[t,c.now(),!0])})},{}],3:[function(t,e,n){t("loader").features.ins=!0},{}],4:[function(t,e,n){function r(){L++,C=g.hash,this[u]=y.now()}function o(){L--,g.hash!==C&&i(0,!0);var t=y.now();this[h]=~~this[h]+t-this[u],this[d]=t}function i(t,e){E.emit("newURL",[""+g,e])}function a(t,e){t.on(e,function(){this[e]=y.now()})}var s="-start",c="-end",f="-body",u="fn"+s,d="fn"+c,p="cb"+s,l="cb"+c,h="jsTime",m="fetch",v="addEventListener",w=window,g=w.location,y=t("loader");if(w[v]&&y.xhrWrappable){var x=t(10),b=t(11),E=t(8),O=t(6),R=t(13),P=t(7),T=t(14),N=t(9),M=t("ee"),S=M.get("tracer");t(16),y.features.spa=!0;var C,L=0;M.on(u,r),M.on(p,r),M.on(d,o),M.on(l,o),M.buffer([u,d,"xhr-done","xhr-resolved"]),O.buffer([u]),R.buffer(["setTimeout"+c,"clearTimeout"+s,u]),T.buffer([u,"new-xhr","send-xhr"+s]),P.buffer([m+s,m+"-done",m+f+s,m+f+c]),E.buffer(["newURL"]),x.buffer([u]),b.buffer(["propagate",p,l,"executor-err","resolve"+s]),S.buffer([u,"no-"+u]),N.buffer(["new-jsonp","cb-start","jsonp-error","jsonp-end"]),a(T,"send-xhr"+s),a(M,"xhr-resolved"),a(M,"xhr-done"),a(P,m+s),a(P,m+"-done"),a(N,"new-jsonp"),a(N,"jsonp-end"),a(N,"cb-start"),E.on("pushState-end",i),E.on("replaceState-end",i),w[v]("hashchange",i,!0),w[v]("load",i,!0),w[v]("popstate",function(){i(0,L>1)},!0)}},{}],5:[function(t,e,n){function r(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var o=t("ee"),i=t("handle"),a=t(13),s=t(12),c="learResourceTimings",f="addEventListener",u="resourcetimingbufferfull",d="bstResource",p="resource",l="-start",h="-end",m="fn"+l,v="fn"+h,w="bstTimer",g="pushState",y=t("loader");y.features.stn=!0,t(8),"addEventListener"in window&&t(6);var x=NREUM.o.EV;o.on(m,function(t,e){var n=t[0];n instanceof x&&(this.bstStart=y.now())}),o.on(v,function(t,e){var n=t[0];n instanceof x&&i("bst",[n,e,this.bstStart,y.now()])}),a.on(m,function(t,e,n){this.bstStart=y.now(),this.bstType=n}),a.on(v,function(t,e){i(w,[e,this.bstStart,y.now(),this.bstType])}),s.on(m,function(){this.bstStart=y.now()}),s.on(v,function(t,e){i(w,[e,this.bstStart,y.now(),"requestAnimationFrame"])}),o.on(g+l,function(t){this.time=y.now(),this.startPath=location.pathname+location.hash}),o.on(g+h,function(t){i("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),f in window.performance&&(window.performance["c"+c]?window.performance[f](u,function(t){i(d,[window.performance.getEntriesByType(p)]),window.performance["c"+c]()},!1):window.performance[f]("webkit"+u,function(t){i(d,[window.performance.getEntriesByType(p)]),window.performance["webkitC"+c]()},!1)),document[f]("scroll",r,{passive:!0}),document[f]("keypress",r,!1),document[f]("click",r,!1)}},{}],6:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&o(e)}function o(t){s.inPlace(t,[u,d],"-",i)}function i(t,e){return t[1]}var a=t("ee").get("events"),s=t("wrap-function")(a,!0),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(o(window),o(f.prototype)),a.on(u+"-start",function(t,e){var n=t[1],r=c(n,"nr@wrapped",function(){function t(){if("function"==typeof n.handleEvent)return n.handleEvent.apply(n,arguments)}var e={object:t,"function":n}[typeof n];return e?s(e,"fn-",null,e.name||"anonymous"):n});this.wrapped=t[1]=r}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],7:[function(t,e,n){function r(t,e,n){var r=t[e];"function"==typeof r&&(t[e]=function(){var t=i(arguments),e={};o.emit(n+"before-start",[t],e);var a;e[m]&&e[m].dt&&(a=e[m].dt);var s=r.apply(this,t);return o.emit(n+"start",[t,a],s),s.then(function(t){return o.emit(n+"end",[null,t],s),t},function(t){throw o.emit(n+"end",[t],s),t})})}var o=t("ee").get("fetch"),i=t(26),a=t(25);e.exports=o;var s=window,c="fetch-",f=c+"body-",u=["arrayBuffer","blob","json","text","formData"],d=s.Request,p=s.Response,l=s.fetch,h="prototype",m="nr@context";d&&p&&l&&(a(u,function(t,e){r(d[h],e,f),r(p[h],e,f)}),r(s,"fetch",c),o.on(c+"end",function(t,e){var n=this;if(e){var r=e.headers.get("content-length");null!==r&&(n.rxSize=r),o.emit(c+"done",[null,e],n)}else o.emit(c+"done",[t],n)}))},{}],8:[function(t,e,n){var r=t("ee").get("history"),o=t("wrap-function")(r);e.exports=r;var i=window.history&&window.history.constructor&&window.history.constructor.prototype,a=window.history;i&&i.pushState&&i.replaceState&&(a=i),o.inPlace(a,["pushState","replaceState"],"-")},{}],9:[function(t,e,n){function r(t){function e(){c.emit("jsonp-end",[],p),t.removeEventListener("load",e,!1),t.removeEventListener("error",n,!1)}function n(){c.emit("jsonp-error",[],p),c.emit("jsonp-end",[],p),t.removeEventListener("load",e,!1),t.removeEventListener("error",n,!1)}var r=t&&"string"==typeof t.nodeName&&"script"===t.nodeName.toLowerCase();if(r){var o="function"==typeof t.addEventListener;if(o){var a=i(t.src);if(a){var u=s(a),d="function"==typeof u.parent[u.key];if(d){var p={};f.inPlace(u.parent,[u.key],"cb-",p),t.addEventListener("load",e,!1),t.addEventListener("error",n,!1),c.emit("new-jsonp",[t.src],p)}}}}}function o(){return"addEventListener"in window}function i(t){var e=t.match(u);return e?e[1]:null}function a(t,e){var n=t.match(p),r=n[1],o=n[3];return o?a(o,e[r]):e[r]}function s(t){var e=t.match(d);return e&&e.length>=3?{key:e[2],parent:a(e[1],window)}:{key:t,parent:window}}var c=t("ee").get("jsonp"),f=t("wrap-function")(c);if(e.exports=c,o()){var u=/[?&](?:callback|cb)=([^&#]+)/,d=/(.*)\.([^.]+)/,p=/^(\w+)(\.|$)(.*)$/,l=["appendChild","insertBefore","replaceChild"];Node&&Node.prototype&&Node.prototype.appendChild?f.inPlace(Node.prototype,l,"dom-"):(f.inPlace(HTMLElement.prototype,l,"dom-"),f.inPlace(HTMLHeadElement.prototype,l,"dom-"),f.inPlace(HTMLBodyElement.prototype,l,"dom-")),c.on("dom-start",function(t){r(t[0])})}},{}],10:[function(t,e,n){var r=t("ee").get("mutation"),o=t("wrap-function")(r),i=NREUM.o.MO;e.exports=r,i&&(window.MutationObserver=function(t){return this instanceof i?new i(o(t,"fn-")):i.apply(this,arguments)},MutationObserver.prototype=i.prototype)},{}],11:[function(t,e,n){function r(t){var e=a.context(),n=s(t,"executor-",e),r=new f(n);return a.context(r).getCtx=function(){return e},a.emit("new-promise",[r,e],e),r}function o(t,e){return e}var i=t("wrap-function"),a=t("ee").get("promise"),s=i(a),c=t(25),f=NREUM.o.PR;e.exports=a,f&&(window.Promise=r,["all","race"].forEach(function(t){var e=f[t];f[t]=function(n){function r(t){return function(){a.emit("propagate",[null,!o],i),o=o||!t}}var o=!1;c(n,function(e,n){Promise.resolve(n).then(r("all"===t),r(!1))});var i=e.apply(f,arguments),s=f.resolve(i);return s}}),["resolve","reject"].forEach(function(t){var e=f[t];f[t]=function(t){var n=e.apply(f,arguments);return t!==n&&a.emit("propagate",[t,!0],n),n}}),f.prototype["catch"]=function(t){return this.then(null,t)},f.prototype=Object.create(f.prototype,{constructor:{value:r}}),c(Object.getOwnPropertyNames(f),function(t,e){try{r[e]=f[e]}catch(n){}}),a.on("executor-start",function(t){t[0]=s(t[0],"resolve-",this),t[1]=s(t[1],"resolve-",this)}),a.on("executor-err",function(t,e,n){t[1](n)}),s.inPlace(f.prototype,["then"],"then-",o),a.on("then-start",function(t,e){this.promise=e,t[0]=s(t[0],"cb-",this),t[1]=s(t[1],"cb-",this)}),a.on("then-end",function(t,e,n){this.nextPromise=n;var r=this.promise;a.emit("propagate",[r,!0],n)}),a.on("cb-end",function(t,e,n){a.emit("propagate",[n,!0],this.nextPromise)}),a.on("propagate",function(t,e,n){this.getCtx&&!e||(this.getCtx=function(){if(t instanceof Promise)var e=a.context(t);return e&&e.getCtx?e.getCtx():this})}),r.toString=function(){return""+f})},{}],12:[function(t,e,n){var r=t("ee").get("raf"),o=t("wrap-function")(r),i="equestAnimationFrame";e.exports=r,o.inPlace(window,["r"+i,"mozR"+i,"webkitR"+i,"msR"+i],"raf-"),r.on("raf-start",function(t){t[0]=o(t[0],"fn-")})},{}],13:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function o(t,e,n){this.method=n,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,n)}var i=t("ee").get("timer"),a=t("wrap-function")(i),s="setTimeout",c="setInterval",f="clearTimeout",u="-start",d="-";e.exports=i,a.inPlace(window,[s,"setImmediate"],s+d),a.inPlace(window,[c],c+d),a.inPlace(window,[f,"clearImmediate"],f+d),i.on(c+u,r),i.on(s+u,o)},{}],14:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",s)}function o(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,g,"fn-",s)}function i(t){y.push(t),h&&(b?b.then(a):v?v(a):(E=-E,O.data=E))}function a(){for(var t=0;t<y.length;t++)r([],y[t]);y.length&&(y=[])}function s(t,e){return e}function c(t,e){for(var n in t)e[n]=t[n];return e}t(6);var f=t("ee"),u=f.get("xhr"),d=t("wrap-function")(u),p=NREUM.o,l=p.XHR,h=p.MO,m=p.PR,v=p.SI,w="readystatechange",g=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],y=[];e.exports=u;var x=window.XMLHttpRequest=function(t){var e=new l(t);try{u.emit("new-xhr",[e],e),e.addEventListener(w,o,!1)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(c(l,x),x.prototype=l.prototype,d.inPlace(x.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,e){r(t,e),i(e)}),u.on("open-xhr-start",r),h){var b=m&&m.resolve();if(!v&&!m){var E=1,O=document.createTextNode(E);new h(a).observe(O,{characterData:!0})}}else f.on("fn-end",function(t){t[0]&&t[0].type===w||a()})},{}],15:[function(t,e,n){function r(t){if(!i(t))return null;var e=window.NREUM;if(!e.loader_config)return null;var n=(e.loader_config.accountID||"").toString()||null,r=(e.loader_config.agentID||"").toString()||null,s=(e.loader_config.trustKey||"").toString()||null;if(!n||!r)return null;var c=a.generateCatId(),f=a.generateCatId(),u=Date.now(),d=o(c,f,u,n,r,s);return{header:d,guid:c,traceId:f,timestamp:u}}function o(t,e,n,r,o,i){var a="btoa"in window&&"function"==typeof window.btoa;if(!a)return null;var s={v:[0,1],d:{ty:"Browser",ac:r,ap:o,id:t,tr:e,ti:n}};return i&&r!==i&&(s.d.tk=i),btoa(JSON.stringify(s))}function i(t){var e=!1,n=!1,r={};if("init"in NREUM&&"distributed_tracing"in NREUM.init&&(r=NREUM.init.distributed_tracing,n=!!r.enabled),n)if(t.sameOrigin)e=!0;else if(r.allowed_origins instanceof Array)for(var o=0;o<r.allowed_origins.length;o++){var i=s(r.allowed_origins[o]);if(t.hostname===i.hostname&&t.protocol===i.protocol&&t.port===i.port){e=!0;break}}return n&&e}var a=t(23),s=t(17);e.exports={generateTracePayload:r,shouldGenerateTrace:i}},{}],16:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<p;r++)t.removeEventListener(d[r],this.listener,!1);e.aborted||(n.duration=a.now()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==e.status&&(e.status=0):i(this,t),n.cbTime=this.cbTime,u.emit("xhr-done",[t],t),s("xhr",[e,n,this.startTime]))}}function o(t,e){var n=c(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.parsedOrigin=c(e),t.sameOrigin=t.parsedOrigin.sameOrigin}function i(t,e){t.params.status=e.status;var n=v(e,t.lastSize);if(n&&(t.metrics.rxSize=n),t.sameOrigin){var r=e.getResponseHeader("X-NewRelic-App-Data");r&&(t.params.cat=r.split(", ").pop())}t.loadCaptureCalled=!0}var a=t("loader");if(a.xhrWrappable){var s=t("handle"),c=t(17),f=t(15).generateTracePayload,u=t("ee"),d=["load","error","abort","timeout"],p=d.length,l=t("id"),h=t(21),m=t(20),v=t(18),w=window.XMLHttpRequest;a.features.xhr=!0,t(14),t(7),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,e.loadCaptureCalled=!1,t.addEventListener("load",function(n){i(e,t)},!1),h&&(h>34||h<10)||window.opera||t.addEventListener("progress",function(t){e.lastSize=t.loaded},!1)}),u.on("open-xhr-start",function(t){this.params={method:t[0]},o(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid);var n=f(this.parsedOrigin);n&&n.header&&(e.setRequestHeader("newrelic",n.header),this.dt=n)}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],o=this;if(n&&r){var i=m(r);i&&(n.txSize=i)}this.startTime=a.now(),this.listener=function(t){try{"abort"!==t.type||o.loadCaptureCalled||(o.params.aborted=!0),("load"!==t.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof e.onload))&&o.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var s=0;s<p;s++)e.addEventListener(d[s],this.listener,!1)}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+l(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+l(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("addEventListener-end",function(t,e){e instanceof w&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof w&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof w&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,e],e)}),u.on("fetch-before-start",function(t){var e,n=t[1]||{};"string"==typeof t[0]?e=t[0]:t[0]&&t[0].url&&(e=t[0].url),e&&(this.parsedOrigin=c(e),this.sameOrigin=this.parsedOrigin.sameOrigin);var r=f(this.parsedOrigin);if(r&&r.header){var o=r.header;if("string"==typeof t[0]){var i={};for(var a in n)i[a]=n[a];i.headers=new Headers(n.headers||{}),i.headers.set("newrelic",o),this.dt=r,t.length>1?t[1]=i:t.push(i)}else t[0]&&t[0].headers&&(t[0].headers.append("newrelic",o),this.dt=r)}})}},{}],17:[function(t,e,n){var r={};e.exports=function(t){if(t in r)return r[t];var e=document.createElement("a"),n=window.location,o={};e.href=t,o.port=e.port;var i=e.href.split("://");!o.port&&i[1]&&(o.port=i[1].split("/")[0].split("@").pop().split(":")[1]),o.port&&"0"!==o.port||(o.port="https"===i[0]?"443":"80"),o.hostname=e.hostname||n.hostname,o.pathname=e.pathname,o.protocol=i[0],"/"!==o.pathname.charAt(0)&&(o.pathname="/"+o.pathname);var a=!e.protocol||":"===e.protocol||e.protocol===n.protocol,s=e.hostname===document.domain&&e.port===n.port;return o.sameOrigin=a&&(!e.hostname||s),"/"===o.pathname&&(r[t]=o),o}},{}],18:[function(t,e,n){function r(t,e){var n=t.responseType;return"json"===n&&null!==e?e:"arraybuffer"===n||"blob"===n||"json"===n?o(t.response):"text"===n||"document"===n||""===n||void 0===n?o(t.responseText):void 0}var o=t(20);e.exports=r},{}],19:[function(t,e,n){function r(){}function o(t,e,n){return function(){return i(t,[f.now()].concat(s(arguments)),e?null:this,n),e?void 0:this}}var i=t("handle"),a=t(25),s=t(26),c=t("ee").get("tracer"),f=t("loader"),u=NREUM;"undefined"==typeof window.newrelic&&(newrelic=u);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],p="api-",l=p+"ixn-";a(d,function(t,e){u[e]=o(p+e,!0,"api")}),u.addPageAction=o(p+"addPageAction",!0),u.setCurrentRouteName=o(p+"routeName",!0),e.exports=newrelic,u.interaction=function(){return(new r).get()};var h=r.prototype={createTracer:function(t,e){var n={},r=this,o="function"==typeof e;return i(l+"tracer",[f.now(),t,n],r),function(){if(c.emit((o?"":"no-")+"fn-start",[f.now(),r,o],n),o)try{return e.apply(this,arguments)}catch(t){throw c.emit("fn-err",[arguments,this,t],n),t}finally{c.emit("fn-end",[f.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){h[e]=o(l+e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),i("err",[t,f.now(),!1,e])}},{}],20:[function(t,e,n){e.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}},{}],21:[function(t,e,n){var r=0,o=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);o&&(r=+o[1]),e.exports=r},{}],22:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?c("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&c("timing",["fcp",Math.floor(t.startTime)])})}function o(t,e){var n=t.getEntries();n.length>0&&c("lcp",[n[n.length-1]])}function i(t){if(t instanceof u&&!p){var e,n=Math.round(t.timeStamp);e=n>1e12?Date.now()-n:f.now()-n,p=!0,c("timing",["fi",n,{type:t.type,fid:e}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var a,s,c=t("handle"),f=t("loader"),u=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){a=new PerformanceObserver(r),s=new PerformanceObserver(o);try{a.observe({entryTypes:["paint"]}),s.observe({entryTypes:["largest-contentful-paint"]})}catch(d){}}if("addEventListener"in document){var p=!1,l=["click","keydown","mousedown","pointerdown","touchstart"];l.forEach(function(t){document.addEventListener(t,i,!1)})}}},{}],23:[function(t,e,n){function r(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var o,i="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",a="",s=0;s<i.length;s++)o=i[s],"x"===o?a+=t().toString(16):"y"===o?(o=3&t()|8,a+=o.toString(16)):a+=o;return a}function o(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&Uint8Array&&(e=r.getRandomValues(new Uint8Array(31)));for(var o=[],i=0;i<16;i++)o.push(t().toString(16));return o.join("")}e.exports={generateUuid:r,generateCatId:o}},{}],24:[function(t,e,n){function r(t,e){if(!o)return!1;if(t!==o)return!1;if(!e)return!0;if(!i)return!1;for(var n=i.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var o=null,i=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var s=navigator.userAgent,c=s.match(a);c&&s.indexOf("Chrome")===-1&&s.indexOf("Chromium")===-1&&(o="Safari",i=c[1])}e.exports={agent:o,version:i,match:r}},{}],25:[function(t,e,n){function r(t,e){var n=[],r="",i=0;for(r in t)o.call(t,r)&&(n[i]=e(r,t[r]),i+=1);return n}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],26:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(o<0?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=r},{}],27:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function o(t){function e(t){return t&&t instanceof r?t:t?c(t,s,i):i()}function n(n,r,o,i){if(!p.aborted||i){t&&t(n,r,o);for(var a=e(o),s=m(n),c=s.length,f=0;f<c;f++)s[f].apply(a,r);var d=u[y[n]];return d&&d.push([x,n,r,a]),a}}function l(t,e){g[t]=m(t).concat(e)}function h(t,e){var n=g[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return g[t]||[]}function v(t){return d[t]=d[t]||o(n)}function w(t,e){f(t,function(t,n){e=e||"feature",y[n]=e,e in u||(u[e]=[])})}var g={},y={},x={on:l,addEventListener:l,removeEventListener:h,emit:n,get:v,listeners:m,context:e,buffer:w,abort:a,aborted:!1};return x}function i(){return new r}function a(){(u.api||u.feature)&&(p.aborted=!0,u=p.backlog={})}var s="nr@context",c=t("gos"),f=t(25),u={},d={},p=e.exports=o();p.backlog=u},{}],gos:[function(t,e,n){function r(t,e,n){if(o.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return t[e]=r,r}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){o.buffer([t],r),o.emit(t,e,n)}var o=t("ee").get("handle");e.exports=r,r.ee=o},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,i,function(){return o++})}var o=1,i="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!E++){var t=b.info=NREUM.info,e=l.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return u.abort();f(y,function(e,n){t[e]||(t[e]=n)}),c("mark",["onload",a()+b.offset],null,"api");var n=l.createElement("script");n.src="https://"+t.agent,e.parentNode.insertBefore(n,e)}}function o(){"complete"===l.readyState&&i()}function i(){c("mark",["domContent",a()+b.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(s=Math.max((new Date).getTime(),s))-b.offset}var s=(new Date).getTime(),c=t("handle"),f=t(25),u=t("ee"),d=t(24),p=window,l=p.document,h="addEventListener",m="attachEvent",v=p.XMLHttpRequest,w=v&&v.prototype;NREUM.o={ST:setTimeout,SI:p.setImmediate,CT:clearTimeout,XHR:v,REQ:p.Request,EV:p.Event,PR:p.Promise,MO:p.MutationObserver};var g=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-spa-1167.min.js"},x=v&&w&&w[h]&&!/CriOS/.test(navigator.userAgent),b=e.exports={offset:s,now:a,origin:g,features:{},xhrWrappable:x,userAgent:d};t(19),t(22),l[h]?(l[h]("DOMContentLoaded",i,!1),p[h]("load",r,!1)):(l[m]("onreadystatechange",o),p[m]("onload",r)),c("mark",["firstbyte",s],null,"api");var E=0,O=t(27)},{}],"wrap-function":[function(t,e,n){function r(t){return!(t&&t instanceof Function&&t.apply&&!t[a])}var o=t("ee"),i=t(26),a="nr@original",s=Object.prototype.hasOwnProperty,c=!1;e.exports=function(t,e){function n(t,e,n,o){function nrWrapper(){var r,a,s,c;try{a=this,r=i(arguments),s="function"==typeof n?n(r,a):n||{}}catch(f){p([f,"",[r,a,o],s])}u(e+"start",[r,a,o],s);try{return c=t.apply(a,r)}catch(d){throw u(e+"err",[r,a,d],s),d}finally{u(e+"end",[r,a,c],s)}}return r(t)?t:(e||(e=""),nrWrapper[a]=t,d(t,nrWrapper),nrWrapper)}function f(t,e,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<e.length;c++)s=e[c],a=t[s],r(a)||(t[s]=n(a,f?s+o:o,i,s))}function u(n,r,o){if(!c||e){var i=c;c=!0;try{t.emit(n,r,o,e)}catch(a){p([a,n,r,o])}c=i}}function d(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){p([r])}for(var o in t)s.call(t,o)&&(e[o]=t[o]);return e}function p(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=o),n.inPlace=f,n.flag=a,n}},{}]},{},["loader",2,16,5,3,4]);</script>
+<title>Rogue 25MM Boneyard Bars | Rogue Fitness</title>
 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-<meta name="description" content="The 28.5mm Boneyard Bar lineup was created to allow what we consider quality seconds to still be used in a gym. These 20KG bushing bars are all new components with a minor flaw in fit and finish. A series of Women’s 15KG Boneyard Bars is also available." />
+<meta name="description" content="The Women’s 15KG Boneyard Bar lineup was created to allow what we consider quality seconds to still be used in a gym. These 25mm bushing bars are all new components with a minor flaw in fit and finish. A series of Men's Boneyard Bars is also available." />
 <meta name="keywords" content="military style strength training equipment, workout equipment, fitness equipment, crossfit training equipment" />
 <meta name="robots" content="INDEX,FOLLOW" />
 <link rel="icon" href="https://www.roguefitness.com/media/favicon/default/favicon_2.ico" type="image/x-icon" />
@@ -32,7 +32,7 @@
                 window.globalStore.sheerid = {"veterans_day":{"state":0,"states":{"disabled":0,"upcoming":1,"active":2}},"banner_settings":{"url_landing":"military","url_category":"veterans-day"}};
                 window.globalStore.zeus = {"is_enabled":true};
                 window.globalStore.scm = {"three_ships_free":true,"five_k":true};
-                window.globalStore.product_info = {"37871":{"name":"Rogue 28.5MM Boneyard Bars","sku":"BONEYARD285","price":0,"thumbnail":"https:\/\/www.roguefitness.com\/media\/catalog\/product\/cache\/1\/small_image\/200x\/9df78eab33525d08d6e5fb8d27136e95\/2\/8\/28.5mm-boneyard-bar_th_ftc.jpg"},"45747":{"name":"Boneyard Rogue Ohio Bar 1.2 with (Black Zinc Shaft \/ Bright Zinc Sleeve)","sku":"BYRA0539-BLBR","price":225,"thumbnail":"https:\/\/www.roguefitness.com\/media\/catalog\/product\/cache\/1\/small_image\/200x\/9df78eab33525d08d6e5fb8d27136e95\/2\/8\/28.5mm-boneyard-bar_th_ftc_1.jpg"},"51205":{"name":"Boneyard 28.5MM Echo Bar 2.0 with (Black Zinc Shaft \/ Chrome Sleeve)","sku":"BYRA1334-BLDC","price":165,"thumbnail":"https:\/\/www.roguefitness.com\/media\/catalog\/product\/cache\/1\/small_image\/200x\/9df78eab33525d08d6e5fb8d27136e95\/placeholder\/default\/thumb-replace_1.jpg"}};
+                window.globalStore.product_info = {"37873":{"name":"Rogue 25MM Boneyard Bars","sku":"BONEYARD25MM","price":0,"thumbnail":"https:\/\/www.roguefitness.com\/media\/catalog\/product\/cache\/1\/small_image\/200x\/9df78eab33525d08d6e5fb8d27136e95\/b\/e\/bella-boneyard-bar-th_ftc.jpg"},"47389":{"name":"Boneyard Rogue Bella Bar 2.0 with (Raw Shaft \/ Bright Zinc Sleeve)","sku":"BYRA0584-RWBR","price":195,"thumbnail":"https:\/\/www.roguefitness.com\/media\/catalog\/product\/cache\/1\/small_image\/200x\/9df78eab33525d08d6e5fb8d27136e95\/placeholder\/default\/thumb-replace_1.jpg"},"82403":{"name":"Boneyard Rogue 25MM Bella Bar 2.0 with (Black Zinc Shaft \/ Bright Zinc Sleeve)","sku":"BYRA0584-BLBR","price":195,"thumbnail":"https:\/\/www.roguefitness.com\/media\/catalog\/product\/cache\/1\/small_image\/200x\/9df78eab33525d08d6e5fb8d27136e95\/placeholder\/default\/thumb-replace_1.jpg"},"51693":{"name":"Boneyard Rogue Bella Bar 2.0 with (Black Shaft \/ Black Sleeve)","sku":"BYRA0584-EBLACK-EBLACK","price":235,"thumbnail":"https:\/\/www.roguefitness.com\/media\/catalog\/product\/cache\/1\/small_image\/200x\/9df78eab33525d08d6e5fb8d27136e95\/placeholder\/default\/thumb-replace_1.jpg"}};
         
         
         window.isInMobileAppContext = false;
@@ -120,8 +120,8 @@
 <script type="text/javascript" src="https://www.roguefitness.com/js/rogue/hundo.js?1a41c11f" page></script>
 <script type="text/javascript" src="https://www.roguefitness.com/js/rogue/live-calculation.js?8e764cd7" page></script>
 <script type="text/javascript" src="https://www.roguefitness.com/skin/frontend/base/default/js/aitoc/dependable.js?89154771" page></script>
-<link rel="alternate" hreflang="en-US" href="https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars" />
-<link rel="alternate" hreflang="x-default" href="https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars" />
+<link rel="alternate" hreflang="en-US" href="https://www.roguefitness.com/rogue-25mm-boneyard-bars" />
+<link rel="alternate" hreflang="x-default" href="https://www.roguefitness.com/rogue-25mm-boneyard-bars" />
 <!--[if lt IE 10]>
 <link rel="stylesheet" type="text/css" href="https://www.roguefitness.com/skin/frontend/rg/2015/css/ie.css?9b451f5f" media="all" />
 <![endif]-->
@@ -240,7 +240,7 @@ optionalZipCountries = [];
                     $('BVRRContainer').addEventListener('click', bvUpdatePageUrl, false);
                                     }
             },
-                productId : 'BONEYARD285'
+                productId : 'BONEYARD25MM'
                     });
     </script>
 <script type="text/javascript">//<![CDATA[
@@ -268,24 +268,24 @@ optionalZipCountries = [];
 	});
 //]]></script>
 <script type="text/javascript" src="//s7d2.scene7.com/s7viewers/html5/js/ZoomViewer.js"></script>
-<link rel="canonical" href="https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars" />
-<link rel="next" href="https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars?bvstate=pg:2/ct:r" />
-<script type="application/ld+json">{"@context":"http://schema.org","@type":"Product","name":"Rogue 28.5MM Boneyard Bars","description":"\r\npage\r\ngrid\r\n\r\n","sku":"BONEYARD285","mpn":"BONEYARD285","url":"https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars","category":"Weightlifting Bars & Plates > Barbells > Boneyard Barbells","brand":"Rogue Fitness","color":"","image":["https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/o/h/ohio-boneyard-bar-fb.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/o/h/ohio-boneyard-bar-wh.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/o/h/ohio-boneyard-bar-th.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/o/boneyardbar-ohio-lg_2.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/l/blemishes.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/s/l/sleve-finishes.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/d/o/double-tracked-knurlnewextra.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/s/h/shaft-finishes.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/s/h/shaft-finishes-web1.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/o/boneyardbar-ohio-lg_3.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/o/boneyardbar-ohio-lg_4.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/o/boneyard-bar-header-28.5mm_graphics.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/o/boneyard-bar-header-28.5mm_graphics_ftc.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/2/8/28.5mm-boneyard-bar_th_ftc.jpg"],"aggregateRating":{"@type":"aggregateRating","ratingValue":"4.8","reviewCount":"59"}}</script>
+<link rel="canonical" href="https://www.roguefitness.com/rogue-25mm-boneyard-bars" />
+<link rel="next" href="https://www.roguefitness.com/rogue-25mm-boneyard-bars?bvstate=pg:2/ct:r" />
+<script type="application/ld+json">{"@context":"http://schema.org","@type":"Product","name":"Rogue 25MM Boneyard Bars","description":"\r\n\r\nRogue 25mm Boneyard Bars\r\n\r\nThe Women\u2019s 25mm Boneyard Bar lineup was created to allow what we consider quality seconds to still be used in a gym. These 15 KG bushing bars are all new components with a minor flaw in fit and finish. A series of standard 20KG Boneyard Bars is also available.\r\n\r\n\r\nWhen you set the highest manufacturing standards in the industry, even your seconds products will often prove superior to the competition\u2019s best work. And while some barbell manufacturers wouldn\u2019t pay any mind to a minor blemish or a sliver of double-track in the knurling, Rogue takes these small imperfections very seriously. Once identified, these bars are separated out, carefully assessed, and\u2014if approved\u2014made available to our customers here, in the Boneyard, at a discounted price.\r\n\r\nSince we believe our manufacturing 2nds are as good as most companies\u2019 1sts, the Boneyard Bars give our customers an opportunity to purchase a top-tier piece of equipment at budget cost, with the full understanding of what they\u2019re getting. \r\n\r\n\r\nIMPORTANT: All Boneyard Bars are limited time, closeout items. They can only be purchased for shipment (no in-store pick-ups), and all sales are final. All Boneyard Bars are guaranteed to be received in fully functional condition, but do not carry a warranty. \r\n\r\nPlease Note*Clear bars are coated post machining so they will have slight blemishes from clamps in our machining process. \r\n\r\nSpecifications:\r\n\r\n\r\nMade in the USA\r\n\r\nSecond quality Rogue MFG bushing barbells.\r\n\r\n15 KG Weight\r\n\r\nMultipurpose knurl\r\n\r\nDual knurl marks\r\n\r\nFinishes will vary (Bright Zinc, Black Zinc, Chrome, Raw)\r\n\r\nExclusive Rogue Boneyard endcaps\r\n\r\n\r\n\r\n\r\n\r\n","sku":"BONEYARD25MM","mpn":"BONEYARD25MM","url":"https://www.roguefitness.com/rogue-25mm-boneyard-bars","category":"Weightlifting Bars & Plates > Barbells > Boneyard Barbells","brand":"Rogue Fitness","color":"","image":["https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/e/bella-boneyard-bar-fb.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/e/bella-boneyard-bar-th.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/e/bella-boneyard-bar-wh.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/o/boneyardbar-bella-lg_1.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/l/blemishes_1.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/s/l/sleve-finishes_1.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/d/o/double-tracked-knurl_1.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/d/o/double-tracked-knurlnewextra_1.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/s/h/shaft-finishes_1.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/o/boneyardbar-bella-lg_2.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/o/boneyardbar-bella-lg_3.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/e/bella-boneyard-bar-th_ftc.jpg","https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/9df78eab33525d08d6e5fb8d27136e95/b/e/bella-boneyard-bar-header-graphics_ftc-updates.jpg"],"aggregateRating":{"@type":"aggregateRating","ratingValue":"4.7","reviewCount":"14"}}</script>
 <meta property="fb:app_id" content="1664713057151785" />
 <meta property="fb:admins" content="731170917" />
 <meta property="og:site_name" content="Rogue Fitness" />
-<meta property="og:url" content="https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars" />
+<meta property="og:url" content="https://www.roguefitness.com/rogue-25mm-boneyard-bars" />
 <meta property="og:type" content="product" />
-<meta property="og:title" content="Rogue 28.5MM Boneyard Bars" />
-<meta property="og:image" content="https://www.roguefitness.com/media/catalog/product/o/h/ohio-boneyard-bar-fb.jpg" />
-<meta property="og:description" content="The 28.5mm Boneyard Bar lineup was created to allow what we consider quality seconds to still be used in a gym. These 20KG bushing bars are all new components with a minor flaw in fit and finish. A series of Women’s 15KG Boneyard Bars is also available." />
+<meta property="og:title" content="Rogue 25MM Boneyard Bars" />
+<meta property="og:image" content="https://www.roguefitness.com/media/catalog/product/b/e/bella-boneyard-bar-fb.jpg" />
+<meta property="og:description" content="The Women’s 15KG Boneyard Bar lineup was created to allow what we consider quality seconds to still be used in a gym. These 25mm bushing bars are all new components with a minor flaw in fit and finish. A series of Men's Boneyard Bars is also available." />
 
 
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="" />
-<meta name="twitter:title" content="Rogue 28.5MM Boneyard Bars" />
-<meta name="twitter:description" content="The 28.5mm Boneyard Bar lineup was created to allow what we consider quality seconds to still be used in a gym. These 20KG bushing bars are all new components with a minor flaw in fit and finish. A series of Women’s 15KG Boneyard Bars is also available." />
-<meta name="twitter:image" content="https://www.roguefitness.com/media/catalog/product/o/h/ohio-boneyard-bar-fb.jpg" />
+<meta name="twitter:title" content="Rogue 25MM Boneyard Bars" />
+<meta name="twitter:description" content="The Women’s 15KG Boneyard Bar lineup was created to allow what we consider quality seconds to still be used in a gym. These 25mm bushing bars are all new components with a minor flaw in fit and finish. A series of Men's Boneyard Bars is also available." />
+<meta name="twitter:image" content="https://www.roguefitness.com/media/catalog/product/b/e/bella-boneyard-bar-fb.jpg" />
 <script type="text/javascript">//<![CDATA[
         var Translator = new Translate([]);
         //]]></script><link rel="apple-touch-icon" sizes="57x57" href="/skin/frontend/rg/2015/images/favicons/apple-touch-icon-57x57.png">
@@ -309,15 +309,15 @@ optionalZipCountries = [];
 <script type="text/javascript">
  var _sf_startpt=(new Date()).getTime();
  </script></head>
-<body class=" catalog-product-view default website-base catalog-product-view product-rogue-28-5-mm-boneyard-bars">
+<body class=" catalog-product-view default website-base catalog-product-view product-rogue-25mm-boneyard-bars">
 
 <script type="application/javascript">
     if (typeof(dataLayer) === 'undefined') {
         var dataLayer = [];
     }
-            dataLayer.push({"ecommerce":{"impressions":[{"name":"Boneyard Rogue Ohio Bar 1.2 with (Black Zinc Shaft \/ Bright Zinc Sleeve)","id":"BYRA0539-BLBR","price":"225.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard 28.5MM Echo Bar 2.0 with (Black Zinc Shaft \/ Chrome Sleeve)","id":"BYRA1334-BLDC","price":"165.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"}],"detail":{"products":[{"name":"Boneyard Rogue Ohio Bar 1.2 with (Black Zinc Shaft \/ Bright Zinc Sleeve)","id":"BYRA0539-BLBR","price":"225.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard 28.5MM Echo Bar 2.0 with (Black Zinc Shaft \/ Chrome Sleeve)","id":"BYRA1334-BLDC","price":"165.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"}]}}});
+            dataLayer.push({"ecommerce":{"impressions":[{"name":"Boneyard Rogue Bella Bar 2.0 with (Raw Shaft \/ Bright Zinc Sleeve)","id":"BYRA0584-RWBR","price":"195.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard Rogue 25MM Bella Bar 2.0 with (Black Zinc Shaft \/ Bright Zinc Sleeve)","id":"BYRA0584-BLBR","price":"195.00","brand":"Rogue Fitness","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard Rogue Bella Bar 2.0 with (Black Shaft \/ Black Sleeve)","id":"BYRA0584-EBLACK-EBLACK","price":"235.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"}],"detail":{"products":[{"name":"Boneyard Rogue Bella Bar 2.0 with (Raw Shaft \/ Bright Zinc Sleeve)","id":"BYRA0584-RWBR","price":"195.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard Rogue 25MM Bella Bar 2.0 with (Black Zinc Shaft \/ Bright Zinc Sleeve)","id":"BYRA0584-BLBR","price":"195.00","brand":"Rogue Fitness","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard Rogue Bella Bar 2.0 with (Black Shaft \/ Black Sleeve)","id":"BYRA0584-EBLACK-EBLACK","price":"235.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"}]}}});
         dataLayer.push({"browser_type":"in browser"});
-            dataLayer.push({"stockStatus":["BYRA0539-BLBR","BYRA1334-BLDC"]});
+            dataLayer.push({"stockStatus":["BYRA0584-RWBR","BYRA0584-BLBR","BYRA0584-EBLACK-EBLACK"]});
         domAfterLoadCallback(function () {
         var logFn = function (ecEv) {
             var pr;
@@ -345,7 +345,7 @@ optionalZipCountries = [];
                 }
             }
         };
-                logFn({"ecommerce":{"impressions":[{"name":"Boneyard Rogue Ohio Bar 1.2 with (Black Zinc Shaft \/ Bright Zinc Sleeve)","id":"BYRA0539-BLBR","price":"225.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard 28.5MM Echo Bar 2.0 with (Black Zinc Shaft \/ Chrome Sleeve)","id":"BYRA1334-BLDC","price":"165.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"}],"detail":{"products":[{"name":"Boneyard Rogue Ohio Bar 1.2 with (Black Zinc Shaft \/ Bright Zinc Sleeve)","id":"BYRA0539-BLBR","price":"225.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard 28.5MM Echo Bar 2.0 with (Black Zinc Shaft \/ Chrome Sleeve)","id":"BYRA1334-BLDC","price":"165.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"}]}}});
+                logFn({"ecommerce":{"impressions":[{"name":"Boneyard Rogue Bella Bar 2.0 with (Raw Shaft \/ Bright Zinc Sleeve)","id":"BYRA0584-RWBR","price":"195.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard Rogue 25MM Bella Bar 2.0 with (Black Zinc Shaft \/ Bright Zinc Sleeve)","id":"BYRA0584-BLBR","price":"195.00","brand":"Rogue Fitness","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard Rogue Bella Bar 2.0 with (Black Shaft \/ Black Sleeve)","id":"BYRA0584-EBLACK-EBLACK","price":"235.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"}],"detail":{"products":[{"name":"Boneyard Rogue Bella Bar 2.0 with (Raw Shaft \/ Bright Zinc Sleeve)","id":"BYRA0584-RWBR","price":"195.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard Rogue 25MM Bella Bar 2.0 with (Black Zinc Shaft \/ Bright Zinc Sleeve)","id":"BYRA0584-BLBR","price":"195.00","brand":"Rogue Fitness","category":"Barbells\/Boneyard Barbells","variant":"N\/A"},{"name":"Boneyard Rogue Bella Bar 2.0 with (Black Shaft \/ Black Sleeve)","id":"BYRA0584-EBLACK-EBLACK","price":"235.00","brand":"manufacturer not set","category":"Barbells\/Boneyard Barbells","variant":"N\/A"}]}}});
                 logFn({"browser_type":"in browser"});
             });
 </script>
@@ -360,14 +360,19 @@ optionalZipCountries = [];
             ecomm_pname    : [],
             ecomm_pvalue   : []
         };
-                                                                                     google_tag_params.ecomm_prodid.push("BYRA0539-BLBR");
-                             google_tag_params.ecomm_pname.push("Boneyard Rogue Ohio Bar 1.2 with (Black Zinc Shaft \/ Bright Zinc Sleeve)");
-                             google_tag_params.ecomm_pvalue.push("225.0000");
+                                                                                     google_tag_params.ecomm_prodid.push("BYRA0584-RWBR");
+                             google_tag_params.ecomm_pname.push("Boneyard Rogue Bella Bar 2.0 with (Raw Shaft \/ Bright Zinc Sleeve)");
+                             google_tag_params.ecomm_pvalue.push("195.0000");
                              google_tag_params.ecomm_prodtype.push("Barbells\/Boneyard Barbells");
                              google_tag_params.ecomm_pbrand.push("manufacturer not set");
-                                                 google_tag_params.ecomm_prodid.push("BYRA1334-BLDC");
-                             google_tag_params.ecomm_pname.push("Boneyard 28.5MM Echo Bar 2.0 with (Black Zinc Shaft \/ Chrome Sleeve)");
-                             google_tag_params.ecomm_pvalue.push("165.0000");
+                                                 google_tag_params.ecomm_prodid.push("BYRA0584-BLBR");
+                             google_tag_params.ecomm_pname.push("Boneyard Rogue 25MM Bella Bar 2.0 with (Black Zinc Shaft \/ Bright Zinc Sleeve)");
+                             google_tag_params.ecomm_pvalue.push("195.0000");
+                             google_tag_params.ecomm_prodtype.push("Barbells\/Boneyard Barbells");
+                             google_tag_params.ecomm_pbrand.push("Rogue Fitness");
+                                                 google_tag_params.ecomm_prodid.push("BYRA0584-EBLACK-EBLACK");
+                             google_tag_params.ecomm_pname.push("Boneyard Rogue Bella Bar 2.0 with (Black Shaft \/ Black Sleeve)");
+                             google_tag_params.ecomm_pvalue.push("235.0000");
                              google_tag_params.ecomm_prodtype.push("Barbells\/Boneyard Barbells");
                              google_tag_params.ecomm_pbrand.push("manufacturer not set");
                                                     if (typeof dataLayer === 'undefined') {
@@ -377,7 +382,7 @@ optionalZipCountries = [];
         google_tag_params : window.google_tag_params,
         additional_params : {
             productType : "grouped",
-            itemGroupID : "BONEYARD285"        }
+            itemGroupID : "BONEYARD25MM"        }
     });
 </script>
 
@@ -1350,7 +1355,7 @@ APO Store </a>
 <a href="https://www.roguefitness.com/weightlifting-bars-plates/barbells/boneyard-barbells" title="">Boneyard Barbells</a>
 </li>
 <li class="product">
-<span class="active">Rogue 28.5MM Boneyard Bars</span>
+<span class="active">Rogue 25MM Boneyard Bars</span>
 </li>
 </ul>
 </div>
@@ -1400,46 +1405,47 @@ Sign Up </button>
     //<![CDATA[
     var optionsPrice = new Product.OptionsPrice([]);
 
-                        var optionsPrice45747 = new Product.OptionsPrice({"productId":"45747","priceFormat":{"pattern":"$%s","precision":2,"requiredPrecision":2,"decimalSymbol":".","groupSymbol":",","groupLength":3,"integerRequired":1},"includeTax":"false","showIncludeTax":false,"showBothPrices":false,"productPrice":225,"productOldPrice":225,"skipCalculate":1,"defaultTax":0,"currentTax":0,"idSuffix":"__none__","oldPlusDisposition":0,"plusDisposition":0,"oldMinusDisposition":0,"tierPrices":[],"tierPricesInclTax":[],"tierPricesQty":[],"tierPricesQtyInclTax":[],"minusDisposition":0});
-                    var optionsPrice51205 = new Product.OptionsPrice({"productId":"51205","priceFormat":{"pattern":"$%s","precision":2,"requiredPrecision":2,"decimalSymbol":".","groupSymbol":",","groupLength":3,"integerRequired":1},"includeTax":"false","showIncludeTax":false,"showBothPrices":false,"productPrice":165,"productOldPrice":165,"skipCalculate":1,"defaultTax":0,"currentTax":0,"idSuffix":"__none__","oldPlusDisposition":0,"plusDisposition":0,"oldMinusDisposition":0,"tierPrices":[],"tierPricesInclTax":[],"tierPricesQty":[],"tierPricesQtyInclTax":[],"minusDisposition":0});
+                        var optionsPrice47389 = new Product.OptionsPrice({"productId":"47389","priceFormat":{"pattern":"$%s","precision":2,"requiredPrecision":2,"decimalSymbol":".","groupSymbol":",","groupLength":3,"integerRequired":1},"includeTax":"false","showIncludeTax":false,"showBothPrices":false,"productPrice":195,"productOldPrice":195,"skipCalculate":1,"defaultTax":0,"currentTax":0,"idSuffix":"__none__","oldPlusDisposition":0,"plusDisposition":0,"oldMinusDisposition":0,"tierPrices":[],"tierPricesInclTax":[],"tierPricesQty":[],"tierPricesQtyInclTax":[],"minusDisposition":0});
+                    var optionsPrice82403 = new Product.OptionsPrice({"productId":"82403","priceFormat":{"pattern":"$%s","precision":2,"requiredPrecision":2,"decimalSymbol":".","groupSymbol":",","groupLength":3,"integerRequired":1},"includeTax":"false","showIncludeTax":false,"showBothPrices":false,"productPrice":195,"productOldPrice":195,"skipCalculate":1,"defaultTax":0,"currentTax":0,"idSuffix":"__none__","oldPlusDisposition":0,"plusDisposition":0,"oldMinusDisposition":0,"tierPrices":[],"tierPricesInclTax":[],"tierPricesQty":[],"tierPricesQtyInclTax":[],"minusDisposition":0});
+                    var optionsPrice51693 = new Product.OptionsPrice({"productId":"51693","priceFormat":{"pattern":"$%s","precision":2,"requiredPrecision":2,"decimalSymbol":".","groupSymbol":",","groupLength":3,"integerRequired":1},"includeTax":"false","showIncludeTax":false,"showBothPrices":false,"productPrice":235,"productOldPrice":235,"skipCalculate":1,"defaultTax":0,"currentTax":0,"idSuffix":"__none__","oldPlusDisposition":0,"plusDisposition":0,"oldMinusDisposition":0,"tierPrices":[],"tierPricesInclTax":[],"tierPricesQty":[],"tierPricesQtyInclTax":[],"minusDisposition":0});
             </script>
 <div id="messages_product_view"><div style="display:none" class="cache-message" id="cache-session-messages-messages"></div></div>
 <div class="product-essential">
-<form action="//www.roguefitness.com/checkout/cart/add/uenc/aHR0cHM6Ly93d3cucm9ndWVmaXRuZXNzLmNvbS9yb2d1ZS0yOC01LW1tLWJvbmV5YXJkLWJhcnM,/product/37871/form_key/NVJ5LvGUSc580N8s" method="post" id="product_addtocart_form">
+<form action="//www.roguefitness.com/checkout/cart/add/uenc/aHR0cHM6Ly93d3cucm9ndWVmaXRuZXNzLmNvbS9yb2d1ZS0yNW1tLWJvbmV5YXJkLWJhcnM,/product/37873/form_key/0tICFnNzoXMAjQoW" method="post" id="product_addtocart_form">
 <div class="page-row">
-<input name="form_key" type="hidden" value="NVJ5LvGUSc580N8s" />
+<input name="form_key" type="hidden" value="0tICFnNzoXMAjQoW" />
 <div class="no-display">
-<input type="hidden" name="product" value="37871" />
+<input type="hidden" name="product" value="37873" />
 <input type="hidden" name="related_product" id="related-products-field" value="" />
-<span class="hidden" id="product-sku" content="BONEYARD285">BONEYARD285</span>
+<span class="hidden" id="product-sku" content="BONEYARD25MM">BONEYARD25MM</span>
 </div>
 <div class="product-media">
 <div class="prod-header-img">
-<img src="https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/472321edac810f9b2465a359d8cdc0b5/b/o/boneyard-bar-header-28.5mm_graphics_ftc.jpg" sizes="(max-width: 1023px) 100vw, (max-width: 1279px) 66vw, 844px" srcset="https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/640x/472321edac810f9b2465a359d8cdc0b5/b/o/boneyard-bar-header-28.5mm_graphics_ftc.jpg 640w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/750x/472321edac810f9b2465a359d8cdc0b5/b/o/boneyard-bar-header-28.5mm_graphics_ftc.jpg 750w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/828x/472321edac810f9b2465a359d8cdc0b5/b/o/boneyard-bar-header-28.5mm_graphics_ftc.jpg 828w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/844x/472321edac810f9b2465a359d8cdc0b5/b/o/boneyard-bar-header-28.5mm_graphics_ftc.jpg 844w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/1024x/472321edac810f9b2465a359d8cdc0b5/b/o/boneyard-bar-header-28.5mm_graphics_ftc.jpg 1024w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/1125x/472321edac810f9b2465a359d8cdc0b5/b/o/boneyard-bar-header-28.5mm_graphics_ftc.jpg 1125w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/1536x/472321edac810f9b2465a359d8cdc0b5/b/o/boneyard-bar-header-28.5mm_graphics_ftc.jpg 1536w," alt="" title="" />
+<img src="https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/472321edac810f9b2465a359d8cdc0b5/b/e/bella-boneyard-bar-header-graphics_ftc-updates.jpg" sizes="(max-width: 1023px) 100vw, (max-width: 1279px) 66vw, 844px" srcset="https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/640x/472321edac810f9b2465a359d8cdc0b5/b/e/bella-boneyard-bar-header-graphics_ftc-updates.jpg 640w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/750x/472321edac810f9b2465a359d8cdc0b5/b/e/bella-boneyard-bar-header-graphics_ftc-updates.jpg 750w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/828x/472321edac810f9b2465a359d8cdc0b5/b/e/bella-boneyard-bar-header-graphics_ftc-updates.jpg 828w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/844x/472321edac810f9b2465a359d8cdc0b5/b/e/bella-boneyard-bar-header-graphics_ftc-updates.jpg 844w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/1024x/472321edac810f9b2465a359d8cdc0b5/b/e/bella-boneyard-bar-header-graphics_ftc-updates.jpg 1024w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/1125x/472321edac810f9b2465a359d8cdc0b5/b/e/bella-boneyard-bar-header-graphics_ftc-updates.jpg 1125w,https://www.roguefitness.com/media/catalog/product/cache/1/rogue_header_2015/1536x/472321edac810f9b2465a359d8cdc0b5/b/e/bella-boneyard-bar-header-graphics_ftc-updates.jpg 1536w," alt="" title="" />
 </div>
 <div class="more-views owl-carousel">
 <div class="item">
-<a href="https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/472321edac810f9b2465a359d8cdc0b5/b/l/blemishes.jpg" roguebox="additional-img" target="_blank">
-<img src="https://www.roguefitness.com/media/catalog/product/cache/1/image/x100/472321edac810f9b2465a359d8cdc0b5/b/l/blemishes.jpg" srcset="https://www.roguefitness.com/media/catalog/product/cache/1/image/x300/472321edac810f9b2465a359d8cdc0b5/b/l/blemishes.jpg 3x,
-                                https://www.roguefitness.com/media/catalog/product/cache/1/image/x200/472321edac810f9b2465a359d8cdc0b5/b/l/blemishes.jpg 2x" alt="Rogue 20KG Boneyard Bars" />
+<a href="https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/472321edac810f9b2465a359d8cdc0b5/b/l/blemishes_1.jpg" roguebox="additional-img" target="_blank">
+<img src="https://www.roguefitness.com/media/catalog/product/cache/1/image/x100/472321edac810f9b2465a359d8cdc0b5/b/l/blemishes_1.jpg" srcset="https://www.roguefitness.com/media/catalog/product/cache/1/image/x300/472321edac810f9b2465a359d8cdc0b5/b/l/blemishes_1.jpg 3x,
+                                https://www.roguefitness.com/media/catalog/product/cache/1/image/x200/472321edac810f9b2465a359d8cdc0b5/b/l/blemishes_1.jpg 2x" alt="Rogue 15KG Boneyard Bars" />
 </a>
 </div>
 <div class="item">
-<a href="https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/472321edac810f9b2465a359d8cdc0b5/s/l/sleve-finishes.jpg" roguebox="additional-img" target="_blank">
-<img src="https://www.roguefitness.com/media/catalog/product/cache/1/image/x100/472321edac810f9b2465a359d8cdc0b5/s/l/sleve-finishes.jpg" srcset="https://www.roguefitness.com/media/catalog/product/cache/1/image/x300/472321edac810f9b2465a359d8cdc0b5/s/l/sleve-finishes.jpg 3x,
-                                https://www.roguefitness.com/media/catalog/product/cache/1/image/x200/472321edac810f9b2465a359d8cdc0b5/s/l/sleve-finishes.jpg 2x" alt="Rogue 20KG Boneyard Bars" />
+<a href="https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/472321edac810f9b2465a359d8cdc0b5/s/l/sleve-finishes_1.jpg" roguebox="additional-img" target="_blank">
+<img src="https://www.roguefitness.com/media/catalog/product/cache/1/image/x100/472321edac810f9b2465a359d8cdc0b5/s/l/sleve-finishes_1.jpg" srcset="https://www.roguefitness.com/media/catalog/product/cache/1/image/x300/472321edac810f9b2465a359d8cdc0b5/s/l/sleve-finishes_1.jpg 3x,
+                                https://www.roguefitness.com/media/catalog/product/cache/1/image/x200/472321edac810f9b2465a359d8cdc0b5/s/l/sleve-finishes_1.jpg 2x" alt="Rogue 15KG Boneyard Bars" />
 </a>
 </div>
 <div class="item">
-<a href="https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/472321edac810f9b2465a359d8cdc0b5/d/o/double-tracked-knurlnewextra.jpg" roguebox="additional-img" target="_blank">
-<img src="https://www.roguefitness.com/media/catalog/product/cache/1/image/x100/472321edac810f9b2465a359d8cdc0b5/d/o/double-tracked-knurlnewextra.jpg" srcset="https://www.roguefitness.com/media/catalog/product/cache/1/image/x300/472321edac810f9b2465a359d8cdc0b5/d/o/double-tracked-knurlnewextra.jpg 3x,
-                                https://www.roguefitness.com/media/catalog/product/cache/1/image/x200/472321edac810f9b2465a359d8cdc0b5/d/o/double-tracked-knurlnewextra.jpg 2x" alt="Rogue 20KG Boneyard Bars" />
+<a href="https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/472321edac810f9b2465a359d8cdc0b5/d/o/double-tracked-knurlnewextra_1.jpg" roguebox="additional-img" target="_blank">
+<img src="https://www.roguefitness.com/media/catalog/product/cache/1/image/x100/472321edac810f9b2465a359d8cdc0b5/d/o/double-tracked-knurlnewextra_1.jpg" srcset="https://www.roguefitness.com/media/catalog/product/cache/1/image/x300/472321edac810f9b2465a359d8cdc0b5/d/o/double-tracked-knurlnewextra_1.jpg 3x,
+                                https://www.roguefitness.com/media/catalog/product/cache/1/image/x200/472321edac810f9b2465a359d8cdc0b5/d/o/double-tracked-knurlnewextra_1.jpg 2x" alt="Rogue 15KG Boneyard Bars" />
 </a>
 </div>
 <div class="item">
-<a href="https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/472321edac810f9b2465a359d8cdc0b5/s/h/shaft-finishes-web1.jpg" roguebox="additional-img" target="_blank">
-<img src="https://www.roguefitness.com/media/catalog/product/cache/1/image/x100/472321edac810f9b2465a359d8cdc0b5/s/h/shaft-finishes-web1.jpg" srcset="https://www.roguefitness.com/media/catalog/product/cache/1/image/x300/472321edac810f9b2465a359d8cdc0b5/s/h/shaft-finishes-web1.jpg 3x,
-                                https://www.roguefitness.com/media/catalog/product/cache/1/image/x200/472321edac810f9b2465a359d8cdc0b5/s/h/shaft-finishes-web1.jpg 2x" alt="Rogue 20KG Boneyard Bars" />
+<a href="https://www.roguefitness.com/media/catalog/product/cache/1/image/1500x1500/472321edac810f9b2465a359d8cdc0b5/s/h/shaft-finishes_1.jpg" roguebox="additional-img" target="_blank">
+<img src="https://www.roguefitness.com/media/catalog/product/cache/1/image/x100/472321edac810f9b2465a359d8cdc0b5/s/h/shaft-finishes_1.jpg" srcset="https://www.roguefitness.com/media/catalog/product/cache/1/image/x300/472321edac810f9b2465a359d8cdc0b5/s/h/shaft-finishes_1.jpg 3x,
+                                https://www.roguefitness.com/media/catalog/product/cache/1/image/x200/472321edac810f9b2465a359d8cdc0b5/s/h/shaft-finishes_1.jpg 2x" alt="Rogue 15KG Boneyard Bars" />
 </a>
 </div>
 </div>
@@ -1449,12 +1455,13 @@ Sign Up </button>
 <div class="product-shop">
 <div class="product-main-info">
 
-<h1 class="product-title">Rogue 28.5MM Boneyard Bars</h1>
+<h1 class="product-title">Rogue 25MM Boneyard Bars</h1>
 <div class="product-reviews">
 </div>
 </div>
 <div class="product-purchase">
-<div class="product-cart-box product-cart-box-grouped                                        product-purchase-wrapper-37871                                                                                                                                                                ">
+
+<div class="product-cart-box product-cart-box-grouped                                        product-purchase-wrapper-37873                                         product-cart-box-not-saleable                                                                                                                        ">
 <script type="text/javascript">
 //<![CDATA[
 var DateOption = Class.create({
@@ -1523,13 +1530,13 @@ dateOption = new DateOption();
 <script type="text/javascript">
             optionStockStatus = {};
         </script>
-<div class="grouped-item  product-purchase-wrapper-45747">
+<div class="grouped-item  product-purchase-wrapper-47389">
 <div class="grouped-item-row">
-<div class="item-name">Boneyard Rogue Ohio Bar 1.2 with (Black Zinc Shaft / Bright Zinc Sleeve)</div>
+<div class="item-name">Boneyard Rogue Bella Bar 2.0 with (Raw Shaft / Bright Zinc Sleeve)</div>
 <div class="item-price">
 <div class="price-box">
-<span class="regular-price" id="product-price-45747">
-<span class="price">$225.00</span> </span>
+<span class="regular-price" id="product-price-47389">
+<span class="price">$195.00</span> </span>
 </div>
 </div>
 </div>
@@ -1548,36 +1555,36 @@ Out of Stock </div>
 Coming Soon </span>
 </div>
 <span class="bin-banner-name">
-Boneyard Rogue Ohio Bar 1.2 with (Black Zinc Shaft / Bright Zinc Sleeve) </span>
+Boneyard Rogue Bella Bar 2.0 with (Raw Shaft / Bright Zinc Sleeve) </span>
 <p class="bin-message">
 Sign-up to be notified when this product is available! </p>
 <div class="bin-signup-fields">
 <div class="bin-email-field input-text">
-<input id="binemail-45747" type="text" class="bin-email" placeholder="Email" onkeydown="rogueBinEmailKeydown(event, '45747')" />
+<input id="binemail-47389" type="text" class="bin-email" placeholder="Email" onkeydown="rogueBinEmailKeydown(event, '47389')" />
 </div>
 <div class="bin-email-message">
 Account email will be used for sign up. </div>
-<button id="bin-button-45747" type="button" class="btn bin-button btn-green btn-arrow-right" onclick="binsignupAction('45747', '37871')">
+<button id="bin-button-47389" type="button" class="btn bin-button btn-green btn-arrow-right" onclick="binsignupAction('47389', '37873')">
 Sign Up </button>
 </div>
-<div id="roguebin-response-45747" class="bin-response"></div>
+<div id="roguebin-response-47389" class="bin-response"></div>
 </div>
 </div>
 <div class="hidden">
-<input name="super_group[45747]" value="0" type="hidden" class="input-text qty form-control" />
+<input name="super_group[47389]" value="0" type="hidden" class="input-text qty form-control" />
 </div>
 </div>
 <script type="text/javascript">
                 //collect stock status of all child products inside grouped product
-                optionStockStatus[45747] = 0;
+                optionStockStatus[47389] = 0;
             </script>
-<div class="grouped-item  product-purchase-wrapper-51205">
+<div class="grouped-item  product-purchase-wrapper-82403">
 <div class="grouped-item-row">
-<div class="item-name">Boneyard 28.5MM Echo Bar 2.0 with (Black Zinc Shaft / Chrome Sleeve)</div>
+<div class="item-name">Boneyard Rogue 25MM Bella Bar 2.0 with (Black Zinc Shaft / Bright Zinc Sleeve)</div>
 <div class="item-price">
 <div class="price-box">
-<span class="regular-price" id="product-price-51205">
-<span class="price">$165.00</span> </span>
+<span class="regular-price" id="product-price-82403">
+<span class="price">$195.00</span> </span>
 </div>
 </div>
 </div>
@@ -1596,28 +1603,77 @@ Out of Stock </div>
 Coming Soon </span>
 </div>
 <span class="bin-banner-name">
-Boneyard 28.5MM Echo Bar 2.0 with (Black Zinc Shaft / Chrome Sleeve) </span>
+Boneyard Rogue 25MM Bella Bar 2.0 with (Black Zinc Shaft / Bright Zinc Sleeve) </span>
 <p class="bin-message">
 Sign-up to be notified when this product is available! </p>
 <div class="bin-signup-fields">
 <div class="bin-email-field input-text">
-<input id="binemail-51205" type="text" class="bin-email" placeholder="Email" onkeydown="rogueBinEmailKeydown(event, '51205')" />
+<input id="binemail-82403" type="text" class="bin-email" placeholder="Email" onkeydown="rogueBinEmailKeydown(event, '82403')" />
 </div>
 <div class="bin-email-message">
 Account email will be used for sign up. </div>
-<button id="bin-button-51205" type="button" class="btn bin-button btn-green btn-arrow-right" onclick="binsignupAction('51205', '37871')">
+<button id="bin-button-82403" type="button" class="btn bin-button btn-green btn-arrow-right" onclick="binsignupAction('82403', '37873')">
 Sign Up </button>
 </div>
-<div id="roguebin-response-51205" class="bin-response"></div>
+<div id="roguebin-response-82403" class="bin-response"></div>
 </div>
 </div>
 <div class="hidden">
-<input name="super_group[51205]" value="0" type="hidden" class="input-text qty form-control" />
+<input name="super_group[82403]" value="0" type="hidden" class="input-text qty form-control" />
 </div>
 </div>
 <script type="text/javascript">
                 //collect stock status of all child products inside grouped product
-                optionStockStatus[51205] = 0;
+                optionStockStatus[82403] = 0;
+            </script>
+
+<div class="grouped-item  product-purchase-wrapper-51693">
+<div class="grouped-item-row">
+<div class="item-name">Boneyard Rogue Bella Bar 2.0 with (Black Shaft / Black Sleeve)</div>
+<div class="item-price">
+<div class="price-box">
+<span class="regular-price" id="product-price-51693">
+<span class="price">$235.00</span> </span>
+</div>
+</div>
+</div>
+<div class="bin-stock-availability">
+
+<div class="bin-out-of-stock bin-out-of-stock-cart">
+<div class="bin-out-of-stock-message bin-out-of-stock-default">
+Out of Stock </div>
+</div>
+</div>
+<div class="bin-signup-container" style="display: none">
+<div class="wrapper bin-wrapper">
+<a class="bin-closer" onclick="signupClose(this);"></a>
+<div class="bin-banner">
+<span class="bin-banner-oos">
+Coming Soon </span>
+</div>
+<span class="bin-banner-name">
+Boneyard Rogue Bella Bar 2.0 with (Black Shaft / Black Sleeve) </span>
+<p class="bin-message">
+Sign-up to be notified when this product is available! </p>
+<div class="bin-signup-fields">
+<div class="bin-email-field input-text">
+<input id="binemail-51693" type="text" class="bin-email" placeholder="Email" onkeydown="rogueBinEmailKeydown(event, '51693')" />
+</div>
+<div class="bin-email-message">
+Account email will be used for sign up. </div>
+<button id="bin-button-51693" type="button" class="btn bin-button btn-green btn-arrow-right" onclick="binsignupAction('51693', '37873')">
+Sign Up </button>
+</div>
+<div id="roguebin-response-51693" class="bin-response"></div>
+</div>
+</div>
+<div class="hidden">
+<input name="super_group[51693]" value="0" type="hidden" class="input-text qty form-control" />
+</div>
+</div>
+<script type="text/javascript">
+                //collect stock status of all child products inside grouped product
+                optionStockStatus[51693] = 0;
             </script>
 <script type="text/javascript">
             if (typeof stStatus !== 'undefined' && typeof optionStockStatus !== 'undefined') {
@@ -1640,30 +1696,16 @@ Sign Up </button>
         }
     </script>
 <div class="options-container-big">
-<div class="product-options-bottom product-options-bottom-37871">
+<div class="product-options-bottom product-options-bottom-37873">
 <div class="add-to-box">
 <div class="cart-in-line-error" style="display:none">Please specify the product(s) quantity</div>
 <div class="add-to-cart">
-<div id="apple-pay-product"></div>
-<button type="button" title="Add to Cart" class="v-btn btn-add-to-cart v-btn-red btn-wide js-product-page-btn-add-to-cart ga-rhpa-add-to-cart"><span>Add to Cart</span></button>
-<div id="rapid-checkout-buy-now-button">
-<rapid-checkout-buy-now-button></rapid-checkout-buy-now-button>
-</div>
 </div>
 </div>
 <script>
     </script> 
 </div>
 </div>
-<ul class="add-to-links">
-<li>
-<a href="https://www.roguefitness.com/wishlist/index/add/product/37871/form_key/NVJ5LvGUSc580N8s" class="link-wishlist js-btn-wishlist">
-<i class="icon icon-plus black"></i>
-<i class="icon icon-check green" style="display: none;"></i>
-<i class="icon icon-loading icon-loading-black" style="display: none;"></i>
-Add to Wishlist </a>
-</li>
-</ul>
 </div>
 </div>
 
@@ -1690,12 +1732,12 @@ Add to Wishlist </a>
 <th class="label">Brand</th>
 <td class="data">
 <a href="https://www.roguefitness.com/brands/rogue">Rogue Fitness</a> </td>
- </tr>
+</tr>
 <tr>
 <th class="label">Made In USA</th>
 <td class="data">
 No </td>
-</tr>
+ </tr>
 <tr>
 <th class="label">Color</th>
 <td class="data">
@@ -1704,7 +1746,7 @@ Various Colors </td>
 <tr>
 <th class="label">Bar Type</th>
 <td class="data">
-Men's Bars </td>
+Women's Bars </td>
 </tr>
 <tr>
 <th class="label">Bar Use</th>
@@ -1714,12 +1756,12 @@ Multipurpose </td>
 <tr>
 <th class="label">Bar Weight</th>
 <td class="data">
-Varies by Barbell </td>
+15KG </td>
 </tr>
 <tr>
 <th class="label">Diameter</th>
 <td class="data">
-28.5MM </td>
+25MM </td>
 </tr>
 <tr>
 <th class="label">Knurl</th>
@@ -1742,11 +1784,6 @@ Dual </td>
 Varies </td>
 </tr>
 <tr>
-<th class="label">Loadable Sleeve Length</th>
-<td class="data">
-16.40" </td>
-</tr>
-<tr>
 <th class="label">Sleeve Coating</th>
 <td class="data">
 Varies </td>
@@ -1754,7 +1791,7 @@ Varies </td>
 <tr>
 <th class="label">Bushing/Bearing</th>
 <td class="data">
-No </td>
+Bushing </td>
 </tr>
 <tr>
 <th class="label">Tensile Strength</th>
@@ -1810,7 +1847,7 @@ No </td>
 <p><strong>8) Where can I find more information on each specific Bar?</strong></p>
 <p>All Boneyard Bars will have its standard name included in the product title. Please see that product's page for more information.</p>
 <p><strong>*Note: We do not specify the bushing type for Boneyard Bars</strong></p>
-<p>The Boneyard Bar you are purchasing can come with either composite or bronze bushings. You can check the regular page of the Boneyard Bar you are looking to purchase to determine if it normally includes composite bushings or not.</p></div>
+<p>The Boneyard Bar you are purchasing can come with either composite or bronze bushings. You can check the regular page of the Boneyard Bar you are looking to purchase to determine if it normally includes composite bushings or not. </p></div>
 </div>
 </div>
 </div>
@@ -1822,13 +1859,13 @@ No </td>
 <div class="row-column row-column-0 row-column-width-67">
 <div class="block block-type-html">
 <div class="block_content">
-<img class="hideLarge barbellInfo" src="https://www.roguefitness.com/media/wysiwyg/Boneyard-Bar-28.5mm-Mobile-Specs_FTC.png" alt="" />
-<img class="hideSmall barbellInfo" src="https://www.roguefitness.com/media/wysiwyg/Boneyard-Bar-28.5mm-Desktop-Specs_FTC.png" alt="" />
+<img class="hideLarge barbellInfo" src="https://www.roguefitness.com/media/wysiwyg/bellamobile_1.png" alt="" />
+<img class="hideSmall barbellInfo" src="https://www.roguefitness.com/media/wysiwyg/belladesktop2_1.png" alt="" />
 </div>
 </div>
 </div>
 <div class="row-column row-column-1 row-column-width-33">
-<div class="block block-type-gear_specs">
+ <div class="block block-type-gear_specs">
 <div class="block_content">
 <div class="product-gear-specs no-grid">
 <h3 class="divider">Gear Specs<i></i></h3>
@@ -1856,7 +1893,7 @@ Various Colors </td>
 <tr>
 <th class="label">Bar Type</th>
 <td class="data">
-Men's Bars </td>
+Women's Bars </td>
 </tr>
 <tr>
 <th class="label">Bar Use</th>
@@ -1866,12 +1903,12 @@ Multipurpose </td>
 <tr>
 <th class="label">Bar Weight</th>
 <td class="data">
-Varies by Barbell </td>
+15KG </td>
 </tr>
 <tr>
 <th class="label">Diameter</th>
 <td class="data">
-28.5MM </td>
+25MM </td>
 </tr>
 <tr>
 <th class="label">Knurl</th>
@@ -1894,19 +1931,14 @@ Dual </td>
 Varies </td>
 </tr>
 <tr>
-<th class="label">Loadable Sleeve Length</th>
-<td class="data">
-16.40" </td>
-</tr>
-<tr>
 <th class="label">Sleeve Coating</th>
 <td class="data">
 Varies </td>
 </tr>
- <tr>
+<tr>
 <th class="label">Bushing/Bearing</th>
 <td class="data">
-No </td>
+Bushing </td>
 </tr>
 <tr>
 <th class="label">Tensile Strength</th>
@@ -1933,11 +1965,10 @@ No </td>
 <div class="row-column row-column-0 row-column-width-67">
 <div class="block block-type-html">
 <div class="block_content">
-<h2>Rogue 28.5mm Boneyard Bars</h2>
-<p>The Boneyard Bar lineup was created to allow what we consider quality seconds to still be used in a gym. These 28.5mm bushing bars are all new components with a minor flaw in fit and finish.
+<h2>Rogue 25mm Boneyard Bars</h2>
+<p>The Women’s 15KG Boneyard Bar lineup was created to allow what we consider quality seconds to still be used in a gym. These 25mm bushing bars are all new components with a minor flaw in fit and finish.
 </p>
-<p>When you set the highest manufacturing standards in the industry, even your seconds products will often prove superior to the competition’s best work. And while some barbell manufacturers wouldn’t pay any mind to a minor blemish or a sliver of double-track in the knurling, Rogue takes these small imperfections very seriously. Once identified, these bars are separated out, carefully assessed, and—if approved—made available to our customers here, in the Boneyard, at a discounted price.
-</p>
+<p>When you set the highest manufacturing standards in the industry, even your seconds products will often prove superior to the competition’s best work. And while some barbell manufacturers wouldn’t pay any mind to a minor blemish or a sliver of double-track in the knurling, Rogue takes these small imperfections very seriously. Once identified, these bars are separated out, carefully assessed, and—if approved—made available to our customers here, in the Boneyard, at a discounted price.</p>
 <p>Since we believe our manufacturing 2nds are as good as most companies’ 1sts, the Boneyard Bars give our customers an opportunity to purchase a top-tier piece of equipment at budget cost, with the full understanding of what they’re getting.
 </p>
 <p>IMPORTANT: All Boneyard Bars are limited time, closeout items. They can only be purchased for shipment (no in-store pick-ups), and all sales are final. All Boneyard Bars are guaranteed to be received in fully functional condition, but do not carry a warranty. </p>
@@ -1951,13 +1982,13 @@ No </td>
 <ul>
 <li>Second quality Rogue MFG bushing barbells.
 </li>
-<li>28.5mm shafts / 20KG Bars
+<li>25mm shafts
 </li>
 <li>Multipurpose knurl
 </li>
 <li>Dual knurl marks
 </li>
-<li>Finishes will vary (Bright Zinc, Black Zinc, Chrome, Raw, Cerakote)
+<li>Finishes will vary (Bright Zinc, Black Zinc, Chrome, Raw)
 </li>
 <li>Exclusive Rogue Boneyard endcaps
 </li>
@@ -1967,14 +1998,14 @@ No </td>
 </div>
 <div class="page-row columns-1">
 <div class="row-column row-column-0">
- <div class="block block-type-html">
+<div class="block block-type-html">
 <div class="block_content">
 <div class="visualProductList">
 <ul>
 <li>
 <img src="https://www.roguefitness.com/media/wysiwyg/Doulbe-Tracked-Knurl-AC_2.jpg" alt="" />
 <h4><span>1</span>Double Tracked Knurl</h4>
-<p>This image shows double tracked knurl. The feel and grip of the knurl are maintained, but the spacing of the cuts is different than our standard creating a cosmetic difference on close inspection.
+<p>On the right side of the image double tracked knurl is shown. The feel and grip of the knurl are maintained, but the spacing of the cuts is different than our standard creating a cosmetic difference on close inspection.
 </p>
 </li>
 <li>
@@ -1984,9 +2015,9 @@ No </td>
 </p>
 </li>
 <li>
-<img src="https://www.roguefitness.com/media/wysiwyg/shaft-finishes-AC3.jpg" alt="" />
+<img src="https://www.roguefitness.com/media/wysiwyg/Sleve-Finishes-AC.jpg" alt="" />
 <h4><span>3</span>Finish Options</h4>
-<p>Boneyard Bars can come in a variety of finish combinations including Black/Bright Zinc, Olive Drab Zinc, Black Oxide, Raw Steel, Polished Chrome, & Cerakote. The finish for the shaft and sleeves for each barbell will be listed in the right hand purchase area.
+<p>Boneyard Bars can come in a variety of finish combinations including Black/Bright Zinc, Olive Drab Zinc, Black Oxide, Raw Steel & Polished Chrome. The finish for the shaft and sleeves for each barbell will be listed in the right hand purchase area.
 </p>
 </li>
 </ul>
@@ -2136,7 +2167,7 @@ No </td>
 </script> <div id="rogue-cache-additional"></div>
 <script type="text/javascript">
 		
-					rogueCacheId = 37871;
+					rogueCacheId = 37873;
 			</script>
 </div>
 </div>
@@ -2207,7 +2238,7 @@ No </td>
 <ul>
 <li><a href="tel:6143586190" class="ga-footer-link">(614) 358-6190</a></li>
 <li>Fax: (614) 340-7206</li>
-<li><a href="/cdn-cgi/l/email-protection#037766626e43716c647666656a776d6670702d606c6e" class="ga-footer-link"><span class="__cf_email__" data-cfemail="bbcfdedad6fbc9d4dccededdd2cfd5dec8c895d8d4d6">[email&#160;protected]</span></a></li>
+<li><a href="/cdn-cgi/l/email-protection#403425212d00322f2735252629342e2533336e232f2d" class="ga-footer-link"><span class="__cf_email__" data-cfemail="82f6e7e3efc2f0ede5f7e7e4ebf6ece7f1f1ace1edef">[email&#160;protected]</span></a></li>
 </ul>
 <ul>
 <p><b>Rogue Fitness HQ</b><br>
@@ -2284,7 +2315,7 @@ var fieldMaps = {};
 <li><a href="/gsa-contract-info/" class="gsa ga-footer-partner"></a></li>
 <li><a href="//verify.authorize.net/anetseal/?pid=8470d248-495f-4f3b-9be1-2fc9d04ea5f5&rurl=https%3A//www.roguefitness.com/onestepcheckout/" class="authorize ga-footer-partner" onclick="window.open('//verify.authorize.net/anetseal/?pid=8470d248-495f-4f3b-9be1-2fc9d04ea5f5&rurl=https%3A//www.roguefitness.com/onestepcheckout/','AuthorizeNetVerification','width=600,height=430,dependent=yes,resizable=yes,scrollbars=yes,menubar=no,toolbar=no,status=no,directories=no,location=yes'); return false;" target="_blank"></a></li>
 <li>
- 
+
 </li>
 </ul>
 </div>
@@ -2401,18 +2432,18 @@ if (document.addEventListener) {
                 "@type": "ListItem",
                 "position": 5,
                 "item": {
-                    "@id": "https://www.roguefitness.com/rogue-28-5-mm-boneyard-bars",
-                    "name": "Rogue 28.5MM Boneyard Bars"                }
+                    "@id": "https://www.roguefitness.com/rogue-25mm-boneyard-bars",
+                    "name": "Rogue 25MM Boneyard Bars"                }
             }
                             ]
     }
 </script>
 <script type="text/javascript">
-                        rogueCacheId = 37871;
+                        rogueCacheId = 37873;
                 window.initRogueCache(
             '//www.roguefitness.com/roguecache',
-            'aHR0cHM6Ly93d3cucm9ndWVmaXRuZXNzLmNvbS9yb2d1ZS0yOC01LW1tLWJvbmV5YXJkLWJhcnM,'
-            , 37871        );
+            'aHR0cHM6Ly93d3cucm9ndWVmaXRuZXNzLmNvbS9yb2d1ZS0yNW1tLWJvbmV5YXJkLWJhcnM,'
+            , 37873        );
     </script>
 <script type="text/javascript">
         const cookieName       = 'customer_segments';
@@ -2430,5 +2461,5 @@ if (document.addEventListener) {
         "\/skin\/frontend\/enterprise\/default\/images\/px.gif",
         0,
         0    );
-</script><script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"776f0c0f83","applicationID":"3461083","transactionName":"bwdbZ0ZTWBdRUkEIXlZNbEFdHV8KVFRNT0FQEg==","queueTime":0,"applicationTime":0,"atts":"Q0BYEQ5JSxk=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</script><script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"776f0c0f83","applicationID":"81716488,3461083","transactionName":"bwdbZ0ZTWBdRUkEIXlZNeFBAW1kKH1JUFVBUDV4cREBZAEVSQU5HUQdO","queueTime":0,"applicationTime":2453,"atts":"Q0BYEQ5JSxk=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
 </html>
