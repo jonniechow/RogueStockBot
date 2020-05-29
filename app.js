@@ -75,7 +75,6 @@ app.listen(process.env.PORT, () => {
   catch (error) {
     console.log(`Error: ${error}`);
   }
-
 });
 
 // Home screen page
@@ -475,9 +474,7 @@ async function handleMessage(sender_psid, received_message) {
 
     // Help message
     if (rec_msg === "help") {
-
       let all_items_str = "";
-
       let stmt = `SELECT * FROM items`;
       db.query(stmt, (err, results, fields) => {
         if (err) throw err;
@@ -524,7 +521,6 @@ async function handleMessage(sender_psid, received_message) {
     }
     // Stop message
     else if (rec_msg === "stop") {
-
       let adr = sender_psid;
       // Get records to make string
       let stmt = `SELECT * FROM searches
@@ -613,9 +609,6 @@ async function handleMessage(sender_psid, received_message) {
       }
     }
   }
-
-  // Send the response message
-  callSendAPI(sender_psid, response);
 }
 
 function handlePostback(sender_psid, received_postback) {
