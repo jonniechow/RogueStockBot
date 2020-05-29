@@ -42,7 +42,7 @@ let start_time;
 // Delay in seconds
 let delay = 30;
 // Limit of iteems
-let item_limit = 4;
+let item_limit = 10;
 
 app.set('view engine', 'ejs');
 
