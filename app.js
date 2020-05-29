@@ -40,7 +40,7 @@ const request = require('request'),
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 10;
+let delay = 30;
 // Limit of iteems
 let item_limit = 4;
 
@@ -423,7 +423,7 @@ function handleMessage(sender_psid, received_message) {
         search_str += search_urls[key]['product_name'] + " / " + key +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
-      search_str += `Last reset: ${start_time}\n`;
+      search_str += `Last reset: ${start_time}\nIf this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`;
       let response = {
         "text": search_str
       };

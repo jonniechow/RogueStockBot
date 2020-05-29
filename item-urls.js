@@ -45,7 +45,7 @@ var search_urls = { // Plate URLs
     "plate echo": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue Echo Bumper Plates', 
+        'product_name': 'Rogue Echo Bumper Plates',
         "link": "https://www.roguefitness.com/rogue-echo-bumper-plates-with-white-text"
     },
     "plate echo color": {
@@ -81,7 +81,7 @@ var search_urls = { // Plate URLs
     "plate change": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue LB Change Plates', 
+        'product_name': 'Rogue LB Change Plates',
         "link": "https://www.roguefitness.com/rogue-lb-change-plates"
     },
     "plate 6-shooter": {
@@ -244,7 +244,7 @@ var search_urls = { // Plate URLs
     "barbell rogue 2.0": {
         "type": "single",
         "sender_ids": {},
-        'product_name': 'The Rogue Bar 2.0', 
+        'product_name': 'The Rogue Bar 2.0',
         "link": "https://www.roguefitness.com/the-rogue-bar-2-0"
     },
     "barbell echo 2.0": {
@@ -263,7 +263,7 @@ var search_urls = { // Plate URLs
     "bike echo": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue Echo Bike', 
+        'product_name': 'Rogue Echo Bike',
         "link": "https://www.roguefitness.com/rogue-echo-bike"
     },
     // Bench
@@ -288,7 +288,7 @@ var search_urls = { // Plate URLs
     "bench ab3": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue AB-3 Adjustable Bench', 
+        'product_name': 'Rogue AB-3 Adjustable Bench',
         "link": "https://www.roguefitness.com/rogue-ab-3-adjustable-bench"
     },
     "bench thompson": {
@@ -337,7 +337,7 @@ var search_urls = { // Plate URLs
     "squat s-2": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue S-2 Squat Stand 2.0', 
+        'product_name': 'Rogue S-2 Squat Stand 2.0',
         "link": "https://www.roguefitness.com/rogue-s2-squat-stand-2-0"
     },
     "squat echo": {
@@ -355,7 +355,7 @@ var search_urls = { // Plate URLs
     "yoke y2": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Y-2 Rogue Yoke', 
+        'product_name': 'Y-2 Rogue Yoke',
         "link": "https://www.roguefitness.com/y2-yoke"
     },
     // Racks
@@ -387,7 +387,7 @@ var search_urls = { // Plate URLs
     "yoke y1": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Y-1 Rogue Yoke', 
+        'product_name': 'Y-1 Rogue Yoke',
         "link": "https://www.roguefitness.com/rogue-yoke"
     },
     "yoke y2": {
@@ -432,7 +432,7 @@ var search_urls = { // Plate URLs
     "kettlebells": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue Kettlebells', 
+        'product_name': 'Rogue Kettlebells',
         "link": "https://www.roguefitness.com/rogue-kettlebells"
     },
     "dumbbells": {
@@ -440,7 +440,13 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue Dumbbells',
         "link": "https://www.roguefitness.com/rogue-dumbbells"
+    },
+    "monolift monster": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Adjustable Monolift - Monster',
+        "link": "https://www.roguefitness.com/rogue-adjustable-monolift-monster"
     }
-    
+
 };
 module.exports = search_urls;
