@@ -383,6 +383,36 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue R-3 Power Rack',
         "link": "https://www.roguefitness.com/rogue-r-3-power-rack"
     },
+    "ml spotter": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'SAML-24 Monster Lite Safety Spotter Arms (Pair)',
+        "link": "https://www.roguefitness.com/saml-24-monster-lite-spotter-arms-pair"
+    },
+    "m spotter": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Monster Safety Spotter Arms 2.0',
+        "link": "https://www.roguefitness.com/monster-safety-spotter-arms-2-0"
+    },
+    "infinity spotter": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Infinity Safety Spotter Arms',
+        "link": "https://www.roguefitness.com/set-of-safety-spotter-arms"
+    },
+    "landmine": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Landmines',
+        "link": "https://www.roguefitness.com/landmines"
+    },
+    "m landmine": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Landmine 2.0',
+        "link": "https://www.roguefitness.com/rogue-monster-landmine-2-0"
+    },
     // Yoke
     "yoke y1": {
         "type": "multi",
