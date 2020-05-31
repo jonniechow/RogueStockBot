@@ -40,7 +40,7 @@ const request = require('request'),
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 30;
+let delay = 10;
 // Limit of iteems
 let item_limit = 10;
 
@@ -168,6 +168,7 @@ async function handleAllURLs() {
     let item_str = "";
     let write_item_str = "";
     let in_stock_count = 0;
+    let rand_string = Math.random().toString(36).substring(7);
 
     // Loop through each item on page
     data.forEach((item) =>  {
@@ -223,8 +224,10 @@ async function handleAllURLs() {
             "\n\n" + item_str +
             `First initial check on ${dateTime}\n` +
             `You will be notified everytime there is a change in stock.\n` +
-            `Will begin running in the background until "stop"\n` +
-            "Link " + search_urls[item]['link']
+            `Will begin running in the background until "stop"\n\n` +
+            `Original link:\n${search_urls[item]['link']}\n\n` +
+            `Non-cached link:\n${search_urls[item]['link'] + '?=' + rand_string}\n\n` +
+            `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`
         };
         callSendAPI(sender_id, response);
       }
@@ -262,8 +265,10 @@ async function handleAllURLs() {
             `Match found for: "${search_urls[item]['product_name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
-            "Checked On " + dateTime + "\n" +
-            "Link " + search_urls[item]['link']
+            `Checked On ${dateTime}\n` +
+            `Original link:\n${search_urls[item]['link']}\n\n` +
+            `Non-cached link:\n${search_urls[item]['link'] + '?=' + rand_string}\n\n` +
+            `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`
         };
         callSendAPI(sender_id, response);
       }
@@ -409,7 +414,7 @@ function handleMessage(sender_psid, received_message) {
       }
       response = {
         "text": `HELP MSG:\n` +
-          `Search for the following items\n: ${key_string} \n` +
+          `Search for the following items:\n${key_string} \n` +
           "Type `stop` to stop checking all items \n"
       };
       callSendAPI(sender_psid, response);
@@ -423,7 +428,7 @@ function handleMessage(sender_psid, received_message) {
         search_str += search_urls[key]['product_name'] + " / " + key +
           "\nTime elapsed: " + getTimeDiff(user_id_dic[sender_psid]['products'][key]) + "\n\n";
       }
-      search_str += `Last reset: ${start_time}\nIf this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`;
+      search_str += `Last reset: ${start_time}\n\nIf this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`;
       let response = {
         "text": search_str
       };
