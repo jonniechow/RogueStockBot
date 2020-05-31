@@ -11,12 +11,25 @@ be a great tool to help others just like me.
 ### What?
 * Search for your favorite Rogue Fitness equipment
 * Get notified whenever items are back in stock through FB messenger
-* Limit of 4 items
+* Limit of 10 items
 * Checks items every 30 seconds
 
 ![result](/views/images/home-demo.png)
 
 ### Updates
+v 1.3
+* Included a new “non-cached” link with a random 6 letter string appended to the URL
+    * This link redirects you to the page when a restock occurs and clears the cache so the items should show up instantly
+    * Kept the original link as a back up
+* Included the following items
+    * SAML-24 Monster Lite Safety Spotter Arms (Pair)
+    * Monster Safety Spotter Arms 2.0
+    * Rogue Infinity Safety Spotter Arms
+    * Rogue Landmines
+    * Rogue Thompson Fatbells
+* Removed customizable buggy items for now such as OPB cerakote, OPB ss
+    * Unable to add custom items for now such as loadable dumbbells, monster utility bench 2.0
+
 v 1.2
 * Fixed bug where some pages did not correctly indicate they were in stock
 
