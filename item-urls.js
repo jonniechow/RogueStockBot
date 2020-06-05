@@ -18,6 +18,18 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue LB Competition Plates',
         "link": "https://www.roguefitness.com/rogue-competition-plates"
     },
+    "plate comp white lb": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue LB Training 2.0 Plates (White Print)',
+        "link": "https://www.roguefitness.com/rogue-lb-training-2-0-plates-white-print"
+    },
+    "plate comp kg": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue KG Competition Plates (IWF)',
+        "link": "https://www.roguefitness.com/rogue-kg-competition-plates-iwf"
+    },
     "plate comp lb2": {
         "type": "multi",
         "sender_ids": {},
@@ -83,6 +95,12 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue LB Change Plates',
         "link": "https://www.roguefitness.com/rogue-lb-change-plates"
+    },
+    "plate mil spec": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue US-MIL Spec Bumper',
+        "link": "https://www.roguefitness.com/rogue-us-mil-sprc-bumper-plates"
     },
     "plate 6-shooter": {
         "type": "multi",
@@ -401,6 +419,18 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Infinity Safety Spotter Arms',
         "link": "https://www.roguefitness.com/set-of-safety-spotter-arms"
     },
+    "ml j-cups": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Monster Lite J-Cups',
+        "link": "https://www.roguefitness.com/j-3358-monster-lite-j-cups"
+    },
+    "ml sandwich j-cups": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Monster Lite Sandwich J-Cup Pair',
+        "link": "https://www.roguefitness.com/monster-lite-sandwich-j-cup-pair"
+    },
     "landmine": {
         "type": "multi",
         "sender_ids": {},
@@ -482,7 +512,31 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue Adjustable Monolift - Monster',
         "link": "https://www.roguefitness.com/rogue-adjustable-monolift-monster"
+    },
+    // Canada links
+    "ca dumbbells": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Dumbbells',
+        "link": "https://www.roguecanada.ca/rogue-dumbbells"
+    },
+    "ca echo color": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Color Echo Bumper Plates',
+        "link": "https://www.roguecanada.ca/rogue-color-echo-bumper-plate"
+    },
+    "ca echo": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Echo Bumper Plates V2',
+        "link": "https://www.roguecanada.ca/rogue-echo-bumper-plates-with-white-text"
+    },
+    "ca model d rower": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Black Concept 2 Model D Rower - PM5',
+        "link": "https://www.roguecanada.ca/black-concept-2-model-d-rower-pm5"
     }
-
 };
 module.exports = search_urls;
