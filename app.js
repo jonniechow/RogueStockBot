@@ -59,7 +59,7 @@ let start_time;
 // Delay in seconds
 let delay = 10;
 // Limit of iteems
-let item_limit = 10;
+let item_limit = 100;
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/views/'));
@@ -265,11 +265,13 @@ async function handleAllURLs() {
       var dateTime = time + ' EST ' + date;
 
       // SQL gets all searches with this item_name
-      stmt = `SELECT C.num_searches, S.* FROM searches S,
-              (SELECT COUNT(*) num_searches
-              FROM searches
-              GROUP BY user_id) C
-              WHERE item_name=?`;
+      stmt = `SELECT S2.num_searches, S1.* FROM
+      (SELECT * FROM searches WHERE item_name=?) AS S1
+      JOIN
+      (SELECT COUNT(*) num_searches, user_id
+                    FROM searches
+                    GROUP BY user_id) AS S2
+      ON S1.user_id = S2.user_id;`;
       let args = [item_short_name];
 
       db.query(stmt, [args], (err, search_results, fields) => {
