@@ -134,13 +134,14 @@ app.post('/webhook', (req, res) => { // Parse the request body from the POST
 
     body.entry.forEach(function (entry) { // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
-      console.log("---MESSAGE RECEIVED---");
-      console.log(webhook_event);
+      
+      // console.log(webhook_event);
 
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
-      console.log('Sender ID: ' + sender_psid + "\n");
+      console.log(`---MESSAGE RECEIVED: ${sender_psid}---`);
+      //console.log('Sender ID: ' + sender_psid + "\n");
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
@@ -205,6 +206,7 @@ async function handleAllURLs() {
   let stmt = 'SELECT * FROM items';
   db.query(stmt, async (err, item_results, fields) => {
     if (err) throw err;
+    // Loops through each item
     item_results.forEach(async (item) => {
       // Get data from item url
       let data = await getDataFromURL(item);
@@ -311,7 +313,7 @@ async function handleAllURLs() {
               "text":
                 `RESTOCK: "${item_name}"\n` +
                 `Match found for: "${item_full_name}".\n` +
-                `Currently searching ${item_limit} items` +
+                `Currently searching ${item_count}/${item_limit} items` +
                 "\n\n" + item_str +
                 "Checked On " + dateTime + "\n" +
                 `Link: ${item['link']}`
@@ -335,14 +337,14 @@ async function handleAllURLs() {
         if (prev_stock_count > 0 && in_stock_count == 0) {
           db.query(stmt, args, (err, results, fields) => {
             if (err) throw err;
-            console.log(`MySql db: out of stock`);
+            console.log(`OUT OF STOCK: ${item_short_name}`);
           });
         }
         // Difference in stock count
         else if (in_stock_count != prev_stock_count) {
           db.query(stmt, args, (err, results, fields) => {
             if (err) throw err;
-            console.log(`MySql db: restock`);
+            console.log(`RESTOCK: ${item_short_name}`);
           });
         }
       });
@@ -660,7 +662,7 @@ function callSendAPI(sender_psid, response) { // Construct the message body
     },
     (err, res, body) => {
       if (!err) {
-        console.log('---MESSAGE SENT!---\n');
+        console.log(`---MESSAGE SENT: ${sender_psid}!---`);
       }
       else {
         console.error("Unable to send message:" + err);
