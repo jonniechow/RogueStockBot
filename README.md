@@ -22,6 +22,10 @@ Has this project helped you? Consider donating!
 ![result](/views/images/home-demo.png)
 
 ### Updates
+v 2.1
+* Fixed errors and updated to SQL database
+* Included more items
+
 v 2.0
 * No longer forgets searches, migrated to MySQL Database
 * Increased item limit to 10
