@@ -244,7 +244,7 @@ async function handleAllURLs() {
         })
       }
       catch (err) {
-        console.log("Error: No items")
+        console.log(`Error: No items found for ${item_short_name}`);
       }
 
 
@@ -488,6 +488,7 @@ async function handleMessage(sender_psid, received_message) {
         })
         response = {
           "text": `HELP MSG:\n` +
+            all_items_str +
             `For commands check out\n` +
             `roguestockbot.com/current-items \n` +
             "Type `stop` to stop checking all items \n"

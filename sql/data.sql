@@ -40,7 +40,7 @@ VALUES
 ('curl cerakote', 'Rogue Curl Bar - Cerakote', 'https://www.roguefitness.com/rogue-curl-bar-cerakote', 'single', 0),
 ('curl', 'Rogue Curl Bar', 'https://www.roguefitness.com/rogue-curl-bar', 'multi', 0),
 ('curl rackable', 'Rogue Rackable Curl Bar', 'https://www.roguefitness.com/rogue-rackable-curl-bar', 'single', 0),
-('barbell rogue 2.0', 'The Rogue Bar 2.0', 'https://www.roguefitness.com/the-rogue-bar-2-0', 'single', 0),
+('barbell rogue 2.0', 'The Rogue Bar 2.0', 'https://www.roguefitness.com/the-rogue-bar-2-0', 'multi', 0),
 ('barbell echo 2.0', 'Rogue Echo Bar 2.0', 'https://www.roguefitness.com/rogue-echo-bar', 'single', 0),
 ('barbell freedom', 'Rogue Freedom Bar - 28.5MM', 'https://www.roguefitness.com/cerakote-28-5-mm-freedom-bar', 'single', 0),
 ('bike echo', 'Rogue Echo Bike', 'https://www.roguefitness.com/rogue-echo-bike', 'multi', 0),

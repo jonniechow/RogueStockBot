@@ -25,6 +25,20 @@ describe('Barbell', function () {
             done();
         })
     });
+    it(`Test rogue 2.0 avail`, function (done) {
+        request.get('https://www.roguefitness.com/the-rogue-bar-2-0', function (err, response, body) {
+            let $ = cheerio.load(body);
+            expect($('.bin-stock-availability').text()).to.have.string(`Notify Me`);
+            done();
+        })
+    });
+    it(`Test opb ss avail`, function (done) {
+        request.get('https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless', function (err, response, body) {
+            let $ = cheerio.load(body);
+            expect($('.bin-stock-availability').text()).to.have.string(`Notify Me`);
+            done();
+        })
+    });
     it(`Test in stock local`, function (done) {
         let $ = cheerio.load(fs.readFileSync('test/test_html/barbell_opb_ss.html'));
         expect($('.product-options-bottom button').text()).to.have.string(`Notify Me`);
