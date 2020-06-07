@@ -20,6 +20,8 @@
  */
 
 'use strict';
+require('dotenv').config();
+
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require('request'),
@@ -35,7 +37,7 @@ const request = require('request'),
   useless_items = require('./useless-items')
 // creates express http server
 
-require('dotenv').config();
+
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -66,7 +68,7 @@ app.use(express.static(__dirname + '/views/'));
 
 
 // Sets server port and logs message on success
-app.listen('3000', () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('webhook is listening');
   try {
     setInterval(handleAllURLs, delay * 1000);
