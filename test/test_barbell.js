@@ -15,6 +15,7 @@ describe('Barbell', function () {
             response.statusCode.should.equal(200);
             let $ = cheerio.load(body);
             expect($('.product-title').text()).to.equal(`Rogue 45LB Ohio Power Bar - Stainless Steel`);
+            expect($('.bin-stock-availability').text()).to.have.string(`Notify Me`);
             done();
         })
     });
@@ -36,6 +37,13 @@ describe('Barbell', function () {
         request.get('https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless', function (err, response, body) {
             let $ = cheerio.load(body);
             expect($('.bin-stock-availability').text()).to.have.string(`Notify Me`);
+            done();
+        })
+    });
+    it(`Test squat bar avail`, function (done) {
+        request.get('https://www.roguefitness.com/rogue-32-mm-squat-bar', function (err, response, body) {
+            let $ = cheerio.load(body);
+            expect($('.product-options-bottom button').text()).to.have.string(`Notify Me`);
             done();
         })
     });

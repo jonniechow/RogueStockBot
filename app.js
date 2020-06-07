@@ -57,7 +57,7 @@ const query = util.promisify(db.query).bind(db);
 
 let start_time;
 // Delay in seconds
-let delay = 10;
+let delay = 30;
 // Limit of iteems
 let item_limit = 100;
 
@@ -134,9 +134,7 @@ app.post('/webhook', (req, res) => { // Parse the request body from the POST
 
     body.entry.forEach(function (entry) { // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
-      
       // console.log(webhook_event);
-
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
