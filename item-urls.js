@@ -537,6 +537,12 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Black Concept 2 Model D Rower - PM5',
         "link": "https://www.roguecanada.ca/black-concept-2-model-d-rower-pm5"
+    },
+    "barbell squat": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue 32MM Squat Bar',
+        "link": "https://www.roguefitness.com/rogue-32-mm-squat-bar"
     }
 };
 module.exports = search_urls;
