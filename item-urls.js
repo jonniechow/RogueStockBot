@@ -18,6 +18,18 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue LB Competition Plates',
         "link": "https://www.roguefitness.com/rogue-competition-plates"
     },
+    "plate comp white lb": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue LB Training 2.0 Plates (White Print)',
+        "link": "https://www.roguefitness.com/rogue-lb-training-2-0-plates-white-print"
+    },
+    "plate comp kg": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue KG Competition Plates (IWF)',
+        "link": "https://www.roguefitness.com/rogue-kg-competition-plates-iwf"
+    },
     "plate comp lb2": {
         "type": "multi",
         "sender_ids": {},
@@ -45,7 +57,7 @@ var search_urls = { // Plate URLs
     "plate echo": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue Echo Bumper Plates', 
+        'product_name': 'Rogue Echo Bumper Plates',
         "link": "https://www.roguefitness.com/rogue-echo-bumper-plates-with-white-text"
     },
     "plate echo color": {
@@ -81,8 +93,14 @@ var search_urls = { // Plate URLs
     "plate change": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue LB Change Plates', 
+        'product_name': 'Rogue LB Change Plates',
         "link": "https://www.roguefitness.com/rogue-lb-change-plates"
+    },
+    "plate mil spec": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue US-MIL Spec Bumper',
+        "link": "https://www.roguefitness.com/rogue-us-mil-sprc-bumper-plates"
     },
     "plate 6-shooter": {
         "type": "multi",
@@ -122,18 +140,18 @@ var search_urls = { // Plate URLs
         'product_name': 'The Ohio Bar - E-Coat',
         "link": "https://www.roguefitness.com/the-ohio-bar-2-0-e-coat"
     },
-    "barbell op ss": {
-        "type": "single",
-        "sender_ids": {},
-        'product_name': 'The Ohio Bar - Stainless Steel',
-        "link": "https://www.roguefitness.com/stainless-steel-ohio-bar"
-    },
-    "barbell op cerakote": {
-        "type": "single",
-        "sender_ids": {},
-        'product_name': 'The Ohio Bar - Cerakote',
-        "link": "https://www.roguefitness.com/the-ohio-bar-cerakote"
-    },
+    // "barbell op ss": {
+    //     "type": "single",
+    //     "sender_ids": {},
+    //     'product_name': 'The Ohio Bar - Stainless Steel',
+    //     "link": "https://www.roguefitness.com/stainless-steel-ohio-bar"
+    // },
+    // "barbell op cerakote": {
+    //     "type": "single",
+    //     "sender_ids": {},
+    //     'product_name': 'The Ohio Bar - Cerakote',
+    //     "link": "https://www.roguefitness.com/the-ohio-bar-cerakote"
+    // },
     // Ohio Power Bar
     "barbell opb steel": {
         "type": "single",
@@ -153,24 +171,24 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue 45LB Ohio Power Bar - Black Zinc',
         "link": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-black-zinc"
     },
-    "barbell opb ss": {
-        "type": "single",
-        "sender_ids": {},
-        'product_name': 'Rogue 45LB Ohio Power Bar - Stainless Steel',
-        "link": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless"
-    },
+    // "barbell opb ss": {
+    //     "type": "single",
+    //     "sender_ids": {},
+    //     'product_name': 'Rogue 45LB Ohio Power Bar - Stainless Steel',
+    //     "link": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless"
+    // },
     "barbell opb ss kg": {
         "type": "single",
         "sender_ids": {},
         'product_name': 'Rogue 20KG Ohio Power Bar - Stainless Steel',
         "link": "https://www.roguefitness.com/rogue-20-kg-ohio-power-bar-stainless-steel"
     },
-    "barbell opb cerakote": {
-        "type": "single",
-        "sender_ids": {},
-        'product_name': 'Rogue 45LB Ohio Power Bar - Cerakote',
-        "link": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote"
-    },
+    // "barbell opb cerakote": {
+    //     "type": "single",
+    //     "sender_ids": {},
+    //     'product_name': 'Rogue 45LB Ohio Power Bar - Cerakote',
+    //     "link": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote"
+    // },
     // Boneyard
     "bone 29": {
         "type": "bone",
@@ -244,7 +262,7 @@ var search_urls = { // Plate URLs
     "barbell rogue 2.0": {
         "type": "single",
         "sender_ids": {},
-        'product_name': 'The Rogue Bar 2.0', 
+        'product_name': 'The Rogue Bar 2.0',
         "link": "https://www.roguefitness.com/the-rogue-bar-2-0"
     },
     "barbell echo 2.0": {
@@ -263,7 +281,7 @@ var search_urls = { // Plate URLs
     "bike echo": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue Echo Bike', 
+        'product_name': 'Rogue Echo Bike',
         "link": "https://www.roguefitness.com/rogue-echo-bike"
     },
     // Bench
@@ -288,7 +306,7 @@ var search_urls = { // Plate URLs
     "bench ab3": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue AB-3 Adjustable Bench', 
+        'product_name': 'Rogue AB-3 Adjustable Bench',
         "link": "https://www.roguefitness.com/rogue-ab-3-adjustable-bench"
     },
     "bench thompson": {
@@ -337,7 +355,7 @@ var search_urls = { // Plate URLs
     "squat s-2": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue S-2 Squat Stand 2.0', 
+        'product_name': 'Rogue S-2 Squat Stand 2.0',
         "link": "https://www.roguefitness.com/rogue-s2-squat-stand-2-0"
     },
     "squat echo": {
@@ -345,6 +363,18 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue Echo Squat Stand 2.0',
         "link": "https://www.roguefitness.com/rogue-echo-squat-stand-2-0"
+    },
+    "yoke y1": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Y-1 Rogue Yoke',
+        "link": "https://www.roguefitness.com/rogue-yoke"
+    },
+    "yoke y2": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Y-2 Rogue Yoke',
+        "link": "https://www.roguefitness.com/y2-yoke"
     },
     // Racks
     "rack rml-390f": {
@@ -371,11 +401,53 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue R-3 Power Rack',
         "link": "https://www.roguefitness.com/rogue-r-3-power-rack"
     },
+    "ml spotter": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'SAML-24 Monster Lite Safety Spotter Arms (Pair)',
+        "link": "https://www.roguefitness.com/saml-24-monster-lite-spotter-arms-pair"
+    },
+    "m spotter": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Monster Safety Spotter Arms 2.0',
+        "link": "https://www.roguefitness.com/monster-safety-spotter-arms-2-0"
+    },
+    "infinity spotter": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Infinity Safety Spotter Arms',
+        "link": "https://www.roguefitness.com/set-of-safety-spotter-arms"
+    },
+    "ml j-cups": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Monster Lite J-Cups',
+        "link": "https://www.roguefitness.com/j-3358-monster-lite-j-cups"
+    },
+    "ml sandwich j-cups": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Monster Lite Sandwich J-Cup Pair',
+        "link": "https://www.roguefitness.com/monster-lite-sandwich-j-cup-pair"
+    },
+    "landmine": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Landmines',
+        "link": "https://www.roguefitness.com/landmines"
+    },
+    "m landmine": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Landmine 2.0',
+        "link": "https://www.roguefitness.com/rogue-monster-landmine-2-0"
+    },
     // Yoke
     "yoke y1": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Y-1 Rogue Yoke', 
+        'product_name': 'Y-1 Rogue Yoke',
         "link": "https://www.roguefitness.com/rogue-yoke"
     },
     "yoke y2": {
@@ -420,7 +492,7 @@ var search_urls = { // Plate URLs
     "kettlebells": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue Kettlebells', 
+        'product_name': 'Rogue Kettlebells',
         "link": "https://www.roguefitness.com/rogue-kettlebells"
     },
     "dumbbells": {
@@ -428,7 +500,49 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue Dumbbells',
         "link": "https://www.roguefitness.com/rogue-dumbbells"
+    },
+    "fatbells": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Thompson Fatbells',
+        "link": "https://www.roguefitness.com/rogue-thompson-fatbells"
+    },
+    "monolift monster": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Adjustable Monolift - Monster',
+        "link": "https://www.roguefitness.com/rogue-adjustable-monolift-monster"
+    },
+    // Canada links
+    "ca dumbbells": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Dumbbells',
+        "link": "https://www.roguecanada.ca/rogue-dumbbells"
+    },
+    "ca echo color": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Color Echo Bumper Plates',
+        "link": "https://www.roguecanada.ca/rogue-color-echo-bumper-plate"
+    },
+    "ca echo": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Echo Bumper Plates V2',
+        "link": "https://www.roguecanada.ca/rogue-echo-bumper-plates-with-white-text"
+    },
+    "ca model d rower": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Black Concept 2 Model D Rower - PM5',
+        "link": "https://www.roguecanada.ca/black-concept-2-model-d-rower-pm5"
+    },
+    "barbell squat": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue 32MM Squat Bar',
+        "link": "https://www.roguefitness.com/rogue-32-mm-squat-bar"
     }
-    
 };
 module.exports = search_urls;
