@@ -260,7 +260,7 @@ var search_urls = { // Plate URLs
     },
     // Other bars
     "barbell rogue 2.0": {
-        "type": "single",
+        "type": "multi",
         "sender_ids": {},
         'product_name': 'The Rogue Bar 2.0',
         "link": "https://www.roguefitness.com/the-rogue-bar-2-0"
