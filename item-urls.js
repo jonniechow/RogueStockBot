@@ -488,6 +488,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Mini Deadlift Bar Jack',
         "link": "https://www.roguefitness.com/mini-deadlift-bar-jack"
     },
+    "dl jack": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Deadlift Bar Jack',
+        "link": "https://www.roguefitness.com/bar-jack"
+    },
     // Free weights
     "kettlebells": {
         "type": "multi",
@@ -507,35 +513,95 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Thompson Fatbells',
         "link": "https://www.roguefitness.com/rogue-thompson-fatbells"
     },
-    "monolift monster": {
+    "m monolift": {
         "type": "single",
         "sender_ids": {},
         'product_name': 'Rogue Adjustable Monolift - Monster',
         "link": "https://www.roguefitness.com/rogue-adjustable-monolift-monster"
     },
+    "ml monolift": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Adjustable Monolift - Monster Lite',
+        "link": "https://www.roguefitness.com/rogue-adjustable-monolift-monster-lite"
+    },
+    "m mini feet": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Mini Feet',
+        "link": "https://www.roguefitness.com/rogue-monster-mini-feet"
+    },
+    "m plate storage long": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'SP33100 Plate Storage Pair - Long for 3x3 Monster',
+        "link": "https://www.roguefitness.com/sp33100-plate-storage-long-for-3x3-monster"
+    },
+    "barbell iwf": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue 28MM IWF Olympic Weightlifting Bar w/ Center Knurl - Bright Zinc',
+        "link": "https://www.roguefitness.com/rogue-iwf-olympic-wl-bar-w-center-knurl-bright-zinc"
+    },
+    "rack r-3bt": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Bolt-Together R-3',
+        "link": "https://www.roguefitness.com/rogue-bolt-together-r-3"
+    },
+    "ml matador": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Lite Matador',
+        "link": "https://www.roguefitness.com/rogue-monster-lite-matador"
+    },
+    "assault airbike": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Assault AirBike',
+        "link": "https://www.roguefitness.com/assault-airbike-and-accessories"
+    },
+    "crossmember multigrip": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'XM-43M Monster Multi Grip Crossmember',
+        "link": "https://www.roguefitness.com/xm-43m-monster-multi-grip-crossmember"
+    },
+    "landmine post": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Post Landmine',
+        "link": "https://www.roguefitness.com/post-landmine"
+    },
+    "camber bar": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'CB-1 Rogue Camber Bar ',
+        "link": "https://www.roguefitness.com/cb-1-rogue-camber-bar"
+    },
     // Canada links
     "ca dumbbells": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue Dumbbells',
+        'product_name': 'CA Rogue Dumbbells',
         "link": "https://www.roguecanada.ca/rogue-dumbbells"
     },
     "ca echo color": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue Color Echo Bumper Plates',
+        'product_name': 'CA Rogue Color Echo Bumper Plates',
         "link": "https://www.roguecanada.ca/rogue-color-echo-bumper-plate"
     },
     "ca echo": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue Echo Bumper Plates V2',
+        'product_name': 'CA Rogue Echo Bumper Plates V2',
         "link": "https://www.roguecanada.ca/rogue-echo-bumper-plates-with-white-text"
     },
     "ca model d rower": {
         "type": "single",
         "sender_ids": {},
-        'product_name': 'Black Concept 2 Model D Rower - PM5',
+        'product_name': 'CA Black Concept 2 Model D Rower - PM5',
         "link": "https://www.roguecanada.ca/black-concept-2-model-d-rower-pm5"
     },
     "barbell squat": {
