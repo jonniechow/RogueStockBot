@@ -34,16 +34,14 @@ describe('Barbell', function () {
         })
     });
     it(`Test opb ss avail`, function (done) {
-        request.get('https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless', function (err, response, body) {
+        this.timeout(3000);
+        var options = {
+            url: 'https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless',
+            timeout: 3000
+        }
+        request(options, function (err, response, body) {
             let $ = cheerio.load(body);
             expect($('.bin-stock-availability').text()).to.have.string(`Notify Me`);
-            done();
-        })
-    });
-    it(`Test squat bar avail`, function (done) {
-        request.get('https://www.roguefitness.com/rogue-32-mm-squat-bar', function (err, response, body) {
-            let $ = cheerio.load(body);
-            expect($('.product-options-bottom button').text()).to.have.string(`Notify Me`);
             done();
         })
     });
@@ -51,5 +49,33 @@ describe('Barbell', function () {
         let $ = cheerio.load(fs.readFileSync('test/test_html/barbell_opb_ss.html'));
         expect($('.product-options-bottom button').text()).to.have.string(`Notify Me`);
         done();
+    });
+    it(`Test opb cerakote avail`, function (done) {
+        var options = {
+            url: 'https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote',
+            timeout: 3000
+        }
+        request(options, function (err, response, body) {
+            let $ = cheerio.load(body);
+            var obj = $("script[type='text/javascript']");
+            var info = [];
+            for (var i in obj) {
+                for (var j in obj[i].children) {
+                    var data = obj[i].children[j].data;
+                    if (data && data.includes("stock")) {
+                        var split_data = data.split(/[[\]]{1,2}/);
+                        split_data.forEach((item) => {
+                            if(item.includes("additional_options")) {
+                                var stripped_str = item.substring(item.indexOf('{'), item.lastIndexOf('realLabel') - 2)
+                                info.push(JSON.parse(stripped_str));
+                            }
+                        })
+
+                    }
+                }
+            }
+            expect($('.bin-stock-availability').text()).to.have.string(`Notify Me`);
+            done();
+        })
     });
 });
