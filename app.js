@@ -21,7 +21,7 @@
 
 'use strict';
 require('dotenv').config();
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require('request'),
   express = require('express'),
@@ -41,7 +41,7 @@ const request = require('request'),
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 30;
+let delay = 10;
 // Limit of iteems
 let item_limit = 10;
 
@@ -338,6 +338,13 @@ async function getDataFromURL(item) {
         items[0] = {};
         items[0]['in_stock'] = 'Notify Me';
       }
+    }
+    else if (item_type == "custom") {
+      items[0] = {};
+      items[0]['name'] = $('.product-title').text();
+      items[0]['price'] = $('.price').text();
+      items[0]['in_stock'] = $('.product-options-bottom button').text();
+      console.log(items);
     }
     // Just one item in a page
     else {

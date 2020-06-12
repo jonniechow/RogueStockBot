@@ -171,12 +171,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue 45LB Ohio Power Bar - Black Zinc',
         "link": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-black-zinc"
     },
-    // "barbell opb ss": {
-    //     "type": "single",
-    //     "sender_ids": {},
-    //     'product_name': 'Rogue 45LB Ohio Power Bar - Stainless Steel',
-    //     "link": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless"
-    // },
+    "barbell opb ss": {
+        "type": "custom",
+        "sender_ids": {},
+        'product_name': 'Rogue 45LB Ohio Power Bar - Stainless Steel',
+        "link": "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless"
+    },
     "barbell opb ss kg": {
         "type": "single",
         "sender_ids": {},
@@ -576,8 +576,14 @@ var search_urls = { // Plate URLs
     "camber bar": {
         "type": "single",
         "sender_ids": {},
-        'product_name': 'CB-1 Rogue Camber Bar ',
+        'product_name': 'CB-1 Rogue Camber Bar',
         "link": "https://www.roguefitness.com/cb-1-rogue-camber-bar"
+    },
+    "dl platform": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Deadlift Platform',
+        "link": "https://www.roguefitness.com/rogue-deadlift-platform"
     },
     // Canada links
     "ca dumbbells": {
