@@ -344,16 +344,15 @@ async function getDataFromURL(item) {
       let info = [];
       for (var i in obj) {
         for (var j in obj[i].children) {
-          var data = obj[i].children[j].data;
-          if (data && data.includes("stock")) {
-            var split_data = data.split(/[[\]]{1,2}/);
+          let data = obj[i].children[j].data;
+          if (data && data.includes("relatedColorSwatches")) {
+            let split_data = data.split(/[[\]]{1,2}/);
             split_data.forEach((option) => {
-              if (option.includes("relatedColorSwatches")) {
+              if (option.includes("additional_options")) {
                 var stripped_str = option.substring(option.indexOf('{'), option.lastIndexOf('realLabel') - 2)
                 info.push(JSON.parse(stripped_str));
               }
             })
-
           }
         }
       }
@@ -363,7 +362,6 @@ async function getDataFromURL(item) {
         items[index]['name'] = element[first_key]['product_name'];
         items[index]['price'] = $('.price').first().text().trim();
         items[index]['in_stock'] = element[first_key]['stockTitle'];
-
       })
     }
     // Just one item in a page
