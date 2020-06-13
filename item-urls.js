@@ -146,12 +146,12 @@ var search_urls = { // Plate URLs
     //     'product_name': 'The Ohio Bar - Stainless Steel',
     //     "link": "https://www.roguefitness.com/stainless-steel-ohio-bar"
     // },
-    // "barbell op cerakote": {
-    //     "type": "single",
-    //     "sender_ids": {},
-    //     'product_name': 'The Ohio Bar - Cerakote',
-    //     "link": "https://www.roguefitness.com/the-ohio-bar-cerakote"
-    // },
+    "barbell op cerakote": {
+        "type": "cerakote",
+        "sender_ids": {},
+        'product_name': 'The Ohio Bar - Cerakote',
+        "link": "https://www.roguefitness.com/the-ohio-bar-cerakote"
+    },
     // Ohio Power Bar
     "barbell opb steel": {
         "type": "single",
@@ -183,12 +183,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue 20KG Ohio Power Bar - Stainless Steel',
         "link": "https://www.roguefitness.com/rogue-20-kg-ohio-power-bar-stainless-steel"
     },
-    // "barbell opb cerakote": {
-    //     "type": "single",
-    //     "sender_ids": {},
-    //     'product_name': 'Rogue 45LB Ohio Power Bar - Cerakote',
-    //     "link": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote"
-    // },
+    "barbell opb cerakote": {
+        "type": "cerakote",
+        "sender_ids": {},
+        'product_name': 'Rogue 45LB Ohio Power Bar - Cerakote',
+        "link": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote"
+    },
     // Boneyard
     "bone 29": {
         "type": "bone",

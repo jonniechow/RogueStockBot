@@ -64,18 +64,18 @@
                         <table class="alt">
                             <thead>
                                 <tr>
-                                    <th>Command</th>
                                     <th>Item</th>
+                                    <th>Command</th>
                                     <th>Link</th>
                                 </tr>
                             </thead>
                             <tbody id="data_from_log">
-                                <% data.forEach((entry)=>{%>
+                                <% Object.keys(data).forEach((entry)=>{%>
                                     <tr>
-                                        <td><%=entry.short_name%></td>
-                                        <td><%=entry.full_name%></td>
+                                        <td><%=data[entry].product_name%></td>
+                                        <td><%=entry%></td>
                                         <td>
-                                            <a href="<%=entry.link%>" target="_blank">Link</a>
+                                            <a href="<%=data[entry].link%>" target="_blank">Link</a>
                                         </td>
                                     </tr>
                                 <%});%>

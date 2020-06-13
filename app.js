@@ -172,14 +172,14 @@ async function handleAllURLs() {
     let rand_string = Math.random().toString(36).substring(7);
 
     // Loop through each item on page
-    data.forEach((item) =>  {
+    data.forEach((item) => {
       var avail = decodeURI('\u2705');
 
       // Check if data returned is empty
       if (Object.keys(item).length == 0) {
-        return; 
+        return;
       }
-      
+
       // Out of stock
       if (item['in_stock'].indexOf("Notify Me") >= 0 || item['in_stock'].indexOf("Out of Stock") >= 0) { // Cross emoji
         avail = decodeURI('\u274C');
@@ -189,9 +189,9 @@ async function handleAllURLs() {
         avail = decodeURI('\u2705');
         in_stock_count += 1;
         write_item_str += item['name'] + " " + avail + ", "
-        item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
+        //item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
       }
-      //item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
+      item_str += item['name'] + "\n" + item['price'] + "\nIn stock: " + avail + "\n \n"
     })
 
     // No items found, everything sold out
@@ -218,7 +218,7 @@ async function handleAllURLs() {
         search_urls[item]['sender_ids'][sender_id] = 1;
         // First response message
         let response = {
-          "text": 
+          "text":
             `FIRST CHECK: "${item}"\n` +
             `Match found for: "${search_urls[item]['product_name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
@@ -261,8 +261,8 @@ async function handleAllURLs() {
       for (let sender_id in search_urls[item]['sender_ids']) {
         // Response message
         let response = {
-          "text": 
-            `RESTOCK: "${item}"\n`+
+          "text":
+            `RESTOCK: "${item}"\n` +
             `Match found for: "${search_urls[item]['product_name']}".\n` +
             `Currently searching ${Object.keys(user_id_dic[sender_id]['products']).length}/${item_limit} items` +
             "\n\n" + item_str +
@@ -339,12 +339,32 @@ async function getDataFromURL(item) {
         items[0]['in_stock'] = 'Notify Me';
       }
     }
-    else if (item_type == "custom") {
-      items[0] = {};
-      items[0]['name'] = $('.product-title').text();
-      items[0]['price'] = $('.price').text();
-      items[0]['in_stock'] = $('.product-options-bottom button').text();
-      console.log(items);
+    else if (item_type == "cerakote") {
+      var obj = $("script[type='text/javascript']");
+      let info = [];
+      for (var i in obj) {
+        for (var j in obj[i].children) {
+          var data = obj[i].children[j].data;
+          if (data && data.includes("stock")) {
+            var split_data = data.split(/[[\]]{1,2}/);
+            split_data.forEach((option) => {
+              if (option.includes("relatedColorSwatches")) {
+                var stripped_str = option.substring(option.indexOf('{'), option.lastIndexOf('realLabel') - 2)
+                info.push(JSON.parse(stripped_str));
+              }
+            })
+
+          }
+        }
+      }
+      info.forEach((element, index) => {
+        let first_key = Object.keys(element)[0];
+        items[index] = {};
+        items[index]['name'] = element[first_key]['product_name'];
+        items[index]['price'] = $('.price').first().text().trim();
+        items[index]['in_stock'] = element[first_key]['stockTitle'];
+
+      })
     }
     // Just one item in a page
     else {
@@ -414,7 +434,7 @@ function handleMessage(sender_psid, received_message) {
     }
 
     // Help message
-    if (rec_msg === "help") { 
+    if (rec_msg === "help") {
       var keys = Object.keys(search_urls);
       var key_string = "";
       for (var i = 0; i < keys.length; ++i) {
