@@ -140,12 +140,12 @@ var search_urls = { // Plate URLs
         'product_name': 'The Ohio Bar - E-Coat',
         "link": "https://www.roguefitness.com/the-ohio-bar-2-0-e-coat"
     },
-    // "barbell op ss": {
-    //     "type": "single",
-    //     "sender_ids": {},
-    //     'product_name': 'The Ohio Bar - Stainless Steel',
-    //     "link": "https://www.roguefitness.com/stainless-steel-ohio-bar"
-    // },
+    "barbell op ss": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'The Ohio Bar - Stainless Steel',
+        "link": "https://www.roguefitness.com/stainless-steel-ohio-bar"
+    },
     "barbell op cerakote": {
         "type": "cerakote",
         "sender_ids": {},
@@ -285,6 +285,12 @@ var search_urls = { // Plate URLs
         "link": "https://www.roguefitness.com/rogue-echo-bike"
     },
     // Bench
+    "bench monster 2.0": {
+        "type": "monster bench",
+        "sender_ids": {},
+        'product_name': 'Monster Utility Bench 2.0',
+        "link": "https://www.roguefitness.com/monster-utility-bench-2-0-mg-black"
+    },
     "bench flat 2.0": {
         "type": "single",
         "sender_ids": {},
