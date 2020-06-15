@@ -97,8 +97,8 @@ app.get("/stock-updates", (req, res) => {
     };
     data_from_log["item_info"].unshift(item_dic);
   });
-
   rl.on("close", function () {
+    data_from_log["item_info"] = data_from_log["item_info"].slice(0, 100);
     res.render("stock-updates", { data: data_from_log });
   });
 });
@@ -542,6 +542,8 @@ function handleMessage(sender_psid, received_message) {
       let response = {
         text: search_str,
       };
+      console.log(search_urls);
+      console.log(user_id_dic);
       callSendAPI(sender_psid, response);
       return;
     }

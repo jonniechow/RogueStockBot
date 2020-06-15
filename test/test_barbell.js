@@ -135,6 +135,18 @@ describe("Stainless Steel", function () {
       done();
     });
   });
+  it(`Test op ss avail`, function (done) {
+    this.timeout(3000);
+    var options = {
+      url: "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless",
+      timeout: 3000,
+    };
+    request(options, function (err, response, body) {
+      let $ = cheerio.load(body);
+      expect($(".bin-stock-availability").text()).to.have.string(`Notify Me`);
+      done();
+    });
+  });
   it(`Test in stock local`, function (done) {
     let $ = cheerio.load(fs.readFileSync("test/test_html/barbell_opb_ss.html"));
     expect($(".product-options-bottom button").text()).to.have.string(
