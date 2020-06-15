@@ -54,11 +54,17 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Black Training KG Plates',
         "link": "https://www.roguefitness.com/rogue-black-training-kg-striped-plates"
     },
-    "plate echo": {
+    "plate echo v2": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue Echo Bumper Plates',
+        'product_name': 'Rogue Echo Bumper Plates V2',
         "link": "https://www.roguefitness.com/rogue-echo-bumper-plates-with-white-text"
+    },
+    "plate echo v1": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Echo Bumper Plates V1',
+        "link": "https://www.roguefitness.com/rogue-echo-bumper-plates-with-white-text-v1"
     },
     "plate echo color": {
         "type": "multi",
@@ -101,6 +107,12 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue US-MIL Spec Bumper',
         "link": "https://www.roguefitness.com/rogue-us-mil-sprc-bumper-plates"
+    },
+    "plate mil spec echo": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue MIL Spec Echo Bumper',
+        "link": "https://www.roguefitness.com/rogue-mil-echo-bumper-plates-black"
     },
     "plate 6-shooter": {
         "type": "multi",
@@ -615,6 +627,48 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'CA Black Concept 2 Model D Rower - PM5',
         "link": "https://www.roguecanada.ca/black-concept-2-model-d-rower-pm5"
+    },
+    "uk echo color": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'UK Rogue Color Echo Bumper Plates',
+        "link": "https://www.rogueeurope.eu/rogue-color-echo-bumper-plate-eu"
+    },
+    "uk echo": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'UK Rogue Echo Bumper Plates V2',
+        "link": "https://www.rogueeurope.eu/rogue-echo-bumper-plates-with-white-text-eu"
+    },
+    "uk rr plate": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'UK Rogue RR Plates',
+        "link": "https://www.rogueeurope.eu/rogue-rr-bumper-plates-eu"
+    },
+    "uk bella zinc": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'UK The Bella Bar 2.0 - Black Zinc',
+        "link": "https://www.rogueeurope.eu/rogue-bella-bar-eu"
+    },
+    "au bench ab2": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'AU AB-2 Adjustable Bench',
+        "link": "https://www.rogueaustralia.com.au/ab-2-adjustable-bench-au"
+    },
+    "au barbell opb zinc": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'AU Rogue 20KG Ohio Power Bar - Black Zinc',
+        "link": "https://www.rogueaustralia.com.au/rogue-20-kg-ohio-power-bar-black-zinc-au"
+    },
+    "au barbell opb ss": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'AU Rogue 20KG Ohio Power Bar - Stainless Steel',
+        "link": "https://www.rogueaustralia.com.au/rogue-20-kg-ohio-power-bar-stainless-steel-au"
     },
     "barbell squat": {
         "type": "single",

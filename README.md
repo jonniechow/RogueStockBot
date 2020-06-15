@@ -22,6 +22,11 @@ Has this project helped you? Consider donating!
 ![result](/views/images/home-demo.png)
 
 ### Updates
+
+v 1.5
+* Fixed cerakote options and customizable items such as Monster Utility Bench 2.0
+* Added new items including Australian links
+
 v 1.4
 * Upgraded EC2 instance from t2.micro to t2.small increasing performance
 * Added new items including some Canada links

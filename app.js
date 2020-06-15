@@ -162,6 +162,11 @@ app.get("/webhook", (req, res) => {
 
 async function handleAllURLs() {
   for (let item in search_urls) {
+    // Skips items no one is looking for
+    if (Object.keys(search_urls[item]['sender_ids']).length == 0) {
+      // console.log(`Skipping ${item}`)
+      continue;
+    }
     let data = await getDataFromURL(item);
     let item_str = "";
     let write_item_str = "";
