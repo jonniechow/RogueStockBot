@@ -547,8 +547,6 @@ function handleMessage(sender_psid, received_message) {
       let response = {
         text: search_str,
       };
-      console.log(search_urls);
-      console.log(user_id_dic);
       callSendAPI(sender_psid, response);
       return;
     }
