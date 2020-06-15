@@ -179,6 +179,7 @@ async function handleAllURLs() {
 
       // Out of stock
       if (
+        item["in_stock"] == false ||
         item["in_stock"].indexOf("Notify Me") >= 0 ||
         item["in_stock"].indexOf("Out of Stock") >= 0
       ) {
@@ -191,16 +192,16 @@ async function handleAllURLs() {
         avail = decodeURI("\u2705");
         in_stock_count += 1;
         write_item_str += item["name"] + " " + avail + ", ";
-        // item_str +=
-        //   item["name"] +
-        //   "\n" +
-        //   item["price"] +
-        //   "\nIn stock: " +
-        //   avail +
-        //   "\n \n";
+        item_str +=
+          item["name"] +
+          "\n" +
+          item["price"] +
+          "\nIn stock: " +
+          avail +
+          "\n \n";
       }
-      item_str +=
-        item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
+      // item_str +=
+      //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
     });
 
     // No items found, everything sold out
@@ -389,10 +390,14 @@ async function getDataFromURL(item) {
     } else if (item_type === "monster bench") {
       var obj = $("script[type='text/javascript']");
       let info = [];
-      for (var i in obj) {
+      loop1: for (var i in obj) {
         for (var j in obj[i].children) {
           var data = obj[i].children[j].data;
           if (data && data.includes("RogueColorSwatches")) {
+            data = data.substring(
+              data.indexOf("RogueColorSwatches"),
+              data.length
+            );
             var split_data = data.split(/[[\]]{1,2}/);
             split_data.forEach((item) => {
               if (item.includes("additional_options")) {
@@ -403,15 +408,20 @@ async function getDataFromURL(item) {
                 info.push(JSON.parse(stripped_str));
               }
             });
+            break loop1;
           }
         }
       }
+      info = info.slice(0, 2);
       info.forEach((element, index) => {
-        let first_key = Object.keys(element)[0];
-        items[index] = {};
-        items[index]["name"] = element[first_key]["product_name"];
-        items[index]["price"] = $(".price").first().text().trim();
-        items[index]["in_stock"] = element[first_key]["stockTitle"];
+        Object.keys(element).forEach((mini_item, index2) => {
+          items[index * 3 + index2] = {};
+          items[index * 3 + index2]["name"] =
+            element[mini_item]["product_name"];
+          items[index * 3 + index2]["in_stock"] =
+            element[mini_item]["isInStock"];
+          items[index * 3 + index2]["price"] = $(".price").first().text();
+        });
       });
     } else if (item_type === "custom") {
       items[0] = {};
@@ -520,12 +530,13 @@ function handleMessage(sender_psid, received_message) {
         } total users searching\n\n`;
       for (let key in user_id_dic[sender_psid]["products"]) {
         search_str +=
-          search_urls[key]["product_name"] +
-          " / " +
-          key +
-          "\nTime elapsed: " +
-          getTimeDiff(user_id_dic[sender_psid]["products"][key]) +
-          "\n\n";
+          `${search_urls[key]["product_name"]} / ${key}\n` +
+          `People searching: ${
+            Object.keys(search_urls[key]["sender_ids"]).length
+          }\n` +
+          `Time elapsed: ${getTimeDiff(
+            user_id_dic[sender_psid]["products"][key]
+          )}\n\n`;
       }
       search_str += `Last reset: ${start_time}\n\nIf this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`;
       let response = {
