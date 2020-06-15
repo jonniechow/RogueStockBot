@@ -220,6 +220,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Boneyard Deadlift Bars',
         "link": "https://www.roguefitness.com/rogue-boneyard-ohio-deadlift-bar"
     },
+    "bone 25": {
+        "type": "bone",
+        "sender_ids": {},
+        'product_name': 'Rogue 25MM Boneyard Bars',
+        "link": "https://www.roguefitness.com/rogue-25mm-boneyard-bars"
+    },
     "bone barbell": {
         "type": "bone",
         "sender_ids": {},
@@ -250,6 +256,12 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'The Bella Bar 2.0 - Stainless Steel',
         "link": "https://www.roguefitness.com/the-bella-bar-2-0-stainless"
+    },
+    "bella cerakote": {
+        "type": "cerakote",
+        "sender_ids": {},
+        'product_name': 'The Bella Bar 2.0 - Cerakote',
+        "link": "https://www.roguefitness.com/the-bella-rogue-womens-bar-cerakote"
     },
     // Curl Bar
     "curl cerakote": {
@@ -407,6 +419,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue RML-490 Power Rack',
         "link": "https://www.roguefitness.com/rogue-rml-490-power-rack"
     },
+    "rack rml-490c": {
+        "type": "rmlc",
+        "sender_ids": {},
+        'product_name': 'Rogue RML-490C Power Rack 3.0',
+        "link": "https://www.roguefitness.com/rogue-rml-490-power-rack-color-3-0"
+    },
     "rack rml-690": {
         "type": "multi",
         "sender_ids": {},
@@ -436,6 +454,18 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue Infinity Safety Spotter Arms',
         "link": "https://www.roguefitness.com/set-of-safety-spotter-arms"
+    },
+    "ml straps": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Monster Lite Strap Safety System 2.0',
+        "link": "https://www.roguefitness.com/monster-lite-strap-safety-system-2-0"
+    },
+    "infinity straps": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Infinity Strap Safety System 2.0',
+        "link": "https://www.roguefitness.com/infinity-strap-safety-system-2-0"
     },
     "ml j-cups": {
         "type": "single",
@@ -573,11 +603,23 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Monster Lite Matador',
         "link": "https://www.roguefitness.com/rogue-monster-lite-matador"
     },
+    "infinity matador": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Infinity Matador',
+        "link": "https://www.roguefitness.com/rogue-infinity-matador"
+    },
     "assault airbike": {
         "type": "multi",
         "sender_ids": {},
         'product_name': 'Assault AirBike',
         "link": "https://www.roguefitness.com/assault-airbike-and-accessories"
+    },
+    "bikeerg": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Concept 2 BikeErg',
+        "link": "https://www.roguefitness.com/concept2-bike-erg"
     },
     "crossmember multigrip": {
         "type": "single",
@@ -602,6 +644,42 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue Deadlift Platform',
         "link": "https://www.roguefitness.com/rogue-deadlift-platform"
+    },
+    "dumbbell bumpers": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Dumbbell Bumpers',
+        "link": "https://www.roguefitness.com/rogue-dumbbell-bumpers"
+    },
+    "ab wheel": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Ab Wheel',
+        "link": "https://www.roguefitness.com/ab-wheel"
+    },
+    "ss lat bar": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Stainless Lat Bar',
+        "link": "https://www.roguefitness.com/rogue-stainless-steel-lat-bar"
+    },
+    "ml adj pullup": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Lite Adjustable Pull-up Bar',
+        "link": "https://www.roguefitness.com/rogue-monster-lite-adjustable-pull-up-bar"
+    },
+    "rhino belt squat": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Rhino Belt Squat - Stand Alone',
+        "link": "https://www.roguefitness.com/monster-rhino-belt-squat-stand-alone-mg-black"
+    },
+    "m grip triangle": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Grip Triangle',
+        "link": "https://www.roguefitness.com/rogue-monster-grip-triangle"
     },
     // Canada links
     "ca dumbbells": {
