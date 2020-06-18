@@ -50,7 +50,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/views/'));
 
 // Sets server port and logs message on success
-app.listen(process.env.PORT || 1337, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('webhook is listening');
   try {
     setInterval(handleAllURLs, delay * 1000);
@@ -79,7 +79,8 @@ app.get('/privacy-policy', (req, res) => {
 });
 
 app.get('/current-items', (req, res) => {
-  res.render('current-items', { data: search_urls });
+  const data = search_urls;
+  res.render('current-items', { data });
 });
 
 app.get('/stock-updates', (req, res) => {
@@ -94,6 +95,7 @@ app.get('/stock-updates', (req, res) => {
     let item_dic = { 'time': words[0], 'name': words[1], 'items': items, 'link': words[3] };
     data_from_log['item_info'].unshift(item_dic);
   });
+  console.log(data_from_log);
 
   rl.on('close', function () {
     res.render('stock-updates', { data: data_from_log });
@@ -164,7 +166,9 @@ app.get('/webhook', (req, res) => { /** UPDATE YOUR VERIFY TOKEN **/
 
 
 async function handleAllURLs() {
+  console.log("scraping");
   for (let item in search_urls) {
+    console.log({item })
     let data = await getDataFromURL(item);
     let item_str = "";
     let write_item_str = "";
@@ -173,6 +177,7 @@ async function handleAllURLs() {
 
     // Loop through each item on page
     data.forEach((item) =>  {
+      console.log(data);
       var avail = decodeURI('\u2705');
 
       // Check if data returned is empty
@@ -274,6 +279,8 @@ async function handleAllURLs() {
         callSendAPI(sender_id, response);
       }
       let write_line = `${dateTime} | ${search_urls[item]['product_name']} | ${write_item_str} | ${search_urls[item]['link']}\n`;
+      console.log("writing to file");
+      console.log(write_line)
       try {
         if (write_item_str != "") {
           fs.appendFile('stock-log.txt', write_line, (error) => {
@@ -344,7 +351,6 @@ async function getDataFromURL(item) {
       items[0]['name'] = $('.product-title').text();
       items[0]['price'] = $('.price').text();
       items[0]['in_stock'] = $('.product-options-bottom button').text();
-      console.log(items);
     }
     // Just one item in a page
     else {

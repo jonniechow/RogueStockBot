@@ -70,15 +70,15 @@
                                 </tr>
                             </thead>
                             <tbody id="data_from_log">
-                                <% data.forEach((entry)=>{%>
+                                <% for(let key in data) { %>
                                     <tr>
-                                        <td><%=entry.short_name%></td>
-                                        <td><%=entry.full_name%></td>
+                                        <td><%=key%></td>
+                                        <td><%=data[key].product_name%></td>
                                         <td>
-                                            <a href="<%=entry.link%>" target="_blank">Link</a>
+                                            <a href="<%=data[key].link%>" target="_blank">Link</a>
                                         </td>
                                     </tr>
-                                <%});%>
+                                <%} %>
                             </tbody>
                         </table>
                     </div>
