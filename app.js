@@ -184,7 +184,6 @@ async function handleAllURLs() {
 
       // Out of stock
       if (
-        item["in_stock"] == false ||
         item["in_stock"].indexOf("Notify Me") >= 0 ||
         item["in_stock"].indexOf("Out of Stock") >= 0
       ) {
@@ -349,12 +348,7 @@ async function getDataFromURL(item) {
       // Boneyard page exists
       if (redirect_count == 0) {
         $(".grouped-item").each(function (index, element) {
-          let item_name = $(element).find(".item-name").text();
           items[index] = {};
-          // Check for useless items
-          if (useless_items.indexOf(item_name) >= 0) {
-            return;
-          }
           items[index]["name"] = $(element).find(".item-name").text();
           items[index]["price"] = $(element).find(".price").text();
           items[index]["in_stock"] = $(element)
@@ -390,7 +384,7 @@ async function getDataFromURL(item) {
         items[index] = {};
         items[index]["name"] = element[first_key]["product_name"];
         items[index]["price"] = $(".price").first().text().trim();
-        items[index]["in_stock"] = element[first_key]["stockTitle"];
+        items[index]["in_stock"] = element[first_key]["isInStock"] ? 'Add to Cart' : 'Notify Me';
       });
     } else if (item_type === "monster bench") {
       var obj = $("script[type='text/javascript']");
@@ -424,8 +418,45 @@ async function getDataFromURL(item) {
           items[index * 3 + index2]["name"] =
             element[mini_item]["product_name"];
           items[index * 3 + index2]["in_stock"] =
-            element[mini_item]["isInStock"];
+            element[mini_item]["isInStock"] ? 'Add to Cart' : 'Notify Me';
           items[index * 3 + index2]["price"] = $(".price").first().text();
+        });
+      });
+    } else if (item_type === "rmlc") {
+      var obj = $("script[type='text/javascript']");
+      let info = [];
+      loop1: for (var i in obj) {
+        for (var j in obj[i].children) {
+          var data = obj[i].children[j].data;
+          if (data && data.includes("RogueColorSwatches")) {
+            data = data.substring(
+              data.indexOf("RogueColorSwatches"),
+              data.length
+            );
+            var split_data = data.split(/[[\]]{1,2}/);
+            split_data.forEach((item) => {
+              if (item.includes("additional_options")) {
+                var stripped_str = item.substring(
+                  item.indexOf("{"),
+                  item.lastIndexOf("realLabel") - 2
+                );
+                info.push(JSON.parse(stripped_str));
+              }
+            });
+          }
+        }
+      }
+      info = info.slice(0, 11);
+      info.forEach((element, index) => {
+        Object.keys(element).forEach((mini_item, index2) => {
+          let label = element[mini_item]["label"]
+          let name_label = label.substring(0, label.indexOf("("));
+          let dic = {
+            name: index2 == 0 ? name_label + "Standard" : name_label + "Numbered",
+            in_stock: element[mini_item]["isInStock"] ? 'Add to Cart' : 'Notify Me',
+            price: $(".price").first().text(),
+          };
+          items.push(dic);
         });
       });
     } else if (item_type === "custom") {
