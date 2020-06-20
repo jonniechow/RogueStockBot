@@ -85,7 +85,7 @@ describe("Cerakote", function () {
         }
       }
       expect($(".bin-stock-availability").text()).to.have.string(`Notify Me`);
-      expect(info.should.have.length(13));
+      expect(info.should.have.length(14));
       done();
     });
   });

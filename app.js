@@ -21,7 +21,7 @@
 
 "use strict";
 require("dotenv").config();
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
@@ -41,7 +41,7 @@ const request = require("request"),
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 30;
+let delay = 10;
 // Limit of iteems
 let item_limit = 10;
 
@@ -163,7 +163,7 @@ app.get("/webhook", (req, res) => {
 async function handleAllURLs() {
   for (let item in search_urls) {
     // Skips items no one is looking for
-    if (Object.keys(search_urls[item]['sender_ids']).length == 0) {
+    if (Object.keys(search_urls[item]["sender_ids"]).length == 0) {
       // console.log(`Skipping ${item}`)
       continue;
     }
@@ -384,7 +384,9 @@ async function getDataFromURL(item) {
         items[index] = {};
         items[index]["name"] = element[first_key]["product_name"];
         items[index]["price"] = $(".price").first().text().trim();
-        items[index]["in_stock"] = element[first_key]["isInStock"] ? 'Add to Cart' : 'Notify Me';
+        items[index]["in_stock"] = element[first_key]["isInStock"]
+          ? "Add to Cart"
+          : "Notify Me";
       });
     } else if (item_type === "monster bench") {
       var obj = $("script[type='text/javascript']");
@@ -417,8 +419,11 @@ async function getDataFromURL(item) {
           items[index * 3 + index2] = {};
           items[index * 3 + index2]["name"] =
             element[mini_item]["product_name"];
-          items[index * 3 + index2]["in_stock"] =
-            element[mini_item]["isInStock"] ? 'Add to Cart' : 'Notify Me';
+          items[index * 3 + index2]["in_stock"] = element[mini_item][
+            "isInStock"
+          ]
+            ? "Add to Cart"
+            : "Notify Me";
           items[index * 3 + index2]["price"] = $(".price").first().text();
         });
       });
@@ -449,11 +454,14 @@ async function getDataFromURL(item) {
       info = info.slice(0, 11);
       info.forEach((element, index) => {
         Object.keys(element).forEach((mini_item, index2) => {
-          let label = element[mini_item]["label"]
+          let label = element[mini_item]["label"];
           let name_label = label.substring(0, label.indexOf("("));
           let dic = {
-            name: index2 == 0 ? name_label + "Standard" : name_label + "Numbered",
-            in_stock: element[mini_item]["isInStock"] ? 'Add to Cart' : 'Notify Me',
+            name:
+              index2 == 0 ? name_label + "Standard" : name_label + "Numbered",
+            in_stock: element[mini_item]["isInStock"]
+              ? "Add to Cart"
+              : "Notify Me",
             price: $(".price").first().text(),
           };
           items.push(dic);
@@ -549,8 +557,10 @@ function handleMessage(sender_psid, received_message) {
       response = {
         text:
           `HELP MSG:\n` +
-          `Search for the following items:\n${key_string} \n` +
-          "Type `stop` to stop checking all items \n",
+          `How to guide for the bot:\nroguestockbot.com/bot-guide\n\n` +
+          `For all items to search go to:\nroguestockbot.com/current-items\n\n` +
+          `Type 'status' to check what items you are searching\n` +
+          `Type 'stop' to stop checking all items\n`,
       };
       callSendAPI(sender_psid, response);
       return;

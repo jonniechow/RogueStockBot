@@ -263,6 +263,12 @@ var search_urls = { // Plate URLs
         'product_name': 'The Bella Bar 2.0 - Cerakote',
         "link": "https://www.roguefitness.com/the-bella-rogue-womens-bar-cerakote"
     },
+    "barbell operator": {
+        "type": "cerakote",
+        "sender_ids": {},
+        'product_name': 'Rogue Operator Bar 3.0',
+        "link": "https://www.roguefitness.com/rogue-operator-bar-cerakote"
+    },
     // Curl Bar
     "curl cerakote": {
         "type": "single",
