@@ -196,16 +196,16 @@ async function handleAllURLs() {
         avail = decodeURI("\u2705");
         in_stock_count += 1;
         write_item_str += item["name"] + " " + avail + ", ";
-        item_str +=
-          item["name"] +
-          "\n" +
-          item["price"] +
-          "\nIn stock: " +
-          avail +
-          "\n \n";
+        // item_str +=
+        //   item["name"] +
+        //   "\n" +
+        //   item["price"] +
+        //   "\nIn stock: " +
+        //   avail +
+        //   "\n \n";
       }
-      // item_str +=
-      //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
+      item_str +=
+        item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
     });
 
     // No items found, everything sold out
@@ -359,6 +359,42 @@ async function getDataFromURL(item) {
         items[0] = {};
         items[0]["in_stock"] = "Notify Me";
       }
+    } else if (item_type === "grab bag") {
+      // Boneyard page exists
+      if (redirect_count == 0) {
+        var obj = $("script[type='text/javascript']");
+        let info = [];
+        for (var i in obj) {
+          for (var j in obj[i].children) {
+            var data = obj[i].children[j].data;
+            if (data && data.includes("ColorSwatches")) {
+              var split_data = data.split(/[[\]]{1,2}/);
+              split_data.forEach((item) => {
+                if (item.includes("additional_options")) {
+                  var stripped_str = item.substring(
+                    item.indexOf("{"),
+                    item.lastIndexOf("realLabel") - 2
+                  );
+                  info.push(JSON.parse(stripped_str));
+                }
+              });
+            }
+          }
+        }
+        let items = [];
+        info.forEach((element, index) => {
+          let first_key = Object.keys(element)[0];
+          items[index] = {};
+          items[index]["name"] = element[first_key]["label"];
+          items[index]["price"] = $(".price").first().text().trim();
+          items[index]["in_stock"] = element[first_key]["isInStock"]
+            ? "Add to Cart"
+            : "Notify Me";
+        });
+      } else {
+        items[0] = {};
+        items[0]["in_stock"] = "Notify Me";
+      }
     } else if (item_type == "cerakote") {
       var obj = $("script[type='text/javascript']");
       let info = [];
@@ -382,7 +418,7 @@ async function getDataFromURL(item) {
       info.forEach((element, index) => {
         let first_key = Object.keys(element)[0];
         items[index] = {};
-        items[index]["name"] = element[first_key]["product_name"];
+        items[index]["name"] = element[first_key]["label"];
         items[index]["price"] = $(".price").first().text().trim();
         items[index]["in_stock"] = element[first_key]["isInStock"]
           ? "Add to Cart"
@@ -466,6 +502,37 @@ async function getDataFromURL(item) {
           };
           items.push(dic);
         });
+      });
+    } else if (item_type === "db15") {
+      var obj = $("script[type='text/javascript']");
+      let info = [];
+      for (var i in obj) {
+        for (var j in obj[i].children) {
+          var data = obj[i].children[j].data;
+          if (data && data.includes("RogueColorSwatches")) {
+            var split_data = data.split(/[[\]]{1,2}/);
+            split_data.forEach((item) => {
+              if (item.includes("additional_options")) {
+                var stripped_str = item.substring(
+                  item.indexOf("{"),
+                  item.lastIndexOf("realLabel") - 2
+                );
+                info.push(JSON.parse(stripped_str));
+              }
+            });
+          }
+        }
+      }
+      let items = [];
+      info = info.slice(0, 2);
+      info.forEach((element, index) => {
+        let first_key = Object.keys(element)[0];
+        items[index] = {};
+        items[index]["name"] = element[first_key]["label"];
+        items[index]["price"] = $(".price").first().text().trim();
+        items[index]["in_stock"] = element[first_key]["isInStock"]
+          ? "Add to Cart"
+          : "Notify Me";
       });
     } else if (item_type === "custom") {
       items[0] = {};
@@ -623,9 +690,9 @@ function handleMessage(sender_psid, received_message) {
     if (!(rec_msg in search_urls)) {
       response = {
         text:
-          `INVALID\nYou entered: "${received_message.text}".` +
-          "\n\n" +
-          "Item doesn't exist\nTry typing `help` for a list of all valid commands",
+          `INVALID\nYou entered: "${received_message.text}".\n` +
+          `Item doesn't exist\n\n` +
+          `Go to roguestockbot.com/current-items for all supported items`,
       };
       callSendAPI(sender_psid, response);
       return;

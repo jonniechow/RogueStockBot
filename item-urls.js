@@ -12,6 +12,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue HG 2.0 Bumper Plates',
         "link": "https://www.roguefitness.com/rogue-hg-2-0-bumper-plates"
     },
+    "plate hg2 kg": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue HG 2.0 KG Bumper Plates',
+        "link": "https://www.roguefitness.com/kg-rogue-bumpers"
+    },
     "plate comp lb": {
         "type": "multi",
         "sender_ids": {},
@@ -126,6 +132,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Calibrated KG Steel Plates',
         "link": "https://www.roguefitness.com/rogue-calibrated-kg-steel-plates"
     },
+    "plate urethane": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Urethane Plates',
+        "link": "https://www.roguefitness.com/rogue-urethane-plates"
+    },
     "plate tree": {
         "type": "multi",
         "sender_ids": {},
@@ -226,8 +238,8 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue 25MM Boneyard Bars',
         "link": "https://www.roguefitness.com/rogue-25mm-boneyard-bars"
     },
-    "bone barbell": {
-        "type": "bone",
+    "grab bag barbell": {
+        "type": "grab bag",
         "sender_ids": {},
         'product_name': 'Used Barbells',
         "link": "https://www.roguefitness.com/miscellaneous-barbells-used"
@@ -269,6 +281,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Operator Bar 3.0',
         "link": "https://www.roguefitness.com/rogue-operator-bar-cerakote"
     },
+    "barbell chan": {
+        "type": "cerakote",
+        "sender_ids": {},
+        'product_name': 'Rogue Chan Bar - Cerakote',
+        "link": "https://www.roguefitness.com/chan-bar-cerakote"
+    },
     // Curl Bar
     "curl cerakote": {
         "type": "single",
@@ -306,6 +324,18 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue Freedom Bar - 28.5MM',
         "link": "https://www.roguefitness.com/cerakote-28-5-mm-freedom-bar"
+    },
+    "db 15": {
+        "type": "db15",
+        "sender_ids": {},
+        'product_name': 'Rogue DB-15 Loadable Dumbbell',
+        "link": "https://www.roguefitness.com/rogue-loadable-dumbbells"
+    },
+    "db 10": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue DB-10 Loadable Dumbbell',
+        "link": "https://www.roguefitness.com/rogue-loadable-dumbbells"
     },
     // Echo bike
     "bike echo": {
@@ -559,6 +589,12 @@ var search_urls = { // Plate URLs
         "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue Dumbbells',
+        "link": "https://www.roguefitness.com/rogue-medicine-balls"
+    },
+    "medicine balls": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Medicine Balls',
         "link": "https://www.roguefitness.com/rogue-dumbbells"
     },
     "fatbells": {
@@ -686,6 +722,18 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue Monster Grip Triangle',
         "link": "https://www.roguefitness.com/rogue-monster-grip-triangle"
+    },
+    "trap tb1": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue TB-1 Trap Bar 2.0',
+        "link": "https://www.roguefitness.com/rogue-tb-1-trap-bar-2-0"
+    },
+    "trap tb2": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue TB-2 Trap Bar',
+        "link": "https://www.roguefitness.com/rogue-tb-2-trap-bar"
     },
     // Canada links
     "ca dumbbells": {
