@@ -589,13 +589,13 @@ var search_urls = { // Plate URLs
         "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue Dumbbells',
-        "link": "https://www.roguefitness.com/rogue-medicine-balls"
+        "link": "https://www.roguefitness.com/rogue-dumbbells"
     },
     "medicine balls": {
         "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue Medicine Balls',
-        "link": "https://www.roguefitness.com/rogue-dumbbells"
+        "link": "https://www.roguefitness.com/rogue-medicine-balls"
     },
     "fatbells": {
         "type": "multi",
