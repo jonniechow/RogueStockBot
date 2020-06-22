@@ -21,7 +21,7 @@
 
 "use strict";
 require("dotenv").config();
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
@@ -161,9 +161,21 @@ app.get("/webhook", (req, res) => {
 });
 
 async function handleAllURLs() {
+  // fs.writeFileSync('item-urls2.js', 'var search_urls = ', function (err) {
+  //   if (err) return console.log(err);
+  //   console.log('Update item-urls');
+  // });
+  // fs.appendFileSync('item-urls2.js', JSON.stringify(search_urls, null, 2), function (err) {
+  //   if (err) return console.log(err);
+  //   console.log('Update item-urls');
+  // });
+  // fs.appendFileSync('item-urls2.js', ';\nmodule.exports = search_urls;', function (err) {
+  //   if (err) return console.log(err);
+  //   console.log('Update item-urls');
+  // });
   for (let item in search_urls) {
     // Skips items no one is looking for
-    if (Object.keys(search_urls[item]['sender_ids']).length == 0) {
+    if (Object.keys(search_urls[item]["sender_ids"]).length == 0) {
       // console.log(`Skipping ${item}`)
       continue;
     }
@@ -359,6 +371,42 @@ async function getDataFromURL(item) {
         items[0] = {};
         items[0]["in_stock"] = "Notify Me";
       }
+    } else if (item_type === "grab bag") {
+      // Boneyard page exists
+      if (redirect_count == 0) {
+        var obj = $("script[type='text/javascript']");
+        let info = [];
+        for (var i in obj) {
+          for (var j in obj[i].children) {
+            var data = obj[i].children[j].data;
+            if (data && data.includes("ColorSwatches")) {
+              var split_data = data.split(/[[\]]{1,2}/);
+              split_data.forEach((item) => {
+                if (item.includes("additional_options")) {
+                  var stripped_str = item.substring(
+                    item.indexOf("{"),
+                    item.lastIndexOf("realLabel") - 2
+                  );
+                  info.push(JSON.parse(stripped_str));
+                }
+              });
+            }
+          }
+        }
+        let items = [];
+        info.forEach((element, index) => {
+          let first_key = Object.keys(element)[0];
+          items[index] = {};
+          items[index]["name"] = element[first_key]["label"];
+          items[index]["price"] = $(".price").first().text().trim();
+          items[index]["in_stock"] = element[first_key]["isInStock"]
+            ? "Add to Cart"
+            : "Notify Me";
+        });
+      } else {
+        items[0] = {};
+        items[0]["in_stock"] = "Notify Me";
+      }
     } else if (item_type == "cerakote") {
       var obj = $("script[type='text/javascript']");
       let info = [];
@@ -382,9 +430,11 @@ async function getDataFromURL(item) {
       info.forEach((element, index) => {
         let first_key = Object.keys(element)[0];
         items[index] = {};
-        items[index]["name"] = element[first_key]["product_name"];
+        items[index]["name"] = element[first_key]["label"];
         items[index]["price"] = $(".price").first().text().trim();
-        items[index]["in_stock"] = element[first_key]["isInStock"] ? 'Add to Cart' : 'Notify Me';
+        items[index]["in_stock"] = element[first_key]["isInStock"]
+          ? "Add to Cart"
+          : "Notify Me";
       });
     } else if (item_type === "monster bench") {
       var obj = $("script[type='text/javascript']");
@@ -417,8 +467,11 @@ async function getDataFromURL(item) {
           items[index * 3 + index2] = {};
           items[index * 3 + index2]["name"] =
             element[mini_item]["product_name"];
-          items[index * 3 + index2]["in_stock"] =
-            element[mini_item]["isInStock"] ? 'Add to Cart' : 'Notify Me';
+          items[index * 3 + index2]["in_stock"] = element[mini_item][
+            "isInStock"
+          ]
+            ? "Add to Cart"
+            : "Notify Me";
           items[index * 3 + index2]["price"] = $(".price").first().text();
         });
       });
@@ -449,15 +502,49 @@ async function getDataFromURL(item) {
       info = info.slice(0, 11);
       info.forEach((element, index) => {
         Object.keys(element).forEach((mini_item, index2) => {
-          let label = element[mini_item]["label"]
+          let label = element[mini_item]["label"];
           let name_label = label.substring(0, label.indexOf("("));
           let dic = {
-            name: index2 == 0 ? name_label + "Standard" : name_label + "Numbered",
-            in_stock: element[mini_item]["isInStock"] ? 'Add to Cart' : 'Notify Me',
+            name:
+              index2 == 0 ? name_label + "Standard" : name_label + "Numbered",
+            in_stock: element[mini_item]["isInStock"]
+              ? "Add to Cart"
+              : "Notify Me",
             price: $(".price").first().text(),
           };
           items.push(dic);
         });
+      });
+    } else if (item_type === "db15") {
+      var obj = $("script[type='text/javascript']");
+      let info = [];
+      for (var i in obj) {
+        for (var j in obj[i].children) {
+          var data = obj[i].children[j].data;
+          if (data && data.includes("RogueColorSwatches")) {
+            var split_data = data.split(/[[\]]{1,2}/);
+            split_data.forEach((item) => {
+              if (item.includes("additional_options")) {
+                var stripped_str = item.substring(
+                  item.indexOf("{"),
+                  item.lastIndexOf("realLabel") - 2
+                );
+                info.push(JSON.parse(stripped_str));
+              }
+            });
+          }
+        }
+      }
+      let items = [];
+      info = info.slice(0, 2);
+      info.forEach((element, index) => {
+        let first_key = Object.keys(element)[0];
+        items[index] = {};
+        items[index]["name"] = element[first_key]["label"];
+        items[index]["price"] = $(".price").first().text().trim();
+        items[index]["in_stock"] = element[first_key]["isInStock"]
+          ? "Add to Cart"
+          : "Notify Me";
       });
     } else if (item_type === "custom") {
       items[0] = {};
@@ -549,8 +636,14 @@ function handleMessage(sender_psid, received_message) {
       response = {
         text:
           `HELP MSG:\n` +
-          `Search for the following items:\n${key_string} \n` +
-          "Type `stop` to stop checking all items \n",
+          `How to guide for the bot:\nroguestockbot.com/bot-guide\n\n` +
+          `All current items supported:\nroguestockbot.com/current-items\n\n` +
+          `1) Look up the commands for what item you want to search for on\n` +
+          `roguestockbot.com/current-items\n` +
+          `2) Reply back to this bot with each command one by one\n` +
+          `3) The bot will reply back with an initial check then message you whenever there's an update\n\n` +
+          `Type 'status' to check what items you are searching\n` +
+          `Type 'stop' to stop checking all items\n`,
       };
       callSendAPI(sender_psid, response);
       return;
@@ -613,9 +706,9 @@ function handleMessage(sender_psid, received_message) {
     if (!(rec_msg in search_urls)) {
       response = {
         text:
-          `INVALID\nYou entered: "${received_message.text}".` +
-          "\n\n" +
-          "Item doesn't exist\nTry typing `help` for a list of all valid commands",
+          `INVALID\nYou entered: "${received_message.text}".\n` +
+          `Item doesn't exist\n\n` +
+          `Go to roguestockbot.com/current-items for all supported items`,
       };
       callSendAPI(sender_psid, response);
       return;

@@ -17,6 +17,8 @@ var useless_items = [
     'Echo GHD (Pad Only)',
     'Echo GHD 3" Face Stabilizer Kit',
     'Echo GHD Roller Assembly',
-    'Extra Set of Wheels'
+    'Extra Set of Wheels',
+    'Rogue DB-15 Loadable Dumbbell w/ Rogue OSO Collars',
+    'Rogue DB-15 Loadable Dumbbell'
 ];
 module.exports = useless_items;
