@@ -41,7 +41,7 @@ const request = require("request"),
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 10;
+let delay = 30;
 // Limit of iteems
 let item_limit = 10;
 
@@ -161,6 +161,18 @@ app.get("/webhook", (req, res) => {
 });
 
 async function handleAllURLs() {
+  // fs.writeFileSync('item-urls2.js', 'var search_urls = ', function (err) {
+  //   if (err) return console.log(err);
+  //   console.log('Update item-urls');
+  // });
+  // fs.appendFileSync('item-urls2.js', JSON.stringify(search_urls, null, 2), function (err) {
+  //   if (err) return console.log(err);
+  //   console.log('Update item-urls');
+  // });
+  // fs.appendFileSync('item-urls2.js', ';\nmodule.exports = search_urls;', function (err) {
+  //   if (err) return console.log(err);
+  //   console.log('Update item-urls');
+  // });
   for (let item in search_urls) {
     // Skips items no one is looking for
     if (Object.keys(search_urls[item]["sender_ids"]).length == 0) {
@@ -196,16 +208,16 @@ async function handleAllURLs() {
         avail = decodeURI("\u2705");
         in_stock_count += 1;
         write_item_str += item["name"] + " " + avail + ", ";
-        // item_str +=
-        //   item["name"] +
-        //   "\n" +
-        //   item["price"] +
-        //   "\nIn stock: " +
-        //   avail +
-        //   "\n \n";
+        item_str +=
+          item["name"] +
+          "\n" +
+          item["price"] +
+          "\nIn stock: " +
+          avail +
+          "\n \n";
       }
-      item_str +=
-        item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
+      // item_str +=
+      //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
     });
 
     // No items found, everything sold out
@@ -625,7 +637,11 @@ function handleMessage(sender_psid, received_message) {
         text:
           `HELP MSG:\n` +
           `How to guide for the bot:\nroguestockbot.com/bot-guide\n\n` +
-          `For all items to search go to:\nroguestockbot.com/current-items\n\n` +
+          `All current items supported:\nroguestockbot.com/current-items\n\n` +
+          `1) Look up the commands for what item you want to search for on\n` +
+          `roguestockbot.com/current-items\n` +
+          `2) Reply back to this bot with each command one by one\n` +
+          `3) The bot will reply back with an initial check then message you whenever there's an update\n\n` +
           `Type 'status' to check what items you are searching\n` +
           `Type 'stop' to stop checking all items\n`,
       };

@@ -23,6 +23,11 @@ Has this project helped you? Consider donating!
 
 ### Updates
 
+v 1.6
+* Updated bot guide to be more helpful
+* Fixed grab bag barbells
+* Included loadable dumbbells and other items
+
 v 1.5
 * Fixed cerakote options and customizable items such as Monster Utility Bench 2.0
 * Added new items including Australian links
