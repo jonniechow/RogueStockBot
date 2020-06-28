@@ -639,6 +639,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Bolt-Together R-3',
         "link": "https://www.roguefitness.com/rogue-bolt-together-r-3"
     },
+    "m matador": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Matador',
+        "link": "https://www.roguefitness.com/rogue-monster-matador"
+    },
     "ml matador": {
         "type": "single",
         "sender_ids": {},
