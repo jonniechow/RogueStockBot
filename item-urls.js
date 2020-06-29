@@ -220,6 +220,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Boneyard 29mm Bars',
         "link": "https://www.roguefitness.com/rogue-29mm-boneyard-bars"
     },
+    "bone 28": {
+        "type": "bone",
+        "sender_ids": {},
+        'product_name': 'Boneyard 28mm Bars',
+        "link": "https://www.roguefitness.com/rogue-28mm-boneyard-bars"
+    },
     "bone 28.5": {
         "type": "bone",
         "sender_ids": {},
