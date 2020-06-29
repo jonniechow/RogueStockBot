@@ -5,10 +5,7 @@ var fs = require("fs");
 var should = require("should");
 var axios = require("axios");
 var afterLoad = require("after-load");
-var Nightmare = require("nightmare");
-var nightmare = Nightmare({
-  show: false,
-});
+var { getDataFromJS, getRequestDataFromJS } = require("../helper");
 
 describe("Barbell", function () {
   it(`Test rogue 2.0 avail`, function (done) {
@@ -85,14 +82,14 @@ describe("Cerakote", function () {
         }
       }
       expect($(".bin-stock-availability").text()).to.have.string(`Notify Me`);
-      expect(info.should.have.length(14));
+      expect(info.should.have.length(13));
       done();
     });
   });
   it(`Test dl cerakote avail`, function (done) {
     var options = {
       url: "https://www.roguefitness.com/rogue-ohio-deadlift-cerakote",
-      timeout: 3000,
+      timeout: 5000,
     };
     request(options, function (err, response, body) {
       let $ = cheerio.load(body);
@@ -130,8 +127,8 @@ describe("Stainless Steel", function () {
       timeout: 3000,
     };
     request(options, function (err, response, body) {
-      let $ = cheerio.load(body);
-      expect($(".bin-stock-availability").text()).to.have.string(`Notify Me`);
+      let items = getRequestDataFromJS(body, "RogueColorSwatches");
+      expect(items.should.have.length(2));
       done();
     });
   });
@@ -181,12 +178,11 @@ describe("Stainless Steel", function () {
   });
 });
 
-describe("Loadable dumbbell", function() {
+describe("Loadable dumbbell", function () {
   it(`Test loadable db avail`, function (done) {
     this.timeout(3000);
     var options = {
-      url:
-        "https://www.roguefitness.com/rogue-loadable-dumbbells",
+      url: "https://www.roguefitness.com/rogue-loadable-dumbbells",
       timeout: 3000,
     };
     request(options, function (err, response, body) {
@@ -230,39 +226,10 @@ describe("Loadable dumbbell", function() {
 
 describe("Grab bag", function () {
   it(`Test grab bag stock local`, function (done) {
-    let $ = cheerio.load(fs.readFileSync("test/test_html/grab_bag.html"));
-    var obj = $("script[type='text/javascript']");
-      let info = [];
-      for (var i in obj) {
-        for (var j in obj[i].children) {
-          var data = obj[i].children[j].data;
-          if (data && data.includes("ColorSwatches")) {
-            var split_data = data.split(/[[\]]{1,2}/);
-            split_data.forEach((item) => {
-              if (item.includes("additional_options")) {
-                var stripped_str = item.substring(
-                  item.indexOf("{"),
-                  item.lastIndexOf("realLabel") - 2
-                );
-                info.push(JSON.parse(stripped_str));
-              }
-            });
-          }
-        }
-      }
-      let items = [];
-      info.forEach((element, index) => {
-        let first_key = Object.keys(element)[0];
-        items[index] = {};
-        items[index]["name"] = element[first_key]["label"];
-        items[index]["price"] = $(".price").first().text().trim();
-        items[index]["in_stock"] = element[first_key]["isInStock"]
-          ? "Add to Cart"
-          : "Notify Me";
-      });
-      expect(items.should.have.length(2));
-      expect(items[0]['in_stock']).to.equal('Notify Me');
-      expect(items[1]['in_stock']).to.equal('Notify Me');
+    let items = getDataFromJS("test/test_html/grab_bag.html");
+    expect(items.should.have.length(2));
+    expect(items[0]["in_stock"]).to.equal("Notify Me");
+    expect(items[1]["in_stock"]).to.equal("Notify Me");
     done();
   });
 });

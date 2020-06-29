@@ -10,7 +10,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166892917-1"></script>
     <script>
-        window.dataLayer = window.dataLayer || []; We apologize for the inconvenience, but we are unable to process your request at this time.Our engineers have been notified of this problem and will work to resolve it.
+        window.dataLayer = window.dataLayer || [];
         function gtag() {
 
             dataLayer.push(arguments);
@@ -22,13 +22,15 @@
     </script>
     <script data-ad-client="ca-pub-8811523407807032" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <title>Stock Updates</title>
+    <title>Current Items</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 
 <body class="is-preload">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
     <div id="page-wrapper">
 
         <!-- Header -->
@@ -56,13 +58,13 @@
                     </li>
                 </ul>
             </nav>
-
         </header>
+
         <!-- Main -->
         <section id="main" class="container">
             <header>
-                <h2>Stock Updates</h2>
-                <p>Contains log of recorded stock updates.</p>
+                <h2>All Items in Stock</h2>
+                <p>Contains list of all items currently in stock.</p>
             </header>
             <div class="box">
                 <!-- horizontal -->
@@ -72,42 +74,13 @@
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
                 <br>
-                <h4>Stock Updates for the 100 most recent item updates</h4>
-                <div class="table-wrapper">
-                    <table class="alt">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Item</th>
-                                <th>Stock</th>
-                                <th>Link</th>
-                            </tr>
-                        </thead>
-                        <tbody id="data_from_log">
-                            <% data.item_info.forEach((entry, index)=>{%>
-                            <tr>
-                                <td><%=entry.time%></td>
-                                <td><%=entry.name%></td>
-                                <td>
-                                    <% entry.items.forEach((item)=>{%>
-                                    <p><%=item%></p>
-                                    <%});%>
-                                </td>
-                                <td>
-                                    <a href="<%=entry.link%>" target="_blank">Link</a>
-                                </td>
-                            </tr>
-                            <%});%>
-                        </tbody>
-                    </table>
-                    <!-- horizontal -->
-                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8811523407807032"
-                        data-ad-slot="6062146865" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-
+                <p>Coming soon.</p>
+                <!-- horizontal -->
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8811523407807032"
+                    data-ad-slot="6062146865" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
         </section>
 
@@ -141,11 +114,6 @@
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
-    <!-- <script>
-            				setInterval(function(){
-               $('#my_div').load('/path/to/server/source');
-            }, 2000) /* time in milliseconds (ie 2 seconds)*/
-            			</script> -->
 </body>
 </body>
 

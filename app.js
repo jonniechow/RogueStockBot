@@ -37,6 +37,8 @@ const request = require("request"),
   useless_items = require("./useless-items");
 // creates express http server
 
+var { getDataFromJS, getRequestDataFromJS } = require("./helper");
+
 // Dictionary of user_id to items they are searching
 let user_id_dic = {};
 let start_time;
@@ -78,6 +80,10 @@ app.get("/privacy-policy", (req, res) => {
 
 app.get("/current-items", (req, res) => {
   res.render("current-items", { data: search_urls });
+});
+
+app.get("/items-in-stock", (req, res) => {
+  res.render("items-in-stock", { data: search_urls });
 });
 
 app.get("/stock-updates", (req, res) => {
@@ -374,68 +380,14 @@ async function getDataFromURL(item) {
     } else if (item_type === "grab bag") {
       // Boneyard page exists
       if (redirect_count == 0) {
-        var obj = $("script[type='text/javascript']");
-        let info = [];
-        for (var i in obj) {
-          for (var j in obj[i].children) {
-            var data = obj[i].children[j].data;
-            if (data && data.includes("ColorSwatches")) {
-              var split_data = data.split(/[[\]]{1,2}/);
-              split_data.forEach((item) => {
-                if (item.includes("additional_options")) {
-                  var stripped_str = item.substring(
-                    item.indexOf("{"),
-                    item.lastIndexOf("realLabel") - 2
-                  );
-                  info.push(JSON.parse(stripped_str));
-                }
-              });
-            }
-          }
-        }
-        let items = [];
-        info.forEach((element, index) => {
-          let first_key = Object.keys(element)[0];
-          items[index] = {};
-          items[index]["name"] = element[first_key]["label"];
-          items[index]["price"] = $(".price").first().text().trim();
-          items[index]["in_stock"] = element[first_key]["isInStock"]
-            ? "Add to Cart"
-            : "Notify Me";
-        });
+        items[0] = {};
+        items[0]["in_stock"] = "Add to cart";
       } else {
         items[0] = {};
         items[0]["in_stock"] = "Notify Me";
       }
-    } else if (item_type == "cerakote") {
-      var obj = $("script[type='text/javascript']");
-      let info = [];
-      for (var i in obj) {
-        for (var j in obj[i].children) {
-          let data = obj[i].children[j].data;
-          if (data && data.includes("relatedColorSwatches")) {
-            let split_data = data.split(/[[\]]{1,2}/);
-            split_data.forEach((option) => {
-              if (option.includes("additional_options")) {
-                var stripped_str = option.substring(
-                  option.indexOf("{"),
-                  option.lastIndexOf("realLabel") - 2
-                );
-                info.push(JSON.parse(stripped_str));
-              }
-            });
-          }
-        }
-      }
-      info.forEach((element, index) => {
-        let first_key = Object.keys(element)[0];
-        items[index] = {};
-        items[index]["name"] = element[first_key]["label"];
-        items[index]["price"] = $(".price").first().text().trim();
-        items[index]["in_stock"] = element[first_key]["isInStock"]
-          ? "Add to Cart"
-          : "Notify Me";
-      });
+    } else if (item_type === "cerakote") {
+      items = getRequestDataFromJS(response.data, "relatedColorSwatches");
     } else if (item_type === "monster bench") {
       var obj = $("script[type='text/javascript']");
       let info = [];
@@ -516,41 +468,9 @@ async function getDataFromURL(item) {
         });
       });
     } else if (item_type === "db15") {
-      var obj = $("script[type='text/javascript']");
-      let info = [];
-      for (var i in obj) {
-        for (var j in obj[i].children) {
-          var data = obj[i].children[j].data;
-          if (data && data.includes("RogueColorSwatches")) {
-            var split_data = data.split(/[[\]]{1,2}/);
-            split_data.forEach((item) => {
-              if (item.includes("additional_options")) {
-                var stripped_str = item.substring(
-                  item.indexOf("{"),
-                  item.lastIndexOf("realLabel") - 2
-                );
-                info.push(JSON.parse(stripped_str));
-              }
-            });
-          }
-        }
-      }
-      let items = [];
-      info = info.slice(0, 2);
-      info.forEach((element, index) => {
-        let first_key = Object.keys(element)[0];
-        items[index] = {};
-        items[index]["name"] = element[first_key]["label"];
-        items[index]["price"] = $(".price").first().text().trim();
-        items[index]["in_stock"] = element[first_key]["isInStock"]
-          ? "Add to Cart"
-          : "Notify Me";
-      });
+      items = getRequestDataFromJS(response.data, "RogueColorSwatches", 2);
     } else if (item_type === "custom") {
-      items[0] = {};
-      items[0]["name"] = $(".product-title").text();
-      items[0]["price"] = $(".price").text();
-      items[0]["in_stock"] = $(".bin-stock-availability").text();
+      items = getRequestDataFromJS(response.data, "ColorSwatches");
     }
     // Just one item in a page
     else {
@@ -559,6 +479,7 @@ async function getDataFromURL(item) {
       items[0]["price"] = $(".price").text();
       items[0]["in_stock"] = $(".product-options-bottom button").text();
     }
+    console.log(items);
     return items;
   } catch (error) {
     console.log(`Error: ${error}`);
@@ -773,6 +694,7 @@ function callSendAPI(sender_psid, response) {
       id: sender_psid,
     },
     message: response,
+    tag: "CONFIRMED_EVENT_UPDATE",
   };
 
   // Send the HTTP request to the Messenger Platform

@@ -287,6 +287,18 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Chan Bar - Cerakote',
         "link": "https://www.roguefitness.com/chan-bar-cerakote"
     },
+    "barbell training zinc": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue 28MM Training Bar - Black Zinc',
+        "link": "https://www.roguefitness.com/rogue-28mm-training-bar"
+    },
+    "barbell training cerakote": {
+        "type": "cerakote",
+        "sender_ids": {},
+        'product_name': 'Rogue 28MM Training Bar - Cerakote',
+        "link": "https://www.roguefitness.com/rogue-28mm-training-bar-cerakote"
+    },
     // Curl Bar
     "curl cerakote": {
         "type": "single",
@@ -473,6 +485,18 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue R-3 Power Rack',
         "link": "https://www.roguefitness.com/rogue-r-3-power-rack"
     },
+    "rack rm-3 fortis": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue RM-3 Fortis Rack',
+        "link": "https://www.roguefitness.com/rogue-rm-3-fortis-rack"
+    },
+    "rack rm-4 fortis": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue RM-4 Fortis Rack',
+        "link": "https://www.roguefitness.com/rogue-rm-4-fortis-rack"
+    },
     "ml spotter": {
         "type": "single",
         "sender_ids": {},
@@ -639,6 +663,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Bolt-Together R-3',
         "link": "https://www.roguefitness.com/rogue-bolt-together-r-3"
     },
+    "m matador": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Matador',
+        "link": "https://www.roguefitness.com/rogue-monster-matador"
+    },
     "ml matador": {
         "type": "single",
         "sender_ids": {},
@@ -760,6 +790,18 @@ var search_urls = { // Plate URLs
         'product_name': 'CA Black Concept 2 Model D Rower - PM5',
         "link": "https://www.roguecanada.ca/black-concept-2-model-d-rower-pm5"
     },
+    "ca opb cerakote": {
+        "type": "cerakote",
+        "sender_ids": {},
+        'product_name': 'CA Rogue 45LB Ohio Power Bar - Cerakote',
+        "link": "https://www.roguecanada.ca/rogue-45lb-ohio-powerlift-bar-cerakote"
+    },
+    "ca plate change": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'CA Rogue LB Change Plates',
+        "link": "https://www.roguecanada.ca/rogue-lb-change-plates"
+    },
     "uk echo color": {
         "type": "multi",
         "sender_ids": {},
@@ -783,6 +825,12 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'UK The Bella Bar 2.0 - Black Zinc',
         "link": "https://www.rogueeurope.eu/rogue-bella-bar-eu"
+    },
+    "uk opb ss": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'UK Rogue 20KG Ohio Power Bar - Stainless Steel',
+        "link": "https://www.rogueeurope.eu/rogue-20-kg-ohio-power-bar-stainless-steel-eu"
     },
     "au bench ab2": {
         "type": "multi",
