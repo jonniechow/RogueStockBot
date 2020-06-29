@@ -23,6 +23,10 @@ Has this project helped you? Consider donating!
 
 ### Updates
 
+v 1.7
+* Added new items
+* Upgraded from AWS EC2 t2.small to t2.medium
+
 v 1.6
 * Updated bot guide to be more helpful
 * Fixed grab bag barbells

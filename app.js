@@ -21,7 +21,7 @@
 
 "use strict";
 require("dotenv").config();
-const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
@@ -43,7 +43,7 @@ var { getDataFromJS, getRequestDataFromJS } = require("./helper");
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 10;
+let delay = 30;
 // Limit of iteems
 let item_limit = 10;
 
@@ -190,7 +190,7 @@ async function handleAllURLs() {
     let write_item_str = "";
     let in_stock_count = 0;
     let rand_string = Math.random().toString(36).substring(7);
-    console.log(data);
+
     // Loop through each item on page
     data.forEach((item) => {
       var avail = decodeURI("\u2705");
@@ -199,7 +199,7 @@ async function handleAllURLs() {
       if (Object.keys(item).length == 0) {
         return;
       }
-      
+
       // Out of stock
       if (
         item["in_stock"].indexOf("Notify Me") >= 0 ||
@@ -214,16 +214,16 @@ async function handleAllURLs() {
         avail = decodeURI("\u2705");
         in_stock_count += 1;
         write_item_str += item["name"] + " " + avail + ", ";
-        // item_str +=
-        //   item["name"] +
-        //   "\n" +
-        //   item["price"] +
-        //   "\nIn stock: " +
-        //   avail +
-        //   "\n \n";
+        item_str +=
+          item["name"] +
+          "\n" +
+          item["price"] +
+          "\nIn stock: " +
+          avail +
+          "\n \n";
       }
-      item_str +=
-        item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
+      // item_str +=
+      //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
     });
 
     // No items found, everything sold out
@@ -694,7 +694,7 @@ function callSendAPI(sender_psid, response) {
       id: sender_psid,
     },
     message: response,
-    tag: "CONFIRMED_EVENT_UPDATE"
+    tag: "CONFIRMED_EVENT_UPDATE",
   };
 
   // Send the HTTP request to the Messenger Platform
