@@ -21,7 +21,7 @@
 
 "use strict";
 require("dotenv").config();
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
@@ -43,7 +43,7 @@ var { getDataFromJS, getRequestDataFromJS } = require("./helper");
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 30;
+let delay = 10;
 // Limit of iteems
 let item_limit = 10;
 
@@ -292,8 +292,6 @@ async function handleAllURLs() {
     // Difference in stock count
     else if (in_stock_count != search_urls[item]["prev_stock_count"]) {
       console.log("Response msg: Update in stock");
-      console.log(item_str);
-      console.log(dateTime);
       // Send response to every user
       for (let sender_id in search_urls[item]["sender_ids"]) {
         // Response message
@@ -479,7 +477,6 @@ async function getDataFromURL(item) {
       items[0]["price"] = $(".price").text();
       items[0]["in_stock"] = $(".product-options-bottom button").text();
     }
-    console.log(items);
     return items;
   } catch (error) {
     console.log(`Error: ${error}`);
@@ -621,6 +618,42 @@ function handleMessage(sender_psid, received_message) {
       console.log(search_urls);
       callSendAPI(sender_psid, response);
       return;
+    } else if (rec_msg.split(" ")[0] === "stop") {
+      let stopItemMessage = rec_msg.split(" ");
+      try {
+        if (stopItemMessage.length > 1) {
+          let itemToDelete = stopItemMessage.slice(1).join(" ");
+          // If item is currently being searched by user
+          if (itemToDelete in user_id_dic[sender_psid]["products"]) {
+            delete user_id_dic[sender_psid]["products"][itemToDelete];
+          }
+          else {
+            throw "Item not being searched by user"
+          }
+          if (sender_psid in search_urls[itemToDelete]["sender_ids"]) {
+            delete search_urls[itemToDelete]["sender_ids"][sender_psid];
+          }
+          else {
+            throw "Item not being searched by user"
+          }
+
+          console.log(user_id_dic);
+          response = {
+            text: `STOP MSG:\n` + `Stopped checking '${itemToDelete}'`,
+          };
+          callSendAPI(sender_psid, response);
+          return;
+        }
+        else {
+          throw "Invalid stop message"
+        }
+      } catch (err) {
+        response = {
+          text: `INVALID:\n` + `ERROR: ${err}`,
+        };
+        callSendAPI(sender_psid, response);
+        return;
+      }
     }
 
     // User message is invalid
