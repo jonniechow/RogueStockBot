@@ -59,7 +59,7 @@ const query = util.promisify(db.query).bind(db);
 
 let start_time;
 // Delay in seconds
-let delay = 30;
+let delay = 10;
 // Limit of iteems
 let item_limit = 100;
 
