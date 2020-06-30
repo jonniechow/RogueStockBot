@@ -771,6 +771,24 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue TB-2 Trap Bar',
         "link": "https://www.roguefitness.com/rogue-tb-2-trap-bar"
     },
+    "grip triangle": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Grip Triangle (Standard Grip)',
+        "link": "https://www.roguefitness.com/rogue-grip-triangle-standard-grip"
+    },
+    "m grip triangle": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Grip Triangle',
+        "link": "https://www.roguefitness.com/rogue-monster-grip-triangle"
+    },
+    "tricep pushdown": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Tricep Push Down Attachment',
+        "link": "https://www.roguefitness.com/rogue-tricep-pushdown-attachment"
+    },
     // Canada links
     "ca dumbbells": {
         "type": "multi",

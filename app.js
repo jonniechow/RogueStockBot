@@ -214,16 +214,16 @@ async function handleAllURLs() {
         avail = decodeURI("\u2705");
         in_stock_count += 1;
         write_item_str += item["name"] + " " + avail + ", ";
-        item_str +=
-          item["name"] +
-          "\n" +
-          item["price"] +
-          "\nIn stock: " +
-          avail +
-          "\n \n";
+        // item_str +=
+        //   item["name"] +
+        //   "\n" +
+        //   item["price"] +
+        //   "\nIn stock: " +
+        //   avail +
+        //   "\n \n";
       }
-      // item_str +=
-      //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
+      item_str +=
+        item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
     });
 
     // No items found, everything sold out
@@ -615,10 +615,11 @@ function handleMessage(sender_psid, received_message) {
       user_id_dic[sender_psid]["intervals"] = [];
       user_id_dic[sender_psid]["products"] = {};
       delete user_id_dic[sender_psid];
-      console.log(search_urls);
       callSendAPI(sender_psid, response);
       return;
-    } else if (rec_msg.split(" ")[0] === "stop") {
+    }
+    // Stop single item
+    else if (rec_msg.split(" ")[0] === "stop") {
       let stopItemMessage = rec_msg.split(" ");
       try {
         if (stopItemMessage.length > 1) {
@@ -626,15 +627,13 @@ function handleMessage(sender_psid, received_message) {
           // If item is currently being searched by user
           if (itemToDelete in user_id_dic[sender_psid]["products"]) {
             delete user_id_dic[sender_psid]["products"][itemToDelete];
-          }
-          else {
-            throw "Item not being searched by user"
+          } else {
+            throw "Item not being searched by user";
           }
           if (sender_psid in search_urls[itemToDelete]["sender_ids"]) {
             delete search_urls[itemToDelete]["sender_ids"][sender_psid];
-          }
-          else {
-            throw "Item not being searched by user"
+          } else {
+            throw "Item not being searched by user";
           }
 
           console.log(user_id_dic);
@@ -643,9 +642,8 @@ function handleMessage(sender_psid, received_message) {
           };
           callSendAPI(sender_psid, response);
           return;
-        }
-        else {
-          throw "Invalid stop message"
+        } else {
+          throw "Invalid stop message";
         }
       } catch (err) {
         response = {
