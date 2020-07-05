@@ -260,8 +260,7 @@ async function handleAllURLs() {
             `Will begin running in the background until "stop"\n\n` +
             `Link:\n${
               search_urls[item]["link"] + "?=" + rand_string
-            }\n\n` +
-            otherLinkURLS +
+            }\n\n${otherLinkURLS}\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
         console.log(response);

@@ -16,7 +16,8 @@ var search_urls = { // Plate URLs
         "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue HG 2.0 KG Bumper Plates',
-        "link": "https://www.roguefitness.com/kg-rogue-bumpers"
+        "link": "https://www.roguefitness.com/kg-rogue-bumpers",
+        "otherLinks": ["https://www.roguecanada.ca/kg-rogue-bumpers-2786"]
     },
     "plate comp lb": {
         "type": "multi",
@@ -624,7 +625,8 @@ var search_urls = { // Plate URLs
         "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue Kettlebells',
-        "link": "https://www.roguefitness.com/rogue-kettlebells"
+        "link": "https://www.roguefitness.com/rogue-kettlebells",
+        "otherLinks": ["https://www.roguecanada.ca/rogue-kettlebells"]
     },
     "kettlebells comp": {
         "type": "multi",
