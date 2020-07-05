@@ -21,7 +21,7 @@
 
 "use strict";
 require("dotenv").config();
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
@@ -43,7 +43,7 @@ var { getDataFromJS, getRequestDataFromJS } = require("./helper");
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 30;
+let delay = 10;
 // Limit of iteems
 let item_limit = 10;
 
@@ -167,18 +167,6 @@ app.get("/webhook", (req, res) => {
 });
 
 async function handleAllURLs() {
-  // fs.writeFileSync('item-urls2.js', 'var search_urls = ', function (err) {
-  //   if (err) return console.log(err);
-  //   console.log('Update item-urls');
-  // });
-  // fs.appendFileSync('item-urls2.js', JSON.stringify(search_urls, null, 2), function (err) {
-  //   if (err) return console.log(err);
-  //   console.log('Update item-urls');
-  // });
-  // fs.appendFileSync('item-urls2.js', ';\nmodule.exports = search_urls;', function (err) {
-  //   if (err) return console.log(err);
-  //   console.log('Update item-urls');
-  // });
   for (let item in search_urls) {
     // Skips items no one is looking for
     if (Object.keys(search_urls[item]["sender_ids"]).length == 0) {
@@ -248,6 +236,15 @@ async function handleAllURLs() {
     for (let sender_id in search_urls[item]["sender_ids"]) {
       if (search_urls[item]["sender_ids"][sender_id] == 0) {
         search_urls[item]["sender_ids"][sender_id] = 1;
+        var otherLinkURLS = '';
+        if(search_urls[item]['otherLinks']) {
+          search_urls[item]['otherLinks'].forEach((link, index) => {
+            if (index == 0) {
+              otherLinkURLS += "CA: ";
+            }
+            otherLinkURLS += `${link}\n`;
+          })
+        }
         // First response message
         let response = {
           text:
@@ -261,12 +258,12 @@ async function handleAllURLs() {
             `First initial check on ${dateTime}\n` +
             `You will be notified everytime there is a change in stock.\n` +
             `Will begin running in the background until "stop"\n\n` +
-            `Original link:\n${search_urls[item]["link"]}\n\n` +
-            `Non-cached link:\n${
+            `Link:\n${
               search_urls[item]["link"] + "?=" + rand_string
-            }\n\n` +
+            }\n\n${otherLinkURLS}\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
+        console.log(response);
         callSendAPI(sender_id, response);
       }
     }
@@ -292,8 +289,6 @@ async function handleAllURLs() {
     // Difference in stock count
     else if (in_stock_count != search_urls[item]["prev_stock_count"]) {
       console.log("Response msg: Update in stock");
-      console.log(item_str);
-      console.log(dateTime);
       // Send response to every user
       for (let sender_id in search_urls[item]["sender_ids"]) {
         // Response message
@@ -479,7 +474,6 @@ async function getDataFromURL(item) {
       items[0]["price"] = $(".price").text();
       items[0]["in_stock"] = $(".product-options-bottom button").text();
     }
-    console.log(items);
     return items;
   } catch (error) {
     console.log(`Error: ${error}`);
@@ -618,9 +612,43 @@ function handleMessage(sender_psid, received_message) {
       user_id_dic[sender_psid]["intervals"] = [];
       user_id_dic[sender_psid]["products"] = {};
       delete user_id_dic[sender_psid];
-      console.log(search_urls);
       callSendAPI(sender_psid, response);
       return;
+    }
+    // Stop single item
+    else if (rec_msg.split(" ")[0] === "stop") {
+      let stopItemMessage = rec_msg.split(" ");
+      try {
+        if (stopItemMessage.length > 1) {
+          let itemToDelete = stopItemMessage.slice(1).join(" ");
+          // If item is currently being searched by user
+          if (itemToDelete in user_id_dic[sender_psid]["products"]) {
+            delete user_id_dic[sender_psid]["products"][itemToDelete];
+          } else {
+            throw "Item not being searched by user";
+          }
+          if (sender_psid in search_urls[itemToDelete]["sender_ids"]) {
+            delete search_urls[itemToDelete]["sender_ids"][sender_psid];
+          } else {
+            throw "Item not being searched by user";
+          }
+
+          console.log(user_id_dic);
+          response = {
+            text: `STOP MSG:\n` + `Stopped checking '${itemToDelete}'`,
+          };
+          callSendAPI(sender_psid, response);
+          return;
+        } else {
+          throw "Invalid stop message";
+        }
+      } catch (err) {
+        response = {
+          text: `INVALID:\n` + `ERROR: ${err}`,
+        };
+        callSendAPI(sender_psid, response);
+        return;
+      }
     }
 
     // User message is invalid

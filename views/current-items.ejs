@@ -81,6 +81,7 @@
                             <tr>
                                 <th>Item</th>
                                 <th>Command</th>
+                                <th>People Searching</th>
                                 <th>Link</th>
                             </tr>
                         </thead>
@@ -89,6 +90,7 @@
                             <tr>
                                 <td><%=data[entry].product_name%></td>
                                 <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
                                 <td>
                                     <a href="<%=data[entry].link%>" target="_blank">Link</a>
                                 </td>

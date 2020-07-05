@@ -23,6 +23,12 @@ Has this project helped you? Consider donating!
 
 ### Updates
 
+v 1.8
+* Added new items
+* Merged CA links to US links
+* Added number of users searching to /current-items
+* Can now stop single items with "stop item" ex. "stop plate echo color"
+
 v 1.7
 * Added new items
 * Upgraded from AWS EC2 t2.small to t2.medium
