@@ -22,7 +22,7 @@
 'use strict';
 require('dotenv').config();
 
-const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require('request'),
   mysql = require('mysql'),
@@ -31,9 +31,6 @@ const request = require('request'),
   cheerio = require('cheerio'),
   body_parser = require('body-parser'),
   util = require('util'),
-  afterLoad = require('after-load'),
-  Nightmare = require('nightmare'),
-  nightmare = Nightmare({ show: true }),
   useless_items = require('./useless-items')
 // creates express http server
 
@@ -487,11 +484,16 @@ async function handleMessage(sender_psid, received_message) {
           all_items_str += row['short_name'] + "\n";
         })
         response = {
-          "text": `HELP MSG:\n` +
-            all_items_str +
-            `For commands check out\n` +
-            `roguestockbot.com/current-items \n` +
-            "Type `stop` to stop checking all items \n"
+          text:
+            `HELP MSG:\n` +
+            `How to guide for the bot:\nroguestockbot.com/bot-guide\n\n` +
+            `All current items supported:\nroguestockbot.com/current-items\n\n` +
+            `1) Look up the commands for what item you want to search for on\n` +
+            `roguestockbot.com/current-items\n` +
+            `2) Reply back to this bot with each command one by one\n` +
+            `3) The bot will reply back with an initial check then message you whenever there's an update\n\n` +
+            `Type 'status' to check what items you are searching\n` +
+            `Type 'stop' to stop checking all items\n`,
         };
         callSendAPI(sender_psid, response);
       });
@@ -500,18 +502,19 @@ async function handleMessage(sender_psid, received_message) {
     // Status message
     else if (rec_msg === "status") {
       let total_users = 0;
+      console.log('sql 1')
       let stmt = 'SELECT COUNT(DISTINCT user_id) AS user_count FROM searches';
       db.query(stmt, (err, results, fields) => {
         if (err) throw err;
         total_users = results[0].user_count;
       });
-
       let adr = sender_psid;
       stmt = `SELECT * FROM searches
                   WHERE user_id = ?`;
       db.query(stmt, [adr], (err, results, fields) => {
         if (err) throw err;
         let status_string = `STATUS ${results.length}/${item_limit} items:\n` +
+          `CURRENTLY TESTING` +
           `There are ${total_users} total users searching\n\n` + 
           `Currenty searching:\n\n`;
         results.forEach((row) => {
@@ -619,7 +622,7 @@ async function handleMessage(sender_psid, received_message) {
   }
 
   // Send the response message
-  callSendAPI(sender_psid, response);
+  // callSendAPI(sender_psid, response);
 }
 
 function handlePostback(sender_psid, received_postback) {
@@ -663,7 +666,7 @@ function callSendAPI(sender_psid, response) { // Construct the message body
     },
     (err, res, body) => {
       if (!err) {
-        console.log(`---MESSAGE SENT: ${sender_psid}!---`);
+        console.log(`---MESSAGE SENT: ${sender_psid}---`);
       }
       else {
         console.error("Unable to send message:" + err);
