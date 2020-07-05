@@ -64,7 +64,8 @@ var search_urls = { // Plate URLs
         "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue Echo Bumper Plates V2',
-        "link": "https://www.roguefitness.com/rogue-echo-bumper-plates-with-white-text"
+        "link": "https://www.roguefitness.com/rogue-echo-bumper-plates-with-white-text",
+        "otherLinks": ["https://www.roguecanada.ca/rogue-echo-bumper-plates-with-white-text"]
     },
     "plate echo v1": {
         "type": "multi",
@@ -76,7 +77,8 @@ var search_urls = { // Plate URLs
         "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue Color Echo Bumper Plates',
-        "link": "https://www.roguefitness.com/rogue-color-echo-bumper-plate"
+        "link": "https://www.roguefitness.com/rogue-color-echo-bumper-plate",
+        "otherLinks": ["https://www.roguecanada.ca/rogue-color-echo-bumper-plate"]
     },
     "plate machined": {
         "type": "multi",
@@ -106,7 +108,8 @@ var search_urls = { // Plate URLs
         "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue LB Change Plates',
-        "link": "https://www.roguefitness.com/rogue-lb-change-plates"
+        "link": "https://www.roguefitness.com/rogue-lb-change-plates",
+        "otherLinks": ["https://www.roguecanada.ca/rogue-lb-change-plates"]
     },
     "plate mil spec": {
         "type": "multi",
@@ -211,7 +214,8 @@ var search_urls = { // Plate URLs
         "type": "cerakote",
         "sender_ids": {},
         'product_name': 'Rogue 45LB Ohio Power Bar - Cerakote',
-        "link": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote"
+        "link": "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote",
+        "otherLinks": ["https://www.roguecanada.ca/rogue-45lb-ohio-powerlift-bar-cerakote"]
     },
     // Boneyard
     "bone 29": {
@@ -503,6 +507,12 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue RM-4 Fortis Rack',
         "link": "https://www.roguefitness.com/rogue-rm-4-fortis-rack"
     },
+    "combo rack": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Combo Rack',
+        "link": "https://www.roguefitness.com/rogue-combo-rack"
+    },
     "ml spotter": {
         "type": "single",
         "sender_ids": {},
@@ -575,7 +585,8 @@ var search_urls = { // Plate URLs
         "type": "single",
         "sender_ids": {},
         'product_name': 'Black Concept 2 Model D Rower - PM5',
-        "link": "https://www.roguefitness.com/black-concept-2-model-d-rower-pm5"
+        "link": "https://www.roguefitness.com/black-concept-2-model-d-rower-pm5",
+        "otherLinks": ["https://www.roguecanada.ca/black-concept-2-model-d-rower-pm5"]
     },
     // GHD
     "abram ghd": {
@@ -615,11 +626,24 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Kettlebells',
         "link": "https://www.roguefitness.com/rogue-kettlebells"
     },
+    "kettlebells comp": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Competition Kettlebells',
+        "link": "https://www.roguefitness.com/rogue-competition-kettlebells"
+    },
+    "kettlebells ecoat": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Kettlebell - E Coat',
+        "link": "https://www.roguefitness.com/rogue-kettlebell-e-coat"
+    },
     "dumbbells": {
         "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue Dumbbells',
-        "link": "https://www.roguefitness.com/rogue-dumbbells"
+        "link": "https://www.roguefitness.com/rogue-dumbbells",
+        "otherLinks": ["https://www.roguecanada.ca/rogue-dumbbells"]
     },
     "medicine balls": {
         "type": "multi",
@@ -789,42 +813,17 @@ var search_urls = { // Plate URLs
         'product_name': 'Rogue Tricep Push Down Attachment',
         "link": "https://www.roguefitness.com/rogue-tricep-pushdown-attachment"
     },
-    // Canada links
-    "ca dumbbells": {
+    "t-bar row": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'CA Rogue Dumbbells',
-        "link": "https://www.roguecanada.ca/rogue-dumbbells"
+        'product_name': 'Rogue T Bar Row',
+        "link": "https://www.roguefitness.com/rogue-t-bar-row"
     },
-    "ca echo color": {
-        "type": "multi",
-        "sender_ids": {},
-        'product_name': 'CA Rogue Color Echo Bumper Plates',
-        "link": "https://www.roguecanada.ca/rogue-color-echo-bumper-plate"
-    },
-    "ca echo": {
-        "type": "multi",
-        "sender_ids": {},
-        'product_name': 'CA Rogue Echo Bumper Plates V2',
-        "link": "https://www.roguecanada.ca/rogue-echo-bumper-plates-with-white-text"
-    },
-    "ca model d rower": {
+    "xm-43m crossmember": {
         "type": "single",
         "sender_ids": {},
-        'product_name': 'CA Black Concept 2 Model D Rower - PM5',
-        "link": "https://www.roguecanada.ca/black-concept-2-model-d-rower-pm5"
-    },
-    "ca opb cerakote": {
-        "type": "cerakote",
-        "sender_ids": {},
-        'product_name': 'CA Rogue 45LB Ohio Power Bar - Cerakote',
-        "link": "https://www.roguecanada.ca/rogue-45lb-ohio-powerlift-bar-cerakote"
-    },
-    "ca plate change": {
-        "type": "multi",
-        "sender_ids": {},
-        'product_name': 'CA Rogue LB Change Plates',
-        "link": "https://www.roguecanada.ca/rogue-lb-change-plates"
+        'product_name': 'XM-43M Monster Multi Grip Crossmember',
+        "link": "https://www.roguefitness.com/xm-43m-monster-multi-grip-crossmember"
     },
     "uk echo color": {
         "type": "multi",

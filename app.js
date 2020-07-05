@@ -167,18 +167,6 @@ app.get("/webhook", (req, res) => {
 });
 
 async function handleAllURLs() {
-  // fs.writeFileSync('item-urls2.js', 'var search_urls = ', function (err) {
-  //   if (err) return console.log(err);
-  //   console.log('Update item-urls');
-  // });
-  // fs.appendFileSync('item-urls2.js', JSON.stringify(search_urls, null, 2), function (err) {
-  //   if (err) return console.log(err);
-  //   console.log('Update item-urls');
-  // });
-  // fs.appendFileSync('item-urls2.js', ';\nmodule.exports = search_urls;', function (err) {
-  //   if (err) return console.log(err);
-  //   console.log('Update item-urls');
-  // });
   for (let item in search_urls) {
     // Skips items no one is looking for
     if (Object.keys(search_urls[item]["sender_ids"]).length == 0) {
@@ -214,16 +202,16 @@ async function handleAllURLs() {
         avail = decodeURI("\u2705");
         in_stock_count += 1;
         write_item_str += item["name"] + " " + avail + ", ";
-        // item_str +=
-        //   item["name"] +
-        //   "\n" +
-        //   item["price"] +
-        //   "\nIn stock: " +
-        //   avail +
-        //   "\n \n";
+        item_str +=
+          item["name"] +
+          "\n" +
+          item["price"] +
+          "\nIn stock: " +
+          avail +
+          "\n \n";
       }
-      item_str +=
-        item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
+      // item_str +=
+      //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
     });
 
     // No items found, everything sold out
@@ -248,6 +236,15 @@ async function handleAllURLs() {
     for (let sender_id in search_urls[item]["sender_ids"]) {
       if (search_urls[item]["sender_ids"][sender_id] == 0) {
         search_urls[item]["sender_ids"][sender_id] = 1;
+        var otherLinkURLS = '';
+        if(search_urls[item]['otherLinks']) {
+          search_urls[item]['otherLinks'].forEach((link, index) => {
+            if (index == 0) {
+              otherLinkURLS += "CA: ";
+            }
+            otherLinkURLS += `${link}\n`;
+          })
+        }
         // First response message
         let response = {
           text:
@@ -261,12 +258,13 @@ async function handleAllURLs() {
             `First initial check on ${dateTime}\n` +
             `You will be notified everytime there is a change in stock.\n` +
             `Will begin running in the background until "stop"\n\n` +
-            `Original link:\n${search_urls[item]["link"]}\n\n` +
-            `Non-cached link:\n${
+            `Link:\n${
               search_urls[item]["link"] + "?=" + rand_string
             }\n\n` +
+            otherLinkURLS +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
+        console.log(response);
         callSendAPI(sender_id, response);
       }
     }
