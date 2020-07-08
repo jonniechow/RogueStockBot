@@ -22,7 +22,7 @@ CREATE TABLE restock(
     restock_id INT NOT NULL AUTO_INCREMENT,
     restock_time VARCHAR(50) NOT NULL,
     full_name VARCHAR(100) NOT NULL,
-    restock_string VARCHAR(500) NOT NULL,
+    restock_string VARCHAR(1000) NOT NULL,
     link VARCHAR(100) NOT NULL,
     PRIMARY KEY(restock_id)
 );

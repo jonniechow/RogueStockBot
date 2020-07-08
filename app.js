@@ -474,6 +474,7 @@ async function handleMessage(sender_psid, received_message) {
         response = {
           text:
             `HELP MSG:\n` +
+            `CURRENTLY TESTING` +
             `How to guide for the bot:\nroguestockbot.com/bot-guide\n\n` +
             `All current items supported:\nroguestockbot.com/current-items\n\n` +
             `1) Look up the commands for what item you want to search for on\n` +
@@ -490,7 +491,6 @@ async function handleMessage(sender_psid, received_message) {
     // Status message
     else if (rec_msg === "status") {
       let total_users = 0;
-      console.log("sql 1");
       let stmt = "SELECT COUNT(DISTINCT user_id) AS user_count FROM searches";
       db.query(stmt, (err, results, fields) => {
         if (err) throw err;
@@ -559,19 +559,21 @@ async function handleMessage(sender_psid, received_message) {
     let stmt = `SELECT * FROM items WHERE short_name=?`;
     let todo = [rec_msg];
     try {
-      const results = await query(stmt, todo);
-      if (results.length == 0) {
-        response = {
-          text:
-            `INVALID\nYou entered: "${received_message.text}".` +
-            "\n\n" +
-            "Item doesn't exist\nTry typing `help` for a list of all valid commands",
-        };
-        callSendAPI(sender_psid, response);
-        return;
-      } else {
-        item_full_name = results[0]["full_name"];
-      }
+      db.query(stmt, todo, (err, results) => {
+        if (err) throw err;
+        if (results.length == 0) {
+          response = {
+            text:
+              `INVALID\nYou entered: "${received_message.text}".` +
+              "\n\n" +
+              "Item doesn't exist\nTry typing `help` for a list of all valid commands",
+          };
+          callSendAPI(sender_psid, response);
+          return;
+        } else {
+          item_full_name = results[0]["full_name"];
+        }
+      });
     } catch (err) {
       console.log(`Error in checking item database: ${err}`);
     }
@@ -579,21 +581,25 @@ async function handleMessage(sender_psid, received_message) {
     // Check for item limit
     stmt = `SELECT * FROM searches WHERE user_id=?`;
     todo = [sender_psid];
-    const search_results = await query(stmt, todo);
-    if (search_results.length >= item_limit) {
-      response = {
-        text: `INVALID\nYou have reached max limit of "${item_limit}" items\n`,
-      };
-      callSendAPI(sender_psid, response);
-      return;
-    }
+    db.query(stmt, todo, (err, results) => {
+      if (err) throw err;
+      if (results.length >= item_limit) {
+        response = {
+          text: `INVALID\nYou have reached max limit of "${item_limit}" items\n`,
+        };
+        callSendAPI(sender_psid, response);
+        return;
+      }
+    });
 
     // Insert valid search into database
     stmt = `INSERT INTO searches (user_id, item_name, item_full_name, start_time, count)
                VALUES (?, ?, ?, ?, ?)`;
     todo = [sender_psid, rec_msg, item_full_name, new Date(), 0];
     try {
-      await query(stmt, todo);
+      db.query(stmt, todo, (err, results) => {
+        if (err) throw err;
+      });
     } catch (err) {
       // Check if item is already being searched for user
       if (err.code == "ER_DUP_ENTRY") {
