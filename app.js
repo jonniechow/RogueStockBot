@@ -596,19 +596,15 @@ async function handleMessage(sender_psid, received_message) {
     stmt = `INSERT INTO searches (user_id, item_name, item_full_name, start_time, count)
                VALUES (?, ?, ?, ?, ?)`;
     todo = [sender_psid, rec_msg, item_full_name, new Date(), 0];
-    try {
-      db.query(stmt, todo, (err, results) => {
-        if (err.code == "ER_DUP_ENTRY") {
-          response = {
-            text: `INVALID\nAlready searching: "${item_full_name}".`,
-          };
-          callSendAPI(sender_psid, response);
-          return;
-        } else if (err) throw err;
-      });
-    } catch (err) {
-      throw err;
-    }
+    db.query(stmt, todo, (err, results) => {
+      if (err && err.code == "ER_DUP_ENTRY") {
+        response = {
+          text: `INVALID\nAlready searching: "${item_full_name}".`,
+        };
+        callSendAPI(sender_psid, response);
+        return;
+      } else if (err) throw err;
+    });
   }
 
   // Send the response message

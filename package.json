@@ -12,6 +12,7 @@
     "express": "^4.17.1",
     "fb-local-chat-bot": "^0.1.42",
     "moment": "^2.24.0",
+    "mongodb": "^3.5.9",
     "mysql": "^2.18.1",
     "nightmare": "^3.0.2",
     "request": "^2.88.2",
