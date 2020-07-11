@@ -35,7 +35,13 @@ const request = require("request"),
   app = express().use(body_parser.json()),
   search_urls = require("./item-urls"),
   useless_items = require("./useless-items");
-// creates express http server
+
+const MongoClient = require("mongodb").MongoClient;
+const mongo_url = process.env.MONGO_URL;
+const client = new MongoClient(mongo_url, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+});
 
 var { getDataFromJS, getRequestDataFromJS } = require("./helper");
 
@@ -79,7 +85,16 @@ app.get("/privacy-policy", (req, res) => {
 });
 
 app.get("/current-items", (req, res) => {
-  res.render("current-items", { data: search_urls });
+  client.connect(err => {
+    const collection = client.db("rogue").collection("items");
+    collection.find().toArray().then(items => {
+      console.log(`Successfully found ${items.length} documents.`);
+      res.render("current-items", { data: items });
+      client.close();
+    })
+    .catch(err => console.log(`Failed to find ${err}`));
+  });
+  // res.render("current-items", { data: search_urls });
 });
 
 app.get("/items-in-stock", (req, res) => {
@@ -236,14 +251,14 @@ async function handleAllURLs() {
     for (let sender_id in search_urls[item]["sender_ids"]) {
       if (search_urls[item]["sender_ids"][sender_id] == 0) {
         search_urls[item]["sender_ids"][sender_id] = 1;
-        var otherLinkURLS = '';
-        if(search_urls[item]['otherLinks']) {
-          search_urls[item]['otherLinks'].forEach((link, index) => {
+        var otherLinkURLS = "";
+        if (search_urls[item]["otherLinks"]) {
+          search_urls[item]["otherLinks"].forEach((link, index) => {
             if (index == 0) {
               otherLinkURLS += "CA: ";
             }
             otherLinkURLS += `${link}\n`;
-          })
+          });
         }
         // First response message
         let response = {

@@ -79,20 +79,20 @@
                     <table class="alt">
                         <thead>
                             <tr>
-                                <th>Item</th>
                                 <th>Command</th>
+                                <th>Item</th>
                                 <th>People Searching</th>
                                 <th>Link</th>
                             </tr>
                         </thead>
                         <tbody id="data_from_log">
-                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% data.forEach((entry, index)=>{%>
                             <tr>
-                                <td><%=data[entry].product_name%></td>
-                                <td><%=entry%></td>
-                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td><%=entry.short_name%></td>
+                                <td><%=entry.product_name%></td>
+                                <td><%=Object.keys(entry.sender_ids).length%></td>
                                 <td>
-                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                    <a href="<%=entry.link%>" target="_blank">Link</a>
                                 </td>
                             </tr>
                             <%});%>
