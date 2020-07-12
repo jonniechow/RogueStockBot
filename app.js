@@ -49,7 +49,7 @@ var { getDataFromJS, getRequestDataFromJS } = require("./helper");
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 30;
+let delay = 10;
 // Limit of iteems
 let item_limit = 10;
 var db;
@@ -188,176 +188,177 @@ app.get("/webhook", (req, res) => {
 });
 
 async function handleAllURLs() {
-  for (let item in search_urls) {
-    // Skips items no one is looking for
-    if (Object.keys(search_urls[item]["sender_ids"]).length == 0) {
-      // console.log(`Skipping ${item}`)
-      continue;
-    }
-    let data = await getDataFromURL(item);
-    let item_str = "";
-    let write_item_str = "";
-    let in_stock_count = 0;
-    let rand_string = Math.random().toString(36).substring(7);
+  const itemCollection = db.collection("items");
+  itemCollection
+    .find()
+    .toArray()
+    .then((items) => {
+      items.forEach(async (item) => {
+        let data = await getDataFromURL(item);
+        let item_str = "";
+        let write_item_str = "";
+        let in_stock_count = 0;
+        let rand_string = Math.random().toString(36).substring(7);
 
-    // Loop through each item on page
-    data.forEach((item) => {
-      var avail = decodeURI("\u2705");
+        // Loop through each item on page
+        data.forEach((item) => {
+          var avail = decodeURI("\u2705");
 
-      // Check if data returned is empty
-      if (Object.keys(item).length == 0) {
-        return;
-      }
+          // Check if data returned is empty
+          if (Object.keys(item).length == 0) {
+            return;
+          }
 
-      // Out of stock
-      if (
-        item["in_stock"].indexOf("Notify Me") >= 0 ||
-        item["in_stock"].indexOf("Out of Stock") >= 0
-      ) {
-        // Cross emoji
-        avail = decodeURI("\u274C");
-      }
-      // In stock
-      else {
-        // Check emoji
-        avail = decodeURI("\u2705");
-        in_stock_count += 1;
-        write_item_str += item["name"] + " " + avail + ", ";
-        item_str +=
-          item["name"] +
-          "\n" +
-          item["price"] +
-          "\nIn stock: " +
-          avail +
-          "\n \n";
-      }
-      // item_str +=
-      //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
+          // Out of stock
+          if (
+            item["in_stock"].indexOf("Notify Me") >= 0 ||
+            item["in_stock"].indexOf("Out of Stock") >= 0
+          ) {
+            // Cross emoji
+            avail = decodeURI("\u274C");
+          }
+          // In stock
+          else {
+            // Check emoji
+            avail = decodeURI("\u2705");
+            in_stock_count += 1;
+            write_item_str += item["name"] + " " + avail + ", ";
+            item_str +=
+              item["name"] +
+              "\n" +
+              item["price"] +
+              "\nIn stock: " +
+              avail +
+              "\n \n";
+          }
+          // item_str +=
+          //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
+        });
+
+        // No items found, everything sold out
+        if (item_str === "") {
+          item_str = "Everything currently out of stock.\n\n";
+          write_item_str = "Everything currently out of stock.";
+        }
+
+        // Set date
+        var today = new Date();
+        var date =
+          today.getMonth() +
+          1 +
+          "/" +
+          today.getDate() +
+          "/" +
+          today.getFullYear();
+        var time = today.toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: true,
+        });
+        var dateTime = time + " EST " + date;
+
+        // Sends first check message
+        Object.keys(item["sender_ids"]).forEach((sender) => {
+          if (item["sender_ids"][sender] == 0) {
+            let key = `sender_ids.${sender}`;
+            itemCollection.updateOne(
+              { short_name: item["short_name"] },
+              { $set: { [key]: 1 } }
+            );
+            let response = {
+              text:
+                `FIRST CHECK: "${item["short_name"]}"\n` +
+                `Match found for: "${item["full_name"]}".\n` +
+                `Currently searching ${
+                  0
+                }/${item_limit} items` +
+                "\n\n" +
+                item_str +
+                `First initial check on ${dateTime}\n` +
+                `You will be notified everytime there is a change in stock.\n` +
+                `Will begin running in the background until "stop"\n\n` +
+                `Link:\n${
+                  item["link"] + "?=" + rand_string
+                }\n\n` +
+                `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
+            };
+            callSendAPI(sender, response);
+          }
+        });
+
+        // // Checks if item has been checked
+        // if (!("prev_stock_count" in search_urls[item])) {
+        //   search_urls[item]["prev_stock_count"] = in_stock_count;
+        // }
+        // // If item was in stock, but is now out of stock
+        // else if (
+        //   in_stock_count == 0 &&
+        //   search_urls[item]["prev_stock_count"] > 0
+        // ) {
+        //   let write_line = `${dateTime} | ${search_urls[item]["product_name"]} | ${write_item_str} | ${search_urls[item]["link"]}\n`;
+        //   try {
+        //     if (write_item_str != "") {
+        //       fs.appendFile("stock-log.txt", write_line, (error) => {
+        //         if (error) throw error;
+        //         console.log(`Wrote update on ${item} to file`);
+        //       });
+        //     }
+        //   } catch (error) {
+        //     console.error(`Could not write to file`);
+        //   }
+        // }
+        // // Difference in stock count
+        // else if (in_stock_count != search_urls[item]["prev_stock_count"]) {
+        //   console.log("Response msg: Update in stock");
+        //   // Send response to every user
+        //   for (let sender_id in search_urls[item]["sender_ids"]) {
+        //     // Response message
+        //     let response = {
+        //       text:
+        //         `RESTOCK: "${item}"\n` +
+        //         `Match found for: "${search_urls[item]["product_name"]}".\n` +
+        //         `Currently searching ${
+        //           Object.keys(user_id_dic[sender_id]["products"]).length
+        //         }/${item_limit} items` +
+        //         "\n\n" +
+        //         item_str +
+        //         `Checked On ${dateTime}\n` +
+        //         `Original link:\n${search_urls[item]["link"]}\n\n` +
+        //         `Non-cached link:\n${
+        //           search_urls[item]["link"] + "?=" + rand_string
+        //         }\n\n` +
+        //         `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
+        //     };
+        //     callSendAPI(sender_id, response);
+        //   }
+        //   let write_line = `${dateTime} | ${search_urls[item]["product_name"]} | ${write_item_str} | ${search_urls[item]["link"]}\n`;
+        //   try {
+        //     if (write_item_str != "") {
+        //       fs.appendFile("stock-log.txt", write_line, (error) => {
+        //         if (error) throw error;
+        //         console.log(`Wrote update on ${item} to file`);
+        //       });
+        //     }
+        //   } catch (error) {
+        //     console.error(`Could not write to file`);
+        //   }
+        // }
+        // // Update prev stock to current stock
+        // search_urls[item]["prev_stock_count"] = in_stock_count;
+      });
     });
-
-    // No items found, everything sold out
-    if (item_str === "") {
-      item_str = "Everything currently out of stock.\n\n";
-      write_item_str = "Everything currently out of stock.";
-    }
-
-    // Set date
-    var today = new Date();
-    var date =
-      today.getMonth() + 1 + "/" + today.getDate() + "/" + today.getFullYear();
-    var time = today.toLocaleString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      hour12: true,
-    });
-    var dateTime = time + " EST " + date;
-
-    // Send response to every user
-    for (let sender_id in search_urls[item]["sender_ids"]) {
-      if (search_urls[item]["sender_ids"][sender_id] == 0) {
-        search_urls[item]["sender_ids"][sender_id] = 1;
-        var otherLinkURLS = "";
-        if (search_urls[item]["otherLinks"]) {
-          search_urls[item]["otherLinks"].forEach((link, index) => {
-            if (index == 0) {
-              otherLinkURLS += "CA: ";
-            }
-            otherLinkURLS += `${link}\n`;
-          });
-        }
-        // First response message
-        let response = {
-          text:
-            `FIRST CHECK: "${item}"\n` +
-            `Match found for: "${search_urls[item]["product_name"]}".\n` +
-            `Currently searching ${
-              Object.keys(user_id_dic[sender_id]["products"]).length
-            }/${item_limit} items` +
-            "\n\n" +
-            item_str +
-            `First initial check on ${dateTime}\n` +
-            `You will be notified everytime there is a change in stock.\n` +
-            `Will begin running in the background until "stop"\n\n` +
-            `Link:\n${
-              search_urls[item]["link"] + "?=" + rand_string
-            }\n\n${otherLinkURLS}\n` +
-            `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
-        };
-        console.log(response);
-        callSendAPI(sender_id, response);
-      }
-    }
-
-    // Checks if item has been checked
-    if (!("prev_stock_count" in search_urls[item])) {
-      search_urls[item]["prev_stock_count"] = in_stock_count;
-    }
-    // If item was in stock, but is now out of stock
-    else if (in_stock_count == 0 && search_urls[item]["prev_stock_count"] > 0) {
-      let write_line = `${dateTime} | ${search_urls[item]["product_name"]} | ${write_item_str} | ${search_urls[item]["link"]}\n`;
-      try {
-        if (write_item_str != "") {
-          fs.appendFile("stock-log.txt", write_line, (error) => {
-            if (error) throw error;
-            console.log(`Wrote update on ${item} to file`);
-          });
-        }
-      } catch (error) {
-        console.error(`Could not write to file`);
-      }
-    }
-    // Difference in stock count
-    else if (in_stock_count != search_urls[item]["prev_stock_count"]) {
-      console.log("Response msg: Update in stock");
-      // Send response to every user
-      for (let sender_id in search_urls[item]["sender_ids"]) {
-        // Response message
-        let response = {
-          text:
-            `RESTOCK: "${item}"\n` +
-            `Match found for: "${search_urls[item]["product_name"]}".\n` +
-            `Currently searching ${
-              Object.keys(user_id_dic[sender_id]["products"]).length
-            }/${item_limit} items` +
-            "\n\n" +
-            item_str +
-            `Checked On ${dateTime}\n` +
-            `Original link:\n${search_urls[item]["link"]}\n\n` +
-            `Non-cached link:\n${
-              search_urls[item]["link"] + "?=" + rand_string
-            }\n\n` +
-            `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
-        };
-        callSendAPI(sender_id, response);
-      }
-      let write_line = `${dateTime} | ${search_urls[item]["product_name"]} | ${write_item_str} | ${search_urls[item]["link"]}\n`;
-      try {
-        if (write_item_str != "") {
-          fs.appendFile("stock-log.txt", write_line, (error) => {
-            if (error) throw error;
-            console.log(`Wrote update on ${item} to file`);
-          });
-        }
-      } catch (error) {
-        console.error(`Could not write to file`);
-      }
-    }
-    // Update prev stock to current stock
-    search_urls[item]["prev_stock_count"] = in_stock_count;
-  }
 }
 
 // Parses HTML from URL and returns data structure containing relevent data
 async function getDataFromURL(item) {
-  var item_url_dict = search_urls[item];
-  var item_link = item_url_dict["link"];
+  var item_link = item["link"];
   try {
     let response = await axios.get(item_link);
     let redirect_count = response.request._redirectable._redirectCount;
-    var item_type = item_url_dict["type"];
+    var item_type = item["type"];
 
-    // console.log("Looking for: " + item);
+    // console.log("Looking for: " + item["product_name"]);
     // console.log(redirect_count);
     // console.log("Web scraping data from: " + item_link);
     let $ = cheerio.load(response.data);
@@ -739,11 +740,16 @@ async function handleMessage(sender_psid, received_message) {
     };
     searchesCollection
       .insertOne(userSearchItem)
-      .then((result) =>
+      .then((result) => {
         console.log(
           `Successfully inserted item: ${rec_msg} to user:${sender_psid}`
-        )
-      )
+        );
+        let key = `sender_ids.${sender_psid}`;
+        itemCollection.updateOne(
+          { short_name: rec_msg },
+          { $set: { [key]: 0 } }
+        );
+      })
       .catch((err) => console.error(`Failed to insert item: ${err}`));
   }
 
