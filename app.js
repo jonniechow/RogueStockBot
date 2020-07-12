@@ -524,6 +524,18 @@ function getTimeDiff(start_time) {
   return time_elapsed_str;
 }
 
+function getUserDataFromDB(sender_psid) {
+  const searchesCollection = db.collection("searches");
+  return searchesCollection
+    .find({ userID: sender_psid })
+    .toArray()
+    .then((items) => {
+      console.log(`Successfully found ${items.length} documents.`);
+      return items;
+    })
+    .catch((err) => console.error(`Failed to find documents: ${err}`));
+}
+
 // Handles messages from sender
 async function handleMessage(sender_psid, received_message) {
   let response;
@@ -587,12 +599,36 @@ async function handleMessage(sender_psid, received_message) {
     }
     // Status message
     else if (rec_msg === "status") {
-      let statusStriing = await searchesCollection
-        .find({ userID: sender_psid })
-        .toArray()
+      let userItems = await getUserDataFromDB(sender_psid);
+      let statusString =
+        `STATUS ${userItems.length}/${item_limit} items\:\n` +
+        `There are ${userItems.length} total users searching\n\n`;
+      userItems.forEach((item) => {
+        statusString +=
+          `${item["itemFullName"]} / ${item["itemName"]}\n` +
+          `People searching: 0 \n` +
+          `Time elapsed: ${getTimeDiff(item["startTime"])}\n\n`;
+      });
+      statusString +=
+        `Last reset: ${start_time}\n\n` +
+        `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`;
+
+      response = {
+        text: statusString,
+      };
+      callSendAPI(sender_psid, response);
+      return;
+    }
+    // Stop message
+    else if (rec_msg === "stop") {
+      let userItems = await getUserDataFromDB(sender_psid);
+      let itemString =
+        `STOP MSG:\n` + `Stopped checking ${userItems.length} item(s):\n\n`;
+      let deleteString = await searchesCollection
+        .deleteMany({ userID: sender_psid })
         .then((items) => {
-          var itemString = `STATUS ${items.length}/${item_limit} items\:\n`;
-          items.forEach((item) => {
+          console.log(`Deleted ${items.deletedCount} item(s).`);
+          userItems.forEach((item) => {
             itemString +=
               `${item["itemFullName"]} / ${item["itemName"]}\n` +
               `People searching: 0 \n` +
@@ -604,35 +640,11 @@ async function handleMessage(sender_psid, received_message) {
           return itemString;
         })
         .catch((err) => console.log(`${err}`));
+
       response = {
-        text: statusStriing,
+        text: deleteString,
       };
-      callSendAPI(sender_psid, response);
-      return;
-    }
-    // Stop message
-    else if (rec_msg === "stop") {
-      user_id_dic[sender_psid]["intervals"].forEach(clearInterval);
-      var search_item_str = "";
-      for (var key in user_id_dic[sender_psid]["products"]) {
-        delete search_urls[key]["sender_ids"][sender_psid];
-        search_item_str +=
-          search_urls[key]["product_name"] +
-          "\nTime elapsed: " +
-          getTimeDiff(user_id_dic[sender_psid]["products"][key]) +
-          "\n\n";
-      }
-      response = {
-        text:
-          `STOP MSG:\n` +
-          `Stopped checking ${
-            Object.keys(user_id_dic[sender_psid]["products"]).length
-          } item(s):\n\n` +
-          search_item_str,
-      };
-      user_id_dic[sender_psid]["intervals"] = [];
-      user_id_dic[sender_psid]["products"] = {};
-      delete user_id_dic[sender_psid];
+
       callSendAPI(sender_psid, response);
       return;
     }
