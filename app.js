@@ -21,7 +21,7 @@
 
 "use strict";
 require("dotenv").config();
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
@@ -52,20 +52,25 @@ let start_time;
 let delay = 30;
 // Limit of iteems
 let item_limit = 10;
+var db;
+
+client.connect((err) => {
+  if (err) throw err;
+  db = client.db("rogue");
+  // Sets server port and logs message on success
+  app.listen(process.env.PORT || 1337, () => {
+    console.log("webhook is listening");
+    try {
+      setInterval(handleAllURLs, delay * 1000);
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
+  });
+});
 
 app.set("view engine", "ejs");
 
 app.use(express.static(__dirname + "/views/"));
-
-// Sets server port and logs message on success
-app.listen(process.env.PORT || 1337, () => {
-  console.log("webhook is listening");
-  try {
-    setInterval(handleAllURLs, delay * 1000);
-  } catch (error) {
-    console.log(`Error: ${error}`);
-  }
-});
 
 // Home screen page
 app.get("/", (req, res) => {
@@ -85,15 +90,16 @@ app.get("/privacy-policy", (req, res) => {
 });
 
 app.get("/current-items", (req, res) => {
-  client.connect(err => {
-    const collection = client.db("rogue").collection("items");
-    collection.find().toArray().then(items => {
+  const collection = db.collection("items");
+  collection
+    .find()
+    .toArray()
+    .then((items) => {
       console.log(`Successfully found ${items.length} documents.`);
       res.render("current-items", { data: items });
       client.close();
     })
-    .catch(err => console.log(`Failed to find ${err}`));
-  });
+    .catch((err) => console.log(`Failed to find ${err}`));
   // res.render("current-items", { data: search_urls });
 });
 
@@ -519,7 +525,7 @@ function getTimeDiff(start_time) {
 }
 
 // Handles messages from sender
-function handleMessage(sender_psid, received_message) {
+async function handleMessage(sender_psid, received_message) {
   let response;
 
   // Checks if the message contains text
@@ -666,44 +672,66 @@ function handleMessage(sender_psid, received_message) {
       }
     }
 
-    // User message is invalid
-    if (!(rec_msg in search_urls)) {
-      response = {
-        text:
-          `INVALID\nYou entered: "${received_message.text}".\n` +
-          `Item doesn't exist\n\n` +
-          `Go to roguestockbot.com/current-items for all supported items`,
-      };
-      callSendAPI(sender_psid, response);
+    // Check if item is valid
+    const itemCollection = db.collection("items");
+    let errResponseValid = await itemCollection
+      .find({ short_name: rec_msg })
+      .toArray()
+      .then((items) => {
+        console.log(`Successfully found ${items.length} documents.`);
+        if (items.length == 0) {
+          response = {
+            text:
+              `INVALID\nYou entered: "${received_message.text}".\n` +
+              `Item doesn't exist\n\n` +
+              `Go to roguestockbot.com/current-items for all supported items`,
+          };
+          callSendAPI(sender_psid, response);
+          return;
+        }
+      })
+      .catch((err) => console.error(`Failed to find documents: ${err}`));
+
+    if (errResponseValid) {
+      callSendAPI(sender_psid, errResponseValid);
       return;
     }
 
-    // Check current amount of items
-    if (
-      Object.keys(user_id_dic[sender_psid]["products"]).length >= item_limit
-    ) {
-      response = {
-        text: `INVALID\nYou have reached max limit of "${item_limit}" items\n`,
-      };
-      callSendAPI(sender_psid, response);
+    // Check for duplicate searches
+    const searchesCollection = db.collection("searches");
+    let errResponseDup = await searchesCollection
+      .find({ userID: sender_psid, itemName: rec_msg })
+      .toArray()
+      .then((items) => {
+        console.log(`Successfully found ${items.length} documents.`);
+        if (items.length > 0) {
+          response = {
+            text: `INVALID\nAlready searching: "${search_urls[rec_msg]["product_name"]}".\n`,
+          };
+          return response;
+        }
+      })
+      .catch((err) => console.error(`Failed to find documents: ${err}`));
+
+    if (errResponseDup) {
+      callSendAPI(sender_psid, errResponseDup);
       return;
     }
 
-    // Check if item is already being searched for user
-    if (rec_msg in user_id_dic[sender_psid]["products"]) {
-      response = {
-        text: `INVALID\nAlready searching: "${search_urls[rec_msg]["product_name"]}".\n`,
-      };
-      callSendAPI(sender_psid, response);
-      return;
-    } else {
-      user_id_dic[sender_psid]["products"][rec_msg] = new Date();
-    }
-
-    // Check if sender_psid is in dic for url
-    if (!(sender_psid in search_urls[rec_msg]["sender_ids"])) {
-      search_urls[rec_msg]["sender_ids"][sender_psid] = 0;
-    }
+    // Insert current search into database
+    const userSearchItem = {
+      userID: sender_psid,
+      itemName: rec_msg,
+      itemFullName: rec_msg,
+      startTime: new Date(),
+      count: 0,
+    };
+    searchesCollection
+      .insertOne(userSearchItem)
+      .then((result) =>
+        console.log(`Successfully inserted item: ${rec_msg} to user:${sender_psid}`)
+      )
+      .catch((err) => console.error(`Failed to insert item: ${err}`));
   }
 
   // Send the response message
