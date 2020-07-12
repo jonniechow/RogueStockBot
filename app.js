@@ -654,22 +654,21 @@ async function handleMessage(sender_psid, received_message) {
       try {
         if (stopItemMessage.length > 1) {
           let itemToDelete = stopItemMessage.slice(1).join(" ");
-          // If item is currently being searched by user
-          if (itemToDelete in user_id_dic[sender_psid]["products"]) {
-            delete user_id_dic[sender_psid]["products"][itemToDelete];
-          } else {
-            throw "Item not being searched by user";
-          }
-          if (sender_psid in search_urls[itemToDelete]["sender_ids"]) {
-            delete search_urls[itemToDelete]["sender_ids"][sender_psid];
-          } else {
-            throw "Item not being searched by user";
-          }
 
-          console.log(user_id_dic);
+          let itemString = `STOP MSG:\n` + `Stopped checking 1 item:\n\n`;
+          let deleteString = await searchesCollection
+            .deleteOne({ userID: sender_psid, itemName: itemToDelete })
+            .then((items) => {
+              console.log(`Deleted ${rec_msg}`);
+              itemString += `${itemToDelete}\n`;
+              return itemString;
+            })
+            .catch((err) => console.log(`${err}`));
+
           response = {
-            text: `STOP MSG:\n` + `Stopped checking '${itemToDelete}'`,
+            text: deleteString,
           };
+
           callSendAPI(sender_psid, response);
           return;
         } else {
