@@ -97,7 +97,6 @@ app.get("/current-items", (req, res) => {
     .then((items) => {
       console.log(`Successfully found ${items.length} documents.`);
       res.render("current-items", { data: items });
-      client.close();
     })
     .catch((err) => console.log(`Failed to find ${err}`));
   // res.render("current-items", { data: search_urls });
@@ -111,11 +110,12 @@ app.get("/stock-updates", (req, res) => {
   const collection = db.collection("restock");
   collection
     .find()
+    .sort({ restockTime: -1})
+    .limit(100)
     .toArray()
     .then((items) => {
       console.log(`Successfully found ${items.length} documents.`);
       res.render("stock-updates", { data: items });
-      client.close();
     })
     .catch((err) => console.log(`Failed to find ${err}`));
 });
@@ -332,7 +332,8 @@ async function handleAllURLs() {
           { $set: { stockCount: in_stock_count } }
         );
       });
-    });
+    })
+    .catch((err) => console.error(`Failed to find documents: ${err}`));
 }
 
 // Parses HTML from URL and returns data structure containing relevent data
