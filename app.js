@@ -209,6 +209,9 @@ async function handleAllURLs() {
           "\nIn stock: " +
           avail +
           "\n \n";
+        
+        // Update item's last availablity to current time
+        search_urls[item]["last_avail"] = new Date()
       }
       // item_str +=
       //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
@@ -577,6 +580,9 @@ function handleMessage(sender_psid, received_message) {
           `${search_urls[key]["product_name"]} / ${key}\n` +
           `People searching: ${
             Object.keys(search_urls[key]["sender_ids"]).length
+          }\n` +
+          `Last in stock: ${
+            search_url[key] !== null ? getTimeDiff(search_urls[key]["last_avail"]) : "N/A"
           }\n` +
           `Time elapsed: ${getTimeDiff(
             user_id_dic[sender_psid]["products"][key]
