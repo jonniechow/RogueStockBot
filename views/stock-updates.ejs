@@ -84,17 +84,13 @@
                             </tr>
                         </thead>
                         <tbody id="data_from_log">
-                            <% data.item_info.forEach((entry, index)=>{%>
+                            <% data.forEach((entry, index)=>{%>
                             <tr>
-                                <td><%=entry.time%></td>
-                                <td><%=entry.name%></td>
+                                <td><%=entry.restockTime%></td>
+                                <td><%=entry.itemFullName%></td>
+                                <td><%=entry.restockString%></td>
                                 <td>
-                                    <% entry.items.forEach((item)=>{%>
-                                    <p><%=item%></p>
-                                    <%});%>
-                                </td>
-                                <td>
-                                    <a href="<%=entry.link%>" target="_blank">Link</a>
+                                    <a href="<%=entry.itemLink%>" target="_blank">Link</a>
                                 </td>
                             </tr>
                             <%});%>
