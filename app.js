@@ -533,6 +533,7 @@ async function handleMessage(sender_psid, received_message) {
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
     var rec_msg = received_message.text.toLowerCase();
+    const searchesCollection = db.collection("searches");
 
     // Checks if user is in dict, if not creates entry
     if (!(sender_psid in user_id_dic)) {
@@ -586,26 +587,25 @@ async function handleMessage(sender_psid, received_message) {
     }
     // Status message
     else if (rec_msg === "status") {
-      let search_str =
-        `STATUS ${
-          Object.keys(user_id_dic[sender_psid]["products"]).length
-        }/${item_limit} items\:\n` +
-        `There are ${
-          Object.keys(user_id_dic).length
-        } total users searching\n\n`;
-      for (let key in user_id_dic[sender_psid]["products"]) {
-        search_str +=
-          `${search_urls[key]["product_name"]} / ${key}\n` +
-          `People searching: ${
-            Object.keys(search_urls[key]["sender_ids"]).length
-          }\n` +
-          `Time elapsed: ${getTimeDiff(
-            user_id_dic[sender_psid]["products"][key]
-          )}\n\n`;
-      }
-      search_str += `Last reset: ${start_time}\n\nIf this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`;
-      let response = {
-        text: search_str,
+      let statusStriing = await searchesCollection
+        .find({ userID: sender_psid })
+        .toArray()
+        .then((items) => {
+          var itemString = `STATUS ${items.length}/${item_limit} items\:\n`;
+          items.forEach((item) => {
+            itemString +=
+              `${item["itemFullName"]} / ${item["itemName"]}\n` +
+              `People searching: 0 \n` +
+              `Time elapsed: ${getTimeDiff(item["startTime"])}\n\n`;
+          });
+          itemString +=
+            `Last reset: ${start_time}\n\n` +
+            `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`;
+          return itemString;
+        })
+        .catch((err) => console.log(`${err}`));
+      response = {
+        text: statusStriing,
       };
       callSendAPI(sender_psid, response);
       return;
@@ -698,7 +698,7 @@ async function handleMessage(sender_psid, received_message) {
     }
 
     // Check for duplicate searches
-    const searchesCollection = db.collection("searches");
+
     let errResponseDup = await searchesCollection
       .find({ userID: sender_psid, itemName: rec_msg })
       .toArray()
@@ -729,7 +729,9 @@ async function handleMessage(sender_psid, received_message) {
     searchesCollection
       .insertOne(userSearchItem)
       .then((result) =>
-        console.log(`Successfully inserted item: ${rec_msg} to user:${sender_psid}`)
+        console.log(
+          `Successfully inserted item: ${rec_msg} to user:${sender_psid}`
+        )
       )
       .catch((err) => console.error(`Failed to insert item: ${err}`));
   }
