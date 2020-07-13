@@ -266,7 +266,6 @@ async function handleAllURLs() {
             }\n\n${otherLinkURLS}\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
-        console.log(response);
         callSendAPI(sender_id, response);
       }
     }
@@ -582,7 +581,7 @@ function handleMessage(sender_psid, received_message) {
             Object.keys(search_urls[key]["sender_ids"]).length
           }\n` +
           `Last in stock: ${
-            search_url[key] !== null ? getTimeDiff(search_urls[key]["last_avail"]) : "N/A"
+            search_urls[key]["last_avail"] !== null ? getTimeDiff(search_urls[key]["last_avail"]) : "N/A"
           }\n` +
           `Time elapsed: ${getTimeDiff(
             user_id_dic[sender_psid]["products"][key]
