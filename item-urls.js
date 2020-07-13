@@ -793,6 +793,13 @@ var search_urls = { // Plate URLs
         "otherLinks": ["https://www.roguecanada.ca/rogue-dumbbells"],
         "last_avail": null
     },
+    "dumbbell sets": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Dumbbell Sets',
+        "link": "https://www.roguefitness.com/rogue-rubber-hex-dumbbell-sets",
+        "last_avail": null
+    },
     "medicine balls": {
         "type": "multi",
         "sender_ids": {},

@@ -23,6 +23,10 @@ Has this project helped you? Consider donating!
 
 ### Updates
 
+v 1.9
+* Added new items
+* Included last time in stock feature in 'status'
+
 v 1.8
 * Added new items
 * Merged CA links to US links
