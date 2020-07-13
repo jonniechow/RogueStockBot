@@ -520,7 +520,7 @@ var search_urls = { // Plate URLs
         "last_avail": null
     },
     "squat echo": {
-        "type": "single",
+        "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue Echo Squat Stand 2.0',
         "link": "https://www.roguefitness.com/rogue-echo-squat-stand-2-0",
