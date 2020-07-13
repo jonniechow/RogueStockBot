@@ -110,7 +110,7 @@ app.get("/stock-updates", (req, res) => {
   const collection = db.collection("restock");
   collection
     .find()
-    .sort({ restockTime: -1})
+    .sort({ restockTime: -1 })
     .limit(100)
     .toArray()
     .then((items) => {
@@ -254,18 +254,19 @@ async function handleAllURLs() {
         var dateTime = time + " EST " + date;
 
         // Sends first check message
-        Object.keys(item["sender_ids"]).forEach((sender) => {
+        Object.keys(item["sender_ids"]).forEach(async (sender) => {
           if (item["sender_ids"][sender] == 0) {
             let key = `sender_ids.${sender}`;
             itemCollection.updateOne(
               { short_name: item["short_name"] },
               { $set: { [key]: 1 } }
             );
+            let userItems = await getUserDataFromDB(sender);
             let response = {
               text:
-                `FIRST CHECK: "${item["short_name"]}"\n` +
-                `Match found for: "${item["full_name"]}".\n` +
-                `Currently searching ${0}/${item_limit} items` +
+                `FIRST CHECK: "${itemShortName}"\n` +
+                `Match found for: "${itemFullName}".\n` +
+                `Currently searching ${userItems.length}/${item_limit} items` +
                 "\n\n" +
                 item_str +
                 `First initial check on ${dateTime}\n` +
@@ -298,12 +299,13 @@ async function handleAllURLs() {
         else if (in_stock_count != prev_stock_count) {
           console.log(`Response msg: Update in stock ${itemShortName}`);
           // Send response to every user
-          Object.keys(item["sender_ids"]).forEach((sender_id) => {
+          Object.keys(item["sender_ids"]).forEach(async (sender_id) => {
+            let userItems = await getUserDataFromDB(sender_id);
             let response = {
               text:
                 `RESTOCK: "${itemShortName}"\n` +
                 `Match found for: "${itemFullName}".\n` +
-                `Currently searching ${0}/${item_limit} items` +
+                `Currently searching ${userItems.length}/${item_limit} items` +
                 "\n\n" +
                 item_str +
                 `Checked On ${dateTime}\n` +
@@ -533,6 +535,8 @@ async function handleMessage(sender_psid, received_message) {
     // will be added to the body of our request to the Send API
     var rec_msg = received_message.text.toLowerCase();
     const searchesCollection = db.collection("searches");
+    const itemCollection = db.collection("items");
+    let itemFullName = rec_msg;
 
     // Checks if user is in dict, if not creates entry
     if (!(sender_psid in user_id_dic)) {
@@ -587,19 +591,29 @@ async function handleMessage(sender_psid, received_message) {
     // Status message
     else if (rec_msg === "status") {
       let userItems = await getUserDataFromDB(sender_psid);
+      let numPeopleSearching = await searchesCollection.distinct("userID");
+
       let statusString =
         `STATUS ${userItems.length}/${item_limit} items\:\n` +
-        `There are ${userItems.length} total users searching\n\n`;
-      userItems.forEach((item) => {
+        `There are ${numPeopleSearching.length} total users searching\n\n`;
+      // Loop through each item user is searching
+      for (var item in userItems) {
+        let currItem = userItems[item];
+        let numPeopleSearchItem = await itemCollection
+          .find({ short_name: currItem["itemName"] })
+          .toArray()
+          .then((item) => {
+            return Object.keys(item[0]["sender_ids"]).length;
+          });
         statusString +=
-          `${item["itemFullName"]} / ${item["itemName"]}\n` +
-          `People searching: 0 \n` +
-          `Time elapsed: ${getTimeDiff(item["startTime"])}\n\n`;
-      });
+          `${currItem["itemFullName"]} / ${currItem["itemName"]}\n` +
+          `People searching: ${numPeopleSearchItem} \n` +
+          `Time elapsed: ${getTimeDiff(currItem["startTime"])}\n\n`;
+      }
+
       statusString +=
         `Last reset: ${start_time}\n\n` +
         `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`;
-
       response = {
         text: statusString,
       };
@@ -671,7 +685,6 @@ async function handleMessage(sender_psid, received_message) {
     }
 
     // Check if item is valid
-    const itemCollection = db.collection("items");
     let errResponseValid = await itemCollection
       .find({ short_name: rec_msg })
       .toArray()
@@ -686,6 +699,8 @@ async function handleMessage(sender_psid, received_message) {
           };
           callSendAPI(sender_psid, response);
           return;
+        } else {
+          itemFullName = items[0]["product_name"];
         }
       })
       .catch((err) => console.error(`Failed to find documents: ${err}`));
@@ -696,7 +711,6 @@ async function handleMessage(sender_psid, received_message) {
     }
 
     // Check for duplicate searches
-
     let errResponseDup = await searchesCollection
       .find({ userID: sender_psid, itemName: rec_msg })
       .toArray()
@@ -720,7 +734,7 @@ async function handleMessage(sender_psid, received_message) {
     const userSearchItem = {
       userID: sender_psid,
       itemName: rec_msg,
-      itemFullName: rec_msg,
+      itemFullName: itemFullName,
       startTime: new Date(),
       count: 0,
     };
