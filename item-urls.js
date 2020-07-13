@@ -130,6 +130,13 @@ var search_urls = { // Plate URLs
         "otherLinks": ["https://www.roguecanada.ca/rogue-lb-change-plates"],
         "last_avail": null
     },
+    "plate change kg": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue KG Change Plates (IWF)',
+        "link": "https://www.roguefitness.com/rogue-kg-change-plates",
+        "last_avail": null
+    },
     "plate mil spec": {
         "type": "multi",
         "sender_ids": {},
@@ -282,6 +289,13 @@ var search_urls = { // Plate URLs
         "link": "https://www.roguefitness.com/rogue-boneyard-ohio-deadlift-bar",
         "last_avail": null
     },
+    "bone curl": {
+        "type": "bone",
+        "sender_ids": {},
+        'product_name': 'Boneyard Curl Bars',
+        "link": "https://www.roguefitness.com/rogue-boneyard-curl-bar",
+        "last_avail": null
+    },
     "bone 25": {
         "type": "bone",
         "sender_ids": {},
@@ -358,6 +372,13 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Rogue 28MM Training Bar - Cerakote',
         "link": "https://www.roguefitness.com/rogue-28mm-training-bar-cerakote",
+        "last_avail": null
+    },
+    "barbell b&r": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'ogue B&R Bar 2.0',
+        "link": "https://www.roguefitness.com/rogue-29mm-burgener-rippetoe-bar-2-0",
         "last_avail": null
     },
     // Curl Bar
@@ -512,11 +533,25 @@ var search_urls = { // Plate URLs
         "link": "https://www.roguefitness.com/sml-3-rogue-108-monster-lite-squat-stand",
         "last_avail": null
     },
+    "squat s-1": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue S-1 Squat Stand 2.0',
+        "link": "https://www.roguefitness.com/rogue-s-1-squat-stand-2-0",
+        "last_avail": null
+    },
     "squat s-2": {
         "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue S-2 Squat Stand 2.0',
         "link": "https://www.roguefitness.com/rogue-s2-squat-stand-2-0",
+        "last_avail": null
+    },
+    "squat s-4": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue S-4 Squat Stand 2.0',
+        "link": "https://www.roguefitness.com/rogue-s-4-squat-stand-2",
         "last_avail": null
     },
     "squat echo": {
@@ -630,6 +665,13 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'Infinity Strap Safety System 2.0',
         "link": "https://www.roguefitness.com/infinity-strap-safety-system-2-0",
+        "last_avail": null
+    },
+    "infinity j-cups": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Infinity J-Cup Set',
+        "link": "https://www.roguefitness.com/extra-infinity-j-cup-set",
         "last_avail": null
     },
     "ml j-cups": {
@@ -961,6 +1003,48 @@ var search_urls = { // Plate URLs
         "link": "https://www.roguefitness.com/xm-43m-monster-multi-grip-crossmember",
         "last_avail": null
     },
+    "ml crossmember": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Monster Lite Crossmembers',
+        "link": "https://www.roguefitness.com/monster-lite-crossmembers",
+        "last_avail": null
+    },
+    "echo gym timer": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Echo Gym Timer',
+        "link": "https://www.roguefitness.com/rogue-echo-gym-timer",
+        "last_avail": null
+    },
+    "home timer": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Home Timer',
+        "link": "https://www.roguefitness.com/rogue-home-timer",
+        "last_avail": null
+    },
+    "ml shackle": {
+        "type": "single",
+        "sender_ids": {},
+        'product_name': 'Rogue Monster Lite Shackle',
+        "link": "https://www.roguefitness.com/rogue-monster-lite-shackle",
+        "last_avail": null
+    },
+    "mg-2 multi grip": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue MG-2 Multi Grip Bars',
+        "link": "https://www.roguefitness.com/rogue-mg-2-multi-grip-bars",
+        "last_avail": null
+    },
+    "mg-3 multi grip": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue MG-3 Multi Grip Bar',
+        "link": "https://www.roguefitness.com/rogue-mg-3-multi-grip-bar",
+        "last_avail": null
+    },
     "uk echo color": {
         "type": "multi",
         "sender_ids": {},
@@ -1015,6 +1099,20 @@ var search_urls = { // Plate URLs
         "sender_ids": {},
         'product_name': 'AU Rogue 20KG Ohio Power Bar - Stainless Steel',
         "link": "https://www.rogueaustralia.com.au/rogue-20-kg-ohio-power-bar-stainless-steel-au",
+        "last_avail": null
+    },
+    "au sml-1": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'SML-1 Rogue 70" Monster Lite Squat Stand',
+        "link": "https://www.rogueaustralia.com.au/sml-1-rogue-70-monster-lite-squat-stand-au",
+        "last_avail": null
+    },
+    "au ml safety spotter arms": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'SAML-24 Monster Lite Safety Spotter Arms (Pair)',
+        "link": "https://www.rogueaustralia.com.au/saml-24-monster-lite-spotter-arms-pair-au",
         "last_avail": null
     },
     "barbell squat": {

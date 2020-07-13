@@ -202,19 +202,19 @@ async function handleAllURLs() {
         avail = decodeURI("\u2705");
         in_stock_count += 1;
         write_item_str += item["name"] + " " + avail + ", ";
-        item_str +=
-          item["name"] +
-          "\n" +
-          item["price"] +
-          "\nIn stock: " +
-          avail +
-          "\n \n";
+        // item_str +=
+        //   item["name"] +
+        //   "\n" +
+        //   item["price"] +
+        //   "\nIn stock: " +
+        //   avail +
+        //   "\n \n";
         
         // Update item's last availablity to current time
         search_urls[item]["last_avail"] = new Date()
       }
-      // item_str +=
-      //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
+      item_str +=
+        item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
     });
 
     // No items found, everything sold out
