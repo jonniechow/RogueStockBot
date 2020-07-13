@@ -52,8 +52,8 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/views/"));
 
 // Sets server port and logs message on success
-app.listen(process.env.PORT || 1337, () => {
-  console.log("webhook is listening");
+app.listen(process.env.PORT || 3000, () => {
+  console.log('webhook is listening');
   try {
     setInterval(handleAllURLs, delay * 1000);
   } catch (error) {
@@ -78,8 +78,9 @@ app.get("/privacy-policy", (req, res) => {
   res.render("privacy-policy");
 });
 
-app.get("/current-items", (req, res) => {
-  res.render("current-items", { data: search_urls });
+app.get('/current-items', (req, res) => {
+  const data = search_urls;
+  res.render('current-items', { data });
 });
 
 app.get("/items-in-stock", (req, res) => {
@@ -167,6 +168,7 @@ app.get("/webhook", (req, res) => {
 });
 
 async function handleAllURLs() {
+  console.log("scraping");
   for (let item in search_urls) {
     // Skips items no one is looking for
     if (Object.keys(search_urls[item]["sender_ids"]).length == 0) {
