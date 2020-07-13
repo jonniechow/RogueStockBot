@@ -180,18 +180,18 @@ async function handleAllURLs() {
     let rand_string = Math.random().toString(36).substring(7);
 
     // Loop through each item on page
-    data.forEach((item) => {
+    data.forEach((singleItem) => {
       var avail = decodeURI("\u2705");
 
       // Check if data returned is empty
-      if (Object.keys(item).length == 0) {
+      if (Object.keys(singleItem).length == 0) {
         return;
       }
 
       // Out of stock
       if (
-        item["in_stock"].indexOf("Notify Me") >= 0 ||
-        item["in_stock"].indexOf("Out of Stock") >= 0
+        singleItem["in_stock"].indexOf("Notify Me") >= 0 ||
+        singleItem["in_stock"].indexOf("Out of Stock") >= 0
       ) {
         // Cross emoji
         avail = decodeURI("\u274C");
@@ -201,17 +201,16 @@ async function handleAllURLs() {
         // Check emoji
         avail = decodeURI("\u2705");
         in_stock_count += 1;
-        write_item_str += item["name"] + " " + avail + ", ";
+        write_item_str += singleItem["name"] + " " + avail + ", ";
         item_str +=
-          item["name"] +
+          singleItem["name"] +
           "\n" +
-          item["price"] +
+          singleItem["price"] +
           "\nIn stock: " +
           avail +
           "\n \n";
-        
         // Update item's last availablity to current time
-        search_urls[item]["last_avail"] = new Date()
+        search_urls[item]["last_avail"] = new Date();
       }
       // item_str +=
       //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
@@ -239,14 +238,14 @@ async function handleAllURLs() {
     for (let sender_id in search_urls[item]["sender_ids"]) {
       if (search_urls[item]["sender_ids"][sender_id] == 0) {
         search_urls[item]["sender_ids"][sender_id] = 1;
-        var otherLinkURLS = '';
-        if(search_urls[item]['otherLinks']) {
-          search_urls[item]['otherLinks'].forEach((link, index) => {
+        var otherLinkURLS = "";
+        if (search_urls[item]["otherLinks"]) {
+          search_urls[item]["otherLinks"].forEach((link, index) => {
             if (index == 0) {
               otherLinkURLS += "CA: ";
             }
             otherLinkURLS += `${link}\n`;
-          })
+          });
         }
         // First response message
         let response = {
@@ -266,7 +265,6 @@ async function handleAllURLs() {
             }\n\n${otherLinkURLS}\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
-        console.log(response);
         callSendAPI(sender_id, response);
       }
     }
@@ -582,7 +580,9 @@ function handleMessage(sender_psid, received_message) {
             Object.keys(search_urls[key]["sender_ids"]).length
           }\n` +
           `Last in stock: ${
-            search_url[key] !== null ? getTimeDiff(search_urls[key]["last_avail"]) : "N/A"
+            search_urls[key]["last_avail"] !== null
+              ? getTimeDiff(search_urls[key]["last_avail"])
+              : "N/A"
           }\n` +
           `Time elapsed: ${getTimeDiff(
             user_id_dic[sender_psid]["products"][key]
