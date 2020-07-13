@@ -575,6 +575,7 @@ async function handleMessage(sender_psid, received_message) {
       }
       response = {
         text:
+          `CURRENTLY TESTING UPDATE\n` +
           `HELP MSG:\n` +
           `How to guide for the bot:\nroguestockbot.com/bot-guide\n\n` +
           `All current items supported:\nroguestockbot.com/current-items\n\n` +
@@ -594,8 +595,13 @@ async function handleMessage(sender_psid, received_message) {
       let numPeopleSearching = await searchesCollection.distinct("userID");
 
       let statusString =
+        `CURRENTLY TESTING UPDATE\n` +
         `STATUS ${userItems.length}/${item_limit} items\:\n` +
         `There are ${numPeopleSearching.length} total users searching\n\n`;
+
+      if (userItems.length == 0) {
+        statusString += 'Nothing being searched right now.\n\n';
+      }
       // Loop through each item user is searching
       for (var item in userItems) {
         let currItem = userItems[item];
