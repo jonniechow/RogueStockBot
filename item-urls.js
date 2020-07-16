@@ -1265,6 +1265,15 @@ var search_urls = { // Plate URLs
         "status": "new",
         "category": "acc"
     },
+    "loading pin": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'Rogue Loading Pin',
+        "link": "https://www.roguefitness.com/rogue-loading-pin",
+        "last_avail": null,
+        "status": "new",
+        "category": "acc"
+    },
     "uk echo color": {
         "type": "multi",
         "sender_ids": {},
