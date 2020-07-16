@@ -74,7 +74,33 @@
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
                 <br>
-                <p>Coming soon.</p>
+                <section id="new" style="display: block; position: relative; visibility:hidden; top: -290px"></section>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Items in stock</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].prev_stock_count > 0) { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=data[entry].prev_stock_count%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
                 <!-- horizontal -->
                 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8811523407807032"
                     data-ad-slot="6062146865" data-ad-format="auto" data-full-width-responsive="true"></ins>

@@ -195,8 +195,7 @@ async function handleAllURLs() {
       // Out of stock
       if (
         singleItem["in_stock"].indexOf("Notify Me") >= 0 ||
-        singleItem["in_stock"].indexOf("Out of Stock") >= 0 ||
-        singleItem["in_stock"] == ''
+        singleItem["in_stock"].indexOf("Out of Stock") >= 0
       ) {
         // Cross emoji
         avail = decodeURI("\u274C");
@@ -207,23 +206,23 @@ async function handleAllURLs() {
         avail = decodeURI("\u2705");
         in_stock_count += 1;
         write_item_str += singleItem["name"] + " " + avail + ", ";
-        // item_str +=
-        //   singleItem["name"] +
-        //   "\n" +
-        //   singleItem["price"] +
-        //   "\nIn stock: " +
-        //   avail +
-        //   "\n \n";
+        item_str +=
+          singleItem["name"] +
+          "\n" +
+          singleItem["price"] +
+          "\nIn stock: " +
+          avail +
+          "\n \n";
         // Update item's last availablity to current time
         search_urls[item]["last_avail"] = new Date();
       }
-      item_str +=
-        singleItem["name"] +
-        "\n" +
-        singleItem["price"] +
-        "\nIn stock: " +
-        avail +
-        "\n \n";
+      // item_str +=
+      //   singleItem["name"] +
+      //   "\n" +
+      //   singleItem["price"] +
+      //   "\nIn stock: " +
+      //   avail +
+      //   "\n \n";
     });
 
     // No items found, everything sold out
