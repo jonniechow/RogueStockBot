@@ -37,7 +37,6 @@ const request = require("request"),
   useless_items = require("./useless-items");
 // creates express http server
 
-
 var { getDataFromJS, getRequestDataFromJS } = require("./helper");
 
 // Dictionary of user_id to items they are searching
@@ -64,7 +63,7 @@ app.listen(process.env.PORT || 1337, () => {
 
 // Home screen page
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", { users: user_id_dic, startTime: start_time });
 });
 
 app.get("/bot-guide", (req, res) => {
@@ -81,9 +80,11 @@ app.get("/privacy-policy", (req, res) => {
 
 app.get("/current-items", (req, res) => {
   var sortedSearchUrls = {};
-  Object.keys(search_urls).sort().forEach((key) => {
-    sortedSearchUrls[key] = search_urls[key]
-  })
+  Object.keys(search_urls)
+    .sort()
+    .forEach((key) => {
+      sortedSearchUrls[key] = search_urls[key];
+    });
   res.render("current-items", { data: sortedSearchUrls, users: user_id_dic });
 });
 
@@ -312,9 +313,7 @@ async function handleAllURLs() {
             "\n\n" +
             item_str +
             `Checked On ${dateTime}\n` +
-            `Link:\n${
-              search_urls[item]["link"] + "?=" + rand_string
-            }\n\n` +
+            `Link:\n${search_urls[item]["link"] + "?=" + rand_string}\n\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
         callSendAPI(sender_id, response);

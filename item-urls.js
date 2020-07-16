@@ -1185,7 +1185,7 @@ var search_urls = { // Plate URLs
         "category": "barbell"
     },
     "barbell toomey": {
-        "type": "single",
+        "type": "multi",
         "sender_ids": {},
         'product_name': 'The Bella Bar - Cerakote - Tia-Clair Toomey Edition',
         "link": "https://www.roguefitness.com/rogue-athlete-bella-bar-cerakote-toomey",
