@@ -1332,7 +1332,7 @@ var search_urls = { // Plate URLs
     "au sml-1": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'SML-1 Rogue 70" Monster Lite Squat Stand',
+        'product_name': 'AU SML-1 Rogue 70" Monster Lite Squat Stand',
         "link": "https://www.rogueaustralia.com.au/sml-1-rogue-70-monster-lite-squat-stand-au",
         "last_avail": null,
         "category": "au"
@@ -1340,7 +1340,7 @@ var search_urls = { // Plate URLs
     "au ml safety spotter arms": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'SAML-24 Monster Lite Safety Spotter Arms (Pair)',
+        'product_name': 'AU SAML-24 Monster Lite Safety Spotter Arms (Pair)',
         "link": "https://www.rogueaustralia.com.au/saml-24-monster-lite-spotter-arms-pair-au",
         "last_avail": null,
         "category": "au"
@@ -1348,7 +1348,7 @@ var search_urls = { // Plate URLs
     "au plate cal": {
         "type": "multi",
         "sender_ids": {},
-        'product_name': 'Rogue Calibrated KG Steel Plates',
+        'product_name': 'AU Rogue Calibrated KG Steel Plates',
         "link": "https://www.rogueaustralia.com.au/rogue-calibrated-kg-steel-plates-au",
         "last_avail": null,
         "category": "au"
@@ -1356,7 +1356,7 @@ var search_urls = { // Plate URLs
     "ca saml": {
         "type": "single",
         "sender_ids": {},
-        'product_name': 'SAML-24 Monster Lite Safety Spotter Arms (Pair)',
+        'product_name': 'CA SAML-24 Monster Lite Safety Spotter Arms (Pair)',
         "link": "https://www.roguecanada.ca/saml-24-monster-lite-spotter-arms-pair",
         "last_avail": null,
         "status": "new",
