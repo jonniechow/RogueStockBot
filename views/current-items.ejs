@@ -77,28 +77,32 @@
                 </script>
                 <br>
                 <p>Current commands being supported by the bot.</p>
-                <p>People searching: <% Object.keys(users).length %></p>
-                <ul class="actions small">
-                    <li><a href="#new" class="button alt small">New Items</a></li>
-                    <li><a href="#plates" class="button alt small">Plates</a></li>
-                    <li><a href="#barbells" class="button alt small">Barbells</a></li>
-                    <li><a href="#boneyard" class="button alt small">Boneyard</a></li>
-                    <li><a href="#benches" class="button alt small">Benches</a></li>
-                    <li><a href="#squatstands" class="button alt small">Squat Stands</a></li>
-                    <li><a href="#racks" class="button alt small">Racks</a></li>
-                    <li><a href="#cardio" class="button alt small">Cardio</a></li>
-                </ul>
-                <ul class="actions small">
-                    <li><a href="#m" class="button alt small">Monster Accessories</a></li>
-                    <li><a href="#ml" class="button alt small">Monster Lite Accessories</a></li>
-                    <li><a href="#spec_bars" class="button alt small">Specialty Bars</a></li>
-                    <li><a href="#acc" class="button alt small">Accessories</a></li>
-                    <li><a href="#other" class="button alt small">Other</a></li>
-                    <li><a href="#uk" class="button alt small">UK Items</a></li>
-                    <li><a href="#au" class="button alt small">AU Items</a></li>
-                </ul>
+                <div
+                    style="position: sticky; top: 50px; background: white; width: 100%; padding-top: 50px; padding-bottom: 1px;">
+                    <ul class="actions small">
+                        <li><a href="#new" class="button alt small">New Items</a></li>
+                        <li><a href="#plates" class="button alt small">Plates</a></li>
+                        <li><a href="#barbells" class="button alt small">Barbells</a></li>
+                        <li><a href="#boneyard" class="button alt small">Boneyard</a></li>
+                        <li><a href="#benches" class="button alt small">Benches</a></li>
+                        <li><a href="#squatstands" class="button alt small">Squat Stands</a></li>
+                        <li><a href="#racks" class="button alt small">Racks</a></li>
+                        <li><a href="#cardio" class="button alt small">Cardio</a></li>
+                    </ul>
+                    <ul class="actions small">
+                        <li><a href="#m" class="button alt small">Monster Accessories</a></li>
+                        <li><a href="#ml" class="button alt small">Monster Lite Accessories</a></li>
+                        <li><a href="#spec_bars" class="button alt small">Specialty Bars</a></li>
+                        <li><a href="#acc" class="button alt small">Accessories</a></li>
+                        <li><a href="#other" class="button alt small">Other</a></li>
+                        <li><a href="#uk" class="button alt small">UK Items</a></li>
+                        <li><a href="#au" class="button alt small">AU Items</a></li>
+                    </ul>
+                </div>
 
-                <section id="new"></section>
+                <p>People searching: <% Object.keys(users).length %></p>
+
+                <section id="new" style="display: block; position: relative; visibility:hidden; top: -250px"></section>
                 <h2>New Items</h2>
                 <div class="table-wrapper">
                     <table class="alt">
@@ -127,8 +131,9 @@
                     </table>
                 </div>
 
-                <section id="plates"></section>
                 <hr>
+                <section id="plates" style="display: block; position: relative; visibility:hidden; top: -250px">
+                </section>
                 <h2>Plates</h2>
                 <div class="table-wrapper">
                     <table class="alt">
@@ -157,7 +162,8 @@
                     </table>
                 </div>
 
-                <section id="barbells"></section>
+                <section id="barbells" style="display: block; position: relative; visibility:hidden; top: -165px">
+                </section>
                 <hr>
                 <h2>Barbells</h2>
                 <div class="table-wrapper">
@@ -187,7 +193,8 @@
                     </table>
                 </div>
 
-                <section id="boneyard"></section>
+                <section id="boneyard" style="display: block; position: relative; visibility:hidden; top: -165px">
+                </section>
                 <hr>
                 <h2>Boneyard</h2>
                 <div class="table-wrapper">
@@ -217,7 +224,8 @@
                     </table>
                 </div>
 
-                <section id="benches"></section>
+                <section id="benches" style="display: block; position: relative; visibility:hidden; top: -165px">
+                </section>
                 <hr>
                 <h2>Benches</h2>
                 <div class="table-wrapper">
@@ -247,7 +255,8 @@
                     </table>
                 </div>
 
-                <section id="squatstands"></section>
+                <section id="squatstands" style="display: block; position: relative; visibility:hidden; top: -165px">
+                </section>
                 <hr>
                 <h2>Squat Stands</h2>
                 <div class="table-wrapper">
@@ -277,7 +286,8 @@
                     </table>
                 </div>
 
-                <section id="racks"></section>
+                <section id="racks" style="display: block; position: relative; visibility:hidden; top: -165px">
+                </section>
                 <hr>
                 <h2>Racks</h2>
                 <div class="table-wrapper">
@@ -307,7 +317,8 @@
                     </table>
                 </div>
 
-                <section id="cardio"></section>
+                <section id="cardio" style="display: block; position: relative; visibility:hidden; top: -165px">
+                </section>
                 <hr>
                 <h2>Cardio</h2>
                 <div class="table-wrapper">
@@ -337,7 +348,7 @@
                     </table>
                 </div>
 
-                <section id="m"></section>
+                <section id="m" style="display: block; position: relative; visibility:hidden; top: -165px"></section>
                 <hr>
                 <h2>Monster Accessories</h2>
                 <div class="table-wrapper">
@@ -367,7 +378,7 @@
                     </table>
                 </div>
 
-                <section id="ml"></section>
+                <section id="ml" style="display: block; position: relative; visibility:hidden; top: -165px"></section>
                 <hr>
                 <h2>Monster Lite Accessories</h2>
                 <div class="table-wrapper">
@@ -397,7 +408,8 @@
                     </table>
                 </div>
 
-                <section id="spec_bars"></section>
+                <section id="spec_bars" style="display: block; position: relative; visibility:hidden; top: -165px">
+                </section>
                 <hr>
                 <h2>Specialty Bars</h2>
                 <div class="table-wrapper">
@@ -427,7 +439,7 @@
                     </table>
                 </div>
 
-                <section id="acc"></section>
+                <section id="acc" style="display: block; position: relative; visibility:hidden; top: -165px"></section>
                 <hr>
                 <h2>Accessories</h2>
                 <div class="table-wrapper">
@@ -457,7 +469,8 @@
                     </table>
                 </div>
 
-                <section id="other"></section>
+                <section id="other" style="display: block; position: relative; visibility:hidden; top: -165px">
+                </section>
                 <hr>
                 <h2>Other</h2>
                 <div class="table-wrapper">
@@ -487,7 +500,7 @@
                     </table>
                 </div>
 
-                <section id="uk"></section>
+                <section id="uk" style="display: block; position: relative; visibility:hidden; top: -165px"></section>
                 <hr>
                 <h2>UK Items</h2>
                 <div class="table-wrapper">
@@ -517,7 +530,7 @@
                     </table>
                 </div>
 
-                <section id="au"></section>
+                <section id="au" style="display: block; position: relative; visibility:hidden; top: -165px"></section>
                 <hr>
                 <h2>AU Items</h2>
                 <div class="table-wrapper">
@@ -547,31 +560,6 @@
                     </table>
                 </div>
 
-                <h2>All Items</h2>
-                <div class="table-wrapper">
-                    <table class="alt">
-                        <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Command</th>
-                                <th>People Searching</th>
-                                <th>Link</th>
-                            </tr>
-                        </thead>
-                        <tbody id="data_from_log">
-                            <% Object.keys(data).forEach((entry, index)=>{%>
-                            <tr>
-                                <td><%=data[entry].product_name%></td>
-                                <td><%=entry%></td>
-                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
-                                <td>
-                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
-                                </td>
-                            </tr>
-                            <%});%>
-                        </tbody>
-                    </table>
-                </div>
                 <!-- horizontal -->
                 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8811523407807032"
                     data-ad-slot="6062146865" data-ad-format="auto" data-full-width-responsive="true"></ins>
