@@ -88,6 +88,7 @@
                     <ul class="actions small">
                         <li><a href="#m" class="button alt small">Monster Accessories</a></li>
                         <li><a href="#ml" class="button alt small">Monster Lite Accessories</a></li>
+                        <li><a href="#inf" class="button alt small">Infinity Accessories</a></li>
                         <li><a href="#spec_bars" class="button alt small">Specialty Bars</a></li>
                         <li><a href="#acc" class="button alt small">Accessories</a></li>
                         <li><a href="#other" class="button alt small">Other</a></li>
@@ -426,6 +427,36 @@
                         <tbody id="data_from_log">
                             <% Object.keys(data).forEach((entry, index)=>{%>
                             <% if (data[entry].category == "ml") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="inf" style="display: block; position: relative; visibility:hidden; top: -200px"></section>
+                <hr>
+                <h2>Infinity Accessories</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "inf") { %>
                             <tr>
                                 <td><%=data[entry].product_name%></td>
                                 <td><%=entry%></td>

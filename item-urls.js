@@ -721,7 +721,7 @@ var search_urls = { // Plate URLs
         "category": "m"
     },
     "infinity spotter": {
-        "type": "single",
+        "type": "multi",
         "sender_ids": {},
         'product_name': 'Rogue Infinity Safety Spotter Arms',
         "link": "https://www.roguefitness.com/set-of-safety-spotter-arms",
