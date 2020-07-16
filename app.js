@@ -21,7 +21,7 @@
 
 "use strict";
 require("dotenv").config();
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
@@ -37,21 +37,22 @@ const request = require("request"),
   useless_items = require("./useless-items");
 // creates express http server
 
+
 var { getDataFromJS, getRequestDataFromJS } = require("./helper");
 
 // Dictionary of user_id to items they are searching
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 30;
+let delay = 10;
 // Limit of iteems
 let item_limit = 10;
+var db;
 
 app.set("view engine", "ejs");
 
 app.use(express.static(__dirname + "/views/"));
 
-// Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => {
   console.log("webhook is listening");
   try {
@@ -187,11 +188,11 @@ async function handleAllURLs() {
       if (Object.keys(singleItem).length == 0) {
         return;
       }
-
       // Out of stock
       if (
         singleItem["in_stock"].indexOf("Notify Me") >= 0 ||
-        singleItem["in_stock"].indexOf("Out of Stock") >= 0
+        singleItem["in_stock"].indexOf("Out of Stock") >= 0 ||
+        singleItem["in_stock"] == ''
       ) {
         // Cross emoji
         avail = decodeURI("\u274C");
@@ -202,18 +203,23 @@ async function handleAllURLs() {
         avail = decodeURI("\u2705");
         in_stock_count += 1;
         write_item_str += singleItem["name"] + " " + avail + ", ";
-        item_str +=
-          singleItem["name"] +
-          "\n" +
-          singleItem["price"] +
-          "\nIn stock: " +
-          avail +
-          "\n \n";
+        // item_str +=
+        //   singleItem["name"] +
+        //   "\n" +
+        //   singleItem["price"] +
+        //   "\nIn stock: " +
+        //   avail +
+        //   "\n \n";
         // Update item's last availablity to current time
         search_urls[item]["last_avail"] = new Date();
       }
-      // item_str +=
-      //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
+      item_str +=
+        singleItem["name"] +
+        "\n" +
+        singleItem["price"] +
+        "\nIn stock: " +
+        avail +
+        "\n \n";
     });
 
     // No items found, everything sold out

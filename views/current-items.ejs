@@ -7,6 +7,8 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166892917-1"></script>
     <script>
@@ -76,6 +78,476 @@
                 <br>
                 <p>Current commands being supported by the bot.</p>
                 <p>People searching: <% Object.keys(users).length %></p>
+                <ul class="actions small">
+                    <li><a href="#new" class="button alt small">New Items</a></li>
+                    <li><a href="#plates" class="button alt small">Plates</a></li>
+                    <li><a href="#barbells" class="button alt small">Barbells</a></li>
+                    <li><a href="#boneyard" class="button alt small">Boneyard</a></li>
+                    <li><a href="#benches" class="button alt small">Benches</a></li>
+                    <li><a href="#squatstands" class="button alt small">Squat Stands</a></li>
+                    <li><a href="#racks" class="button alt small">Racks</a></li>
+                    <li><a href="#cardio" class="button alt small">Cardio</a></li>
+                </ul>
+                <ul class="actions small">
+                    <li><a href="#m" class="button alt small">Monster Accessories</a></li>
+                    <li><a href="#ml" class="button alt small">Monster Lite Accessories</a></li>
+                    <li><a href="#spec_bars" class="button alt small">Specialty Bars</a></li>
+                    <li><a href="#acc" class="button alt small">Accessories</a></li>
+                    <li><a href="#other" class="button alt small">Other</a></li>
+                    <li><a href="#uk" class="button alt small">UK Items</a></li>
+                    <li><a href="#au" class="button alt small">AU Items</a></li>
+                </ul>
+
+                <section id="new"></section>
+                <h2>New Items</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].status == "new") { %>
+                            <tr class="table-success">
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="plates"></section>
+                <hr>
+                <h2>Plates</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "plate") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="barbells"></section>
+                <hr>
+                <h2>Barbells</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "barbell") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="boneyard"></section>
+                <hr>
+                <h2>Boneyard</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "boneyard") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="benches"></section>
+                <hr>
+                <h2>Benches</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "bench") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="squatstands"></section>
+                <hr>
+                <h2>Squat Stands</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "squat stand") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="racks"></section>
+                <hr>
+                <h2>Racks</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "rack") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="cardio"></section>
+                <hr>
+                <h2>Cardio</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "cardio") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="m"></section>
+                <hr>
+                <h2>Monster Accessories</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "m") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="ml"></section>
+                <hr>
+                <h2>Monster Lite Accessories</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "ml") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="spec_bars"></section>
+                <hr>
+                <h2>Specialty Bars</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "spec_bar") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="acc"></section>
+                <hr>
+                <h2>Accessories</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "acc") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="other"></section>
+                <hr>
+                <h2>Other</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "other") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="uk"></section>
+                <hr>
+                <h2>UK Items</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "uk") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="au"></section>
+                <hr>
+                <h2>AU Items</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].category == "au") { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>All Items</h2>
                 <div class="table-wrapper">
                     <table class="alt">
                         <thead>
