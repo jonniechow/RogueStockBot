@@ -80,7 +80,7 @@ var search_urls = { // Plate URLs
         "link": "https://www.roguefitness.com/rogue-black-training-kg-striped-plates",
         "last_avail": null,
         "category": "plate"
-    },
+    }, 
     "plate echo v2": {
         "type": "multi",
         "sender_ids": {},
@@ -1055,7 +1055,7 @@ var search_urls = { // Plate URLs
         "last_avail": null,
         "category": "ml"
     },
-    "rhino belt squat": {
+    "m rhino belt squat": {
         "type": "single",
         "sender_ids": {},
         'product_name': 'Rogue Monster Rhino Belt Squat - Stand Alone',

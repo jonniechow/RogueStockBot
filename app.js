@@ -80,7 +80,11 @@ app.get("/privacy-policy", (req, res) => {
 });
 
 app.get("/current-items", (req, res) => {
-  res.render("current-items", { data: search_urls, users: user_id_dic });
+  var sortedSearchUrls = {};
+  Object.keys(search_urls).sort().forEach((key) => {
+    sortedSearchUrls[key] = search_urls[key]
+  })
+  res.render("current-items", { data: sortedSearchUrls, users: user_id_dic });
 });
 
 app.get("/items-in-stock", (req, res) => {
