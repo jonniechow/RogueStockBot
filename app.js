@@ -313,8 +313,7 @@ async function handleAllURLs() {
             "\n\n" +
             item_str +
             `Checked On ${dateTime}\n` +
-            `Original link:\n${search_urls[item]["link"]}\n\n` +
-            `Non-cached link:\n${
+            `Link:\n${
               search_urls[item]["link"] + "?=" + rand_string
             }\n\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
