@@ -34,7 +34,8 @@ const request = require("request"),
   stream = require("stream"),
   app = express().use(body_parser.json()),
   search_urls = require("./item-urls"),
-  useless_items = require("./useless-items");
+  useless_items = require("./useless-items"),
+  fuzzyset = require("fuzzyset.js");
 // creates express http server
 
 var { getDataFromJS, getRequestDataFromJS } = require("./helper");
@@ -661,10 +662,24 @@ function handleMessage(sender_psid, received_message) {
     if (!(rec_msg in search_urls)) {
       response = {
         text:
-          `INVALID\nYou entered: "${received_message.text}".\n` +
-          `Item doesn't exist\n\n` +
-          `Go to roguestockbot.com/current-items for all supported items`,
+          `INVALID\n` + 
+          `You entered: "${received_message.text}".\n` +
+          `Item doesn't exist.\n`,
       };
+
+      // Determines the closest product in response to user error
+      let closestMatch = function() {
+        let fuzzySet = FuzzySet(Object.keys(search_urls));
+        // Closest word must be at least 75% similar otherwise no suggestion is made
+        let closest = fuzzySet.get(received_message.text, null, 0.75);
+        if (closest === null) {
+          return `\n`
+        };
+        return `Did you mean "${closest[0][1]}"?\n\n`
+      }
+
+      response.text += closestMatch() + 
+        `Go to roguestockbot.com/current-items for all supported items`;
       callSendAPI(sender_psid, response);
       return;
     }
