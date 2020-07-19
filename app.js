@@ -46,12 +46,12 @@ let start_time;
 let delay = 30;
 // Limit of iteems
 let item_limit = 10;
+var db;
 
 app.set("view engine", "ejs");
 
 app.use(express.static(__dirname + "/views/"));
 
-// Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => {
   console.log("webhook is listening");
   try {
@@ -63,7 +63,7 @@ app.listen(process.env.PORT || 1337, () => {
 
 // Home screen page
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", { users: user_id_dic, startTime: start_time });
 });
 
 app.get("/bot-guide", (req, res) => {
@@ -79,7 +79,13 @@ app.get("/privacy-policy", (req, res) => {
 });
 
 app.get("/current-items", (req, res) => {
-  res.render("current-items", { data: search_urls });
+  var sortedSearchUrls = {};
+  Object.keys(search_urls)
+    .sort()
+    .forEach((key) => {
+      sortedSearchUrls[key] = search_urls[key];
+    });
+  res.render("current-items", { data: sortedSearchUrls, users: user_id_dic });
 });
 
 app.get("/items-in-stock", (req, res) => {
@@ -187,11 +193,11 @@ async function handleAllURLs() {
       if (Object.keys(singleItem).length == 0) {
         return;
       }
-
       // Out of stock
       if (
         singleItem["in_stock"].indexOf("Notify Me") >= 0 ||
-        singleItem["in_stock"].indexOf("Out of Stock") >= 0
+        singleItem["in_stock"].indexOf("Out of Stock") >= 0 || 
+        singleItem["in_stock"].indexOf("OUT OF STOCK") >= 0 
       ) {
         // Cross emoji
         avail = decodeURI("\u274C");
@@ -213,7 +219,12 @@ async function handleAllURLs() {
         search_urls[item]["last_avail"] = new Date();
       }
       // item_str +=
-      //   item["name"] + "\n" + item["price"] + "\nIn stock: " + avail + "\n \n";
+      //   singleItem["name"] +
+      //   "\n" +
+      //   singleItem["price"] +
+      //   "\nIn stock: " +
+      //   avail +
+      //   "\n \n";
     });
 
     // No items found, everything sold out
@@ -303,10 +314,7 @@ async function handleAllURLs() {
             "\n\n" +
             item_str +
             `Checked On ${dateTime}\n` +
-            `Original link:\n${search_urls[item]["link"]}\n\n` +
-            `Non-cached link:\n${
-              search_urls[item]["link"] + "?=" + rand_string
-            }\n\n` +
+            `Link:\n${search_urls[item]["link"] + "?=" + rand_string}\n\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
         callSendAPI(sender_id, response);
@@ -467,6 +475,11 @@ async function getDataFromURL(item) {
       items = getRequestDataFromJS(response.data, "RogueColorSwatches", 2);
     } else if (item_type === "custom") {
       items = getRequestDataFromJS(response.data, "ColorSwatches");
+    } else if (item_type === "ironmaster") {
+      items[0] = {};
+      items[0]["name"] = $(".product_title").text();
+      items[0]["price"] = "N/A";
+      items[0]["in_stock"] = $("span.stock").text();
     }
     // Just one item in a page
     else {
