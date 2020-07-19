@@ -23,6 +23,10 @@ Has this project helped you? Consider donating!
 
 ### Updates
 
+v 2.0
+* Added new items including Ironmaster
+* Updated /current-items to be easier to navigate
+
 v 1.9
 * Added new items
 * Included last time in stock feature in 'status'
