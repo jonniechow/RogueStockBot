@@ -26,6 +26,8 @@ Has this project helped you? Consider donating!
 v 2.0
 * Added new items including Ironmaster
 * Updated /current-items to be easier to navigate
+* Included Youtube video tutorial on website
+* Added spell check suggestions
 
 v 1.9
 * Added new items
