@@ -196,7 +196,8 @@ async function handleAllURLs() {
       // Out of stock
       if (
         singleItem["in_stock"].indexOf("Notify Me") >= 0 ||
-        singleItem["in_stock"].indexOf("Out of Stock") >= 0
+        singleItem["in_stock"].indexOf("Out of Stock") >= 0 || 
+        singleItem["in_stock"].indexOf("OUT OF STOCK") >= 0 
       ) {
         // Cross emoji
         avail = decodeURI("\u274C");
@@ -474,6 +475,11 @@ async function getDataFromURL(item) {
       items = getRequestDataFromJS(response.data, "RogueColorSwatches", 2);
     } else if (item_type === "custom") {
       items = getRequestDataFromJS(response.data, "ColorSwatches");
+    } else if (item_type === "ironmaster") {
+      items[0] = {};
+      items[0]["name"] = $(".product_title").text();
+      items[0]["price"] = "N/A";
+      items[0]["in_stock"] = $("span.stock").text();
     }
     // Just one item in a page
     else {

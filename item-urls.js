@@ -361,6 +361,34 @@ var search_urls = { // Plate URLs
         "last_avail": null,
         "category": "boneyard"
     },
+    // Ironmaster
+    "ironmaster adj 75": {
+        "type": "ironmaster",
+        "sender_ids": {},
+        'product_name': 'Quick-Lock Adjustable Dumbbell System 75 lb Set',
+        "link": "https://www.ironmaster.com/products/quick-lock-adjustable-dumbbells-75/",
+        "last_avail": null,
+        "category": "ironmaster",
+        "status": "new"
+    },
+    "ironmaster adj 45": {
+        "type": "ironmaster",
+        "sender_ids": {},
+        'product_name': 'Quick-Lock Adjustable Dumbbell System 45 lb Set',
+        "link": "https://www.ironmaster.com/products/quick-lock-dumbbell-system-45-lb-set/",
+        "last_avail": null,
+        "category": "ironmaster",
+        "status": "new"
+    },
+    "ironmaster addon 120": {
+        "type": "ironmaster",
+        "sender_ids": {},
+        'product_name': 'Quick-Lock Dumbbell – 120 lb Add on Kit ',
+        "link": "https://www.ironmaster.com/products/add-on-kit-to-120-lbs-quick-lock/",
+        "last_avail": null,
+        "category": "ironmaster",
+        "status": "new"
+    },
     // Bella Bars
     "bella ecoat": {
         "type": "single",
@@ -1202,6 +1230,15 @@ var search_urls = { // Plate URLs
         "status": "new",
         "category": "barbell"
     },
+    "rack rml-3fullw": {
+        "type": "rmlc",
+        "sender_ids": {},
+        'product_name': 'Monster Lite RML-390FULLW Fold Back Wall Mount Power Rack',
+        "link": "https://www.roguefitness.com/monster-lite-rml-390-fullw-fold-back-wall-mount-power-rack",
+        "last_avail": null,
+        "status": "new",
+        "category": "rack"
+    },
     "hr-2 conversion": {
         "type": "multi",
         "sender_ids": {},
@@ -1360,6 +1397,15 @@ var search_urls = { // Plate URLs
         'product_name': 'AU Rogue Calibrated KG Steel Plates',
         "link": "https://www.rogueaustralia.com.au/rogue-calibrated-kg-steel-plates-au",
         "last_avail": null,
+        "category": "au"
+    },
+    "au rml-390f": {
+        "type": "multi",
+        "sender_ids": {},
+        'product_name': 'AU RML-390F Flat Foot Monster Lite Rack',
+        "link": "https://www.rogueaustralia.com.au/rml-390f-flat-foot-monster-lite-rack-au",
+        "last_avail": null,
+        "status": "new",
         "category": "au"
     },
     "ca saml": {
