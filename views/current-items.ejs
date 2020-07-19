@@ -93,8 +93,9 @@
                         <li><a href="#spec_bars" class="button alt small">Specialty Bars</a></li>
                         <li><a href="#acc" class="button alt small">Accessories</a></li>
                         <li><a href="#other" class="button alt small">Other</a></li>
-                        <li><a href="#uk" class="button alt small">UK Items</a></li>
-                        <li><a href="#au" class="button alt small">AU Items</a></li>
+                        <li><a href="#ca" class="button alt small">CA</a></li>
+                        <li><a href="#uk" class="button alt small">UK</a></li>
+                        <li><a href="#au" class="button alt small">AU</a></li>
                     </ul>
                 </div>
 
@@ -587,6 +588,36 @@
                                 <td><%=Object.keys(data[entry].sender_ids).length%></td>
                                 <td>
                                     <a href="<%=data[entry].link%>" target="_blank">Link</a>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <%});%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <section id="ca" style="display: block; position: relative; visibility:hidden; top: -200px"></section>
+                <hr>
+                <h2>CA Items</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Command</th>
+                                <th>People Searching</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_from_log">
+                            <% Object.keys(data).forEach((entry, index)=>{%>
+                            <% if (data[entry].otherLinks) { %>
+                            <tr>
+                                <td><%=data[entry].product_name%></td>
+                                <td><%=entry%></td>
+                                <td><%=Object.keys(data[entry].sender_ids).length%></td>
+                                <td>
+                                    <a href="<%=data[entry].otherLinks[0]%>" target="_blank">Link</a>
                                 </td>
                             </tr>
                             <% } %>
