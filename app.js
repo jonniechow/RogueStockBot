@@ -385,8 +385,7 @@ async function getDataFromURL(item) {
     } else if (item_type === "grab bag") {
       // Boneyard page exists
       if (redirect_count == 0) {
-        items[0] = {};
-        items[0]["in_stock"] = "Add to cart";
+        items = getRequestDataFromJS(response.data, "RogueColorSwatches");
       } else {
         items[0] = {};
         items[0]["in_stock"] = "Notify Me";
