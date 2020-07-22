@@ -21,7 +21,7 @@
 
 "use strict";
 require("dotenv").config();
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
@@ -44,7 +44,7 @@ var { getDataFromJS, getRequestDataFromJS } = require("./helper");
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 30;
+let delay = 10;
 // Limit of iteems
 let item_limit = 10;
 var db;
@@ -197,8 +197,8 @@ async function handleAllURLs() {
       // Out of stock
       if (
         singleItem["in_stock"].indexOf("Notify Me") >= 0 ||
-        singleItem["in_stock"].indexOf("Out of Stock") >= 0 || 
-        singleItem["in_stock"].indexOf("OUT OF STOCK") >= 0 
+        singleItem["in_stock"].indexOf("Out of Stock") >= 0 ||
+        singleItem["in_stock"].indexOf("OUT OF STOCK") >= 0
       ) {
         // Cross emoji
         avail = decodeURI("\u274C");
@@ -209,23 +209,23 @@ async function handleAllURLs() {
         avail = decodeURI("\u2705");
         in_stock_count += 1;
         write_item_str += singleItem["name"] + " " + avail + ", ";
-        item_str +=
-          singleItem["name"] +
-          "\n" +
-          singleItem["price"] +
-          "\nIn stock: " +
-          avail +
-          "\n \n";
+        // item_str +=
+        //   singleItem["name"] +
+        //   "\n" +
+        //   singleItem["price"] +
+        //   "\nIn stock: " +
+        //   avail +
+        //   "\n \n";
         // Update item's last availablity to current time
         search_urls[item]["last_avail"] = new Date();
       }
-      // item_str +=
-      //   singleItem["name"] +
-      //   "\n" +
-      //   singleItem["price"] +
-      //   "\nIn stock: " +
-      //   avail +
-      //   "\n \n";
+      item_str +=
+        singleItem["name"] +
+        "\n" +
+        singleItem["price"] +
+        "\nIn stock: " +
+        avail +
+        "\n \n";
     });
 
     // No items found, everything sold out
@@ -471,9 +471,14 @@ async function getDataFromURL(item) {
           items.push(dic);
         });
       });
+    } else if (item_type === "trolley") {
+      items = getRequestDataFromJS(response.data, "RogueColorSwatches", 4)
     } else if (item_type === "db15") {
       items = getRequestDataFromJS(response.data, "RogueColorSwatches", 2);
-    } else if (item_type === "custom") {
+    } else if (item_type === "custom2") {
+      items = getRequestDataFromJS(response.data, "RogueColorSwatches");
+    } 
+    else if (item_type === "custom") {
       items = getRequestDataFromJS(response.data, "ColorSwatches");
     } else if (item_type === "ironmaster") {
       items[0] = {};
@@ -674,23 +679,24 @@ function handleMessage(sender_psid, received_message) {
     if (!(rec_msg in search_urls)) {
       response = {
         text:
-          `INVALID\n` + 
+          `INVALID\n` +
           `You entered: "${received_message.text}".\n` +
           `Item doesn't exist.\n`,
       };
 
       // Determines the closest product in response to user error
-      let closestMatch = function() {
+      let closestMatch = function () {
         let fuzzySet = FuzzySet(Object.keys(search_urls));
         // Closest word must be at least 75% similar otherwise no suggestion is made
         let closest = fuzzySet.get(received_message.text, null, 0.75);
         if (closest === null) {
-          return `\n`
-        };
-        return `Did you mean "${closest[0][1]}"?\n\n`
-      }
+          return `\n`;
+        }
+        return `Did you mean "${closest[0][1]}"?\n\n`;
+      };
 
-      response.text += closestMatch() + 
+      response.text +=
+        closestMatch() +
         `Go to roguestockbot.com/current-items for all supported items`;
       callSendAPI(sender_psid, response);
       return;
