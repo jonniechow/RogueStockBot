@@ -572,6 +572,7 @@ function handleMessage(sender_psid, received_message) {
           `2) Reply back to this bot with each command one by one\n` +
           `3) The bot will reply back with an initial check then message you whenever there's an update\n\n` +
           `Type 'status' to check what items you are searching\n` +
+          `Type 'stop {item command}' to stop checking a specific item. Ex: 'stop barbell op ss\n' +
           `Type 'stop' to stop checking all items\n`,
       };
       callSendAPI(sender_psid, response);
