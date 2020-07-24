@@ -253,6 +253,15 @@ var search_urls = {
     last_avail: null,
     category: "barbell",
   },
+  "barbell op fraser": {
+    type: "multi",
+    sender_ids: {},
+    product_name: "Rogue Athlete Cerakote Ohio Bar - Fraser Edition",
+    link: "https://www.roguefitness.com/rogue-athlete-ohio-bar-fraser-cerakote-edition",
+    last_avail: null,
+    category: "barbell",
+    status: "new"
+  },
   // Ohio Power Bar
   "barbell opb steel": {
     type: "single",
@@ -283,6 +292,9 @@ var search_urls = {
     sender_ids: {},
     product_name: "Rogue 45LB Ohio Power Bar - Stainless Steel",
     link: "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless",
+    otherLinks: [
+        "https://www.roguecanada.ca/rogue-45lb-ohio-power-bar-stainless",
+      ],
     last_avail: null,
     category: "barbell",
   },
@@ -769,6 +781,15 @@ var search_urls = {
     last_avail: null,
     category: "m",
   },
+  "m attach post": {
+    type: "single",
+    sender_ids: {},
+    product_name: "Rogue Monster Attachment Post",
+    link: "https://www.roguefitness.com/rogue-monster-attachment-post",
+    last_avail: null,
+    category: "m",
+    status: "new"
+  },
   "infinity spotter": {
     type: "multi",
     sender_ids: {},
@@ -1001,6 +1022,26 @@ var search_urls = {
     product_name: "Monster Single Post Storage Shelf",
     link:
       "https://www.roguefitness.com/monster-single-post-storage-shelf",
+    last_avail: null,
+    category: "m",
+    status: "new"
+  },
+  "m storage pin": {
+    type: "custom2",
+    sender_ids: {},
+    product_name: "Rogue Monster Plate Storage Pin",
+    link:
+      "https://www.roguefitness.com/rogue-monster-keyhole-keyless-plate-storage-pin",
+    last_avail: null,
+    category: "m",
+    status: "new"
+  },
+  "m j-cup pairs": {
+    type: "custom2",
+    sender_ids: {},
+    product_name: "Monster J-Cup Pairs",
+    link:
+      "https://www.roguefitness.com/monster-j-cup-pairs",
     last_avail: null,
     category: "m",
     status: "new"
@@ -1261,6 +1302,15 @@ var search_urls = {
     last_avail: null,
     category: "ml",
   },
+  "m shackle": {
+    type: "single",
+    sender_ids: {},
+    product_name: "Rogue Monster Shackle",
+    link: "https://www.roguefitness.com/rogue-monster-shackle",
+    last_avail: null,
+    category: "m",
+    status: "new"
+  },
   "mg-2 multi grip": {
     type: "multi",
     sender_ids: {},
@@ -1440,6 +1490,56 @@ var search_urls = {
     status: "new",
     category: "uk",
   },
+  "uk kettlebells": {
+    type: "multi",
+    sender_ids: {},
+    product_name: "UK Rogue Kettlebells",
+    link:
+      "https://www.rogueeurope.eu/rogue-kettlebells-eu",
+    last_avail: null,
+    status: "new",
+    category: "uk",
+  },
+  "uk dumbbells": {
+    type: "multi",
+    sender_ids: {},
+    product_name: "UK Rogue KG Dumbbells",
+    link:
+      "https://www.rogueeurope.eu/rogue-kg-dumbbells",
+    last_avail: null,
+    status: "new",
+    category: "uk",
+  },
+  "uk home timer": {
+    type: "multi",
+    sender_ids: {},
+    product_name: "UK Rogue Home Timer",
+    link:
+      "https://www.rogueeurope.eu/rogue-home-timer-eu",
+    last_avail: null,
+    status: "new",
+    category: "uk",
+  },
+  "uk plate tree": {
+    type: "multi",
+    sender_ids: {},
+    product_name: "UK Rogue Vertical Plate Tree 2.0",
+    link:
+      "https://www.rogueeurope.eu/rogue-vertical-plate-tree-2-0-eu",
+    last_avail: null,
+    status: "new",
+    category: "uk",
+  },
+  "uk bench ab2": {
+    type: "multi",
+    sender_ids: {},
+    product_name: "UK AB-2 Adjustable Bench",
+    link:
+      "https://www.rogueeurope.eu/ab-2-adjustable-bench-eu",
+    last_avail: null,
+    status: "new",
+    category: "uk",
+  },
   "au bench ab2": {
     type: "multi",
     sender_ids: {},
@@ -1499,6 +1599,16 @@ var search_urls = {
     product_name: "AU RML-390F Flat Foot Monster Lite Rack",
     link:
       "https://www.rogueaustralia.com.au/rml-390f-flat-foot-monster-lite-rack-au",
+    last_avail: null,
+
+    category: "au",
+  },
+  "au model d rower": {
+    type: "single",
+    sender_ids: {},
+    product_name: "AU Black Concept 2 Model D Rower - PM5",
+    link:
+      "https://www.rogueaustralia.com.au/black-concept-2-model-d-rower-pm5-au",
     last_avail: null,
 
     category: "au",
