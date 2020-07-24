@@ -185,6 +185,15 @@ async function handleAllURLs() {
     let write_item_str = "";
     let in_stock_count = 0;
     let rand_string = Math.random().toString(36).substring(7);
+    var otherLinkURLS = "";
+    if (search_urls[item]["otherLinks"]) {
+      search_urls[item]["otherLinks"].forEach((link, index) => {
+        if (index == 0) {
+          otherLinkURLS += "CA: ";
+        }
+        otherLinkURLS += `${link}\n`;
+      });
+    }
 
     // Loop through each item on page
     data.forEach((singleItem) => {
@@ -250,15 +259,6 @@ async function handleAllURLs() {
     for (let sender_id in search_urls[item]["sender_ids"]) {
       if (search_urls[item]["sender_ids"][sender_id] == 0) {
         search_urls[item]["sender_ids"][sender_id] = 1;
-        var otherLinkURLS = "";
-        if (search_urls[item]["otherLinks"]) {
-          search_urls[item]["otherLinks"].forEach((link, index) => {
-            if (index == 0) {
-              otherLinkURLS += "CA: ";
-            }
-            otherLinkURLS += `${link}\n`;
-          });
-        }
         // First response message
         let response = {
           text:
@@ -272,7 +272,8 @@ async function handleAllURLs() {
             `First initial check on ${dateTime}\n` +
             `You will be notified everytime there is a change in stock.\n` +
             `Will begin running in the background until "stop"\n\n` +
-            `Link:\n${
+            `Original link:\n${search_urls[item]["link"]}\n\n` +
+            `Non-cached link:\n${
               search_urls[item]["link"] + "?=" + rand_string
             }\n\n${otherLinkURLS}\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
@@ -315,7 +316,10 @@ async function handleAllURLs() {
             "\n\n" +
             item_str +
             `Checked On ${dateTime}\n` +
-            `Link:\n${search_urls[item]["link"] + "?=" + rand_string}\n\n` +
+            `Original link:\n${search_urls[item]["link"]}\n\n` +
+            `Non-cached link:\n${
+              search_urls[item]["link"] + "?=" + rand_string
+            }\n\n${otherLinkURLS}\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
         callSendAPI(sender_id, response);
@@ -472,13 +476,12 @@ async function getDataFromURL(item) {
         });
       });
     } else if (item_type === "trolley") {
-      items = getRequestDataFromJS(response.data, "RogueColorSwatches", 4)
+      items = getRequestDataFromJS(response.data, "RogueColorSwatches", 4);
     } else if (item_type === "db15") {
       items = getRequestDataFromJS(response.data, "RogueColorSwatches", 2);
     } else if (item_type === "custom2") {
       items = getRequestDataFromJS(response.data, "RogueColorSwatches");
-    } 
-    else if (item_type === "custom") {
+    } else if (item_type === "custom") {
       items = getRequestDataFromJS(response.data, "ColorSwatches");
     } else if (item_type === "ironmaster") {
       items[0] = {};
