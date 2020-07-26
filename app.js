@@ -186,6 +186,9 @@ async function handleAllURLs() {
     let in_stock_count = 0;
     let rand_string = Math.random().toString(36).substring(7);
 
+    let link = search_urls[item]["link"].split("/");
+    let caLink = `https://www.roguecanada.ca/${link[3]}`;
+
     // Loop through each item on page
     data.forEach((singleItem) => {
       var avail = decodeURI("\u2705");
@@ -197,8 +200,8 @@ async function handleAllURLs() {
       // Out of stock
       if (
         singleItem["in_stock"].indexOf("Notify Me") >= 0 ||
-        singleItem["in_stock"].indexOf("Out of Stock") >= 0 || 
-        singleItem["in_stock"].indexOf("OUT OF STOCK") >= 0 
+        singleItem["in_stock"].indexOf("Out of Stock") >= 0 ||
+        singleItem["in_stock"].indexOf("OUT OF STOCK") >= 0
       ) {
         // Cross emoji
         avail = decodeURI("\u274C");
@@ -250,15 +253,6 @@ async function handleAllURLs() {
     for (let sender_id in search_urls[item]["sender_ids"]) {
       if (search_urls[item]["sender_ids"][sender_id] == 0) {
         search_urls[item]["sender_ids"][sender_id] = 1;
-        var otherLinkURLS = "";
-        if (search_urls[item]["otherLinks"]) {
-          search_urls[item]["otherLinks"].forEach((link, index) => {
-            if (index == 0) {
-              otherLinkURLS += "CA: ";
-            }
-            otherLinkURLS += `${link}\n`;
-          });
-        }
         // First response message
         let response = {
           text:
@@ -272,9 +266,8 @@ async function handleAllURLs() {
             `First initial check on ${dateTime}\n` +
             `You will be notified everytime there is a change in stock.\n` +
             `Will begin running in the background until "stop"\n\n` +
-            `Link:\n${
-              search_urls[item]["link"] + "?=" + rand_string
-            }\n\n${otherLinkURLS}\n` +
+            `Link:\n${search_urls[item]["link"]}?=${rand_string}\n\n` +
+            `CA link:\n${caLink}?=${rand_string}\n\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
         callSendAPI(sender_id, response);
@@ -315,7 +308,8 @@ async function handleAllURLs() {
             "\n\n" +
             item_str +
             `Checked On ${dateTime}\n` +
-            `Link:\n${search_urls[item]["link"] + "?=" + rand_string}\n\n` +
+            `Link:\n${search_urls[item]["link"]}?=${rand_string}\n\n` +
+            `CA link:\n${caLink}?=${rand_string}\n\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
         callSendAPI(sender_id, response);
@@ -471,8 +465,12 @@ async function getDataFromURL(item) {
           items.push(dic);
         });
       });
+    } else if (item_type === "trolley") {
+      items = getRequestDataFromJS(response.data, "RogueColorSwatches", 4);
     } else if (item_type === "db15") {
       items = getRequestDataFromJS(response.data, "RogueColorSwatches", 2);
+    } else if (item_type === "custom2") {
+      items = getRequestDataFromJS(response.data, "RogueColorSwatches");
     } else if (item_type === "custom") {
       items = getRequestDataFromJS(response.data, "ColorSwatches");
     } else if (item_type === "ironmaster") {
@@ -674,23 +672,24 @@ function handleMessage(sender_psid, received_message) {
     if (!(rec_msg in search_urls)) {
       response = {
         text:
-          `INVALID\n` + 
+          `INVALID\n` +
           `You entered: "${received_message.text}".\n` +
           `Item doesn't exist.\n`,
       };
 
       // Determines the closest product in response to user error
-      let closestMatch = function() {
+      let closestMatch = function () {
         let fuzzySet = FuzzySet(Object.keys(search_urls));
         // Closest word must be at least 75% similar otherwise no suggestion is made
         let closest = fuzzySet.get(received_message.text, null, 0.75);
         if (closest === null) {
-          return `\n`
-        };
-        return `Did you mean "${closest[0][1]}"?\n\n`
-      }
+          return `\n`;
+        }
+        return `Did you mean "${closest[0][1]}"?\n\n`;
+      };
 
-      response.text += closestMatch() + 
+      response.text +=
+        closestMatch() +
         `Go to roguestockbot.com/current-items for all supported items`;
       callSendAPI(sender_psid, response);
       return;
