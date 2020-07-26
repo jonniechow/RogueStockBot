@@ -22,7 +22,6 @@ var search_urls = {
     sender_ids: {},
     product_name: "Rogue HG 2.0 KG Bumper Plates",
     link: "https://www.roguefitness.com/kg-rogue-bumpers",
-    otherLinks: ["https://www.roguecanada.ca/kg-rogue-bumpers-2786"],
     last_avail: null,
     category: "plate",
   },
@@ -90,9 +89,6 @@ var search_urls = {
     product_name: "Rogue Echo Bumper Plates V2",
     link:
       "https://www.roguefitness.com/rogue-echo-bumper-plates-with-white-text",
-    otherLinks: [
-      "https://www.roguecanada.ca/rogue-echo-bumper-plates-with-white-text",
-    ],
     last_avail: null,
     category: "plate",
   },
@@ -110,7 +106,6 @@ var search_urls = {
     sender_ids: {},
     product_name: "Rogue Color Echo Bumper Plates",
     link: "https://www.roguefitness.com/rogue-color-echo-bumper-plate",
-    otherLinks: ["https://www.roguecanada.ca/rogue-color-echo-bumper-plate"],
     last_avail: null,
     category: "plate",
   },
@@ -151,7 +146,6 @@ var search_urls = {
     sender_ids: {},
     product_name: "Rogue LB Change Plates",
     link: "https://www.roguefitness.com/rogue-lb-change-plates",
-    otherLinks: ["https://www.roguecanada.ca/rogue-lb-change-plates"],
     last_avail: null,
     category: "plate",
   },
@@ -257,10 +251,11 @@ var search_urls = {
     type: "multi",
     sender_ids: {},
     product_name: "Rogue Athlete Cerakote Ohio Bar - Fraser Edition",
-    link: "https://www.roguefitness.com/rogue-athlete-ohio-bar-fraser-cerakote-edition",
+    link:
+      "https://www.roguefitness.com/rogue-athlete-ohio-bar-fraser-cerakote-edition",
     last_avail: null,
     category: "barbell",
-    status: "new"
+    status: "new",
   },
   // Ohio Power Bar
   "barbell opb steel": {
@@ -292,9 +287,6 @@ var search_urls = {
     sender_ids: {},
     product_name: "Rogue 45LB Ohio Power Bar - Stainless Steel",
     link: "https://www.roguefitness.com/rogue-45lb-ohio-power-bar-stainless",
-    otherLinks: [
-        "https://www.roguecanada.ca/rogue-45lb-ohio-power-bar-stainless",
-      ],
     last_avail: null,
     category: "barbell",
   },
@@ -312,9 +304,6 @@ var search_urls = {
     sender_ids: {},
     product_name: "Rogue 45LB Ohio Power Bar - Cerakote",
     link: "https://www.roguefitness.com/rogue-45lb-ohio-powerlift-bar-cerakote",
-    otherLinks: [
-      "https://www.roguecanada.ca/rogue-45lb-ohio-powerlift-bar-cerakote",
-    ],
     last_avail: null,
     category: "barbell",
   },
@@ -325,7 +314,7 @@ var search_urls = {
     link: "https://www.roguefitness.com/rogue-ohio-deadlift-cerakote",
     last_avail: null,
     category: "barbell",
-    status: "new"
+    status: "new",
   },
   // Boneyard
   "bone 29": {
@@ -400,7 +389,7 @@ var search_urls = {
     link:
       "https://www.ironmaster.com/products/quick-lock-adjustable-dumbbells-75/",
     last_avail: null,
-    category: "ironmaster"
+    category: "ironmaster",
   },
   "ironmaster adj 45": {
     type: "ironmaster",
@@ -409,7 +398,7 @@ var search_urls = {
     link:
       "https://www.ironmaster.com/products/quick-lock-dumbbell-system-45-lb-set/",
     last_avail: null,
-    category: "ironmaster"
+    category: "ironmaster",
   },
   "ironmaster addon 120": {
     type: "ironmaster",
@@ -418,7 +407,7 @@ var search_urls = {
     link:
       "https://www.ironmaster.com/products/add-on-kit-to-120-lbs-quick-lock/",
     last_avail: null,
-    category: "ironmaster"
+    category: "ironmaster",
   },
   // Bella Bars
   "bella ecoat": {
@@ -781,6 +770,24 @@ var search_urls = {
     last_avail: null,
     category: "m",
   },
+  "m top beam": {
+    type: "custom2",
+    sender_ids: {},
+    product_name: "Monster 43 Top Beam",
+    link: "https://www.roguefitness.com/monster-43-top-beam",
+    last_avail: null,
+    status: "new",
+    category: "m",
+  },
+  "m slinger": {
+    type: "custom2",
+    sender_ids: {},
+    product_name: "Rogue Monster Slinger",
+    link: "https://www.roguefitness.com/rogue-monster-slinger",
+    last_avail: null,
+    status: "new",
+    category: "m",
+  },
   "m attach post": {
     type: "single",
     sender_ids: {},
@@ -788,7 +795,7 @@ var search_urls = {
     link: "https://www.roguefitness.com/rogue-monster-attachment-post",
     last_avail: null,
     category: "m",
-    status: "new"
+    status: "new",
   },
   "infinity spotter": {
     type: "multi",
@@ -838,6 +845,15 @@ var search_urls = {
     last_avail: null,
     category: "ml",
   },
+  "ml slinger": {
+    type: "custom2",
+    sender_ids: {},
+    product_name: "Rogue Monster Lite Slinger",
+    link: "https://www.roguefitness.com/rogue-monster-lite-slinger",
+    last_avail: null,
+    status: "new",
+    category: "ml",
+  },
   landmine: {
     type: "multi",
     sender_ids: {},
@@ -853,6 +869,15 @@ var search_urls = {
     link: "https://www.roguefitness.com/rogue-monster-landmine-2-0",
     last_avail: null,
     category: "m",
+  },
+  "parallel landmine handle": {
+    type: "multi",
+    sender_ids: {},
+    product_name: "Rogue Parallel Landmine Handle",
+    link: "https://www.roguefitness.com/rogue-parallel-landmine-handle",
+    last_avail: null,
+    category: "acc",
+    status: "new",
   },
   // Yoke
   "yoke y1": {
@@ -877,9 +902,6 @@ var search_urls = {
     sender_ids: {},
     product_name: "Black Concept 2 Model D Rower - PM5",
     link: "https://www.roguefitness.com/black-concept-2-model-d-rower-pm5",
-    otherLinks: [
-      "https://www.roguecanada.ca/black-concept-2-model-d-rower-pm5",
-    ],
     last_avail: null,
     category: "cardio",
   },
@@ -930,7 +952,6 @@ var search_urls = {
     sender_ids: {},
     product_name: "Rogue Kettlebells",
     link: "https://www.roguefitness.com/rogue-kettlebells",
-    otherLinks: ["https://www.roguecanada.ca/rogue-kettlebells"],
     last_avail: null,
     category: "cond",
   },
@@ -955,7 +976,6 @@ var search_urls = {
     sender_ids: {},
     product_name: "Rogue Dumbbells",
     link: "https://www.roguefitness.com/rogue-dumbbells",
-    otherLinks: ["https://www.roguecanada.ca/rogue-dumbbells"],
     last_avail: null,
     category: "cond",
   },
@@ -1020,11 +1040,10 @@ var search_urls = {
     type: "multi",
     sender_ids: {},
     product_name: "Monster Single Post Storage Shelf",
-    link:
-      "https://www.roguefitness.com/monster-single-post-storage-shelf",
+    link: "https://www.roguefitness.com/monster-single-post-storage-shelf",
     last_avail: null,
     category: "m",
-    status: "new"
+    status: "new",
   },
   "m storage pin": {
     type: "custom2",
@@ -1034,17 +1053,16 @@ var search_urls = {
       "https://www.roguefitness.com/rogue-monster-keyhole-keyless-plate-storage-pin",
     last_avail: null,
     category: "m",
-    status: "new"
+    status: "new",
   },
   "m j-cup pairs": {
     type: "custom2",
     sender_ids: {},
     product_name: "Monster J-Cup Pairs",
-    link:
-      "https://www.roguefitness.com/monster-j-cup-pairs",
+    link: "https://www.roguefitness.com/monster-j-cup-pairs",
     last_avail: null,
     category: "m",
-    status: "new"
+    status: "new",
   },
   "barbell iwf": {
     type: "single",
@@ -1080,6 +1098,15 @@ var search_urls = {
     last_avail: null,
     category: "ml",
   },
+  "ml pin pipe": {
+    type: "multi",
+    sender_ids: {},
+    product_name: "Infinity/ML Pin and Pipe Safeties",
+    link: "https://www.roguefitness.com/infinity-ml-pin-pipe-safeties",
+    last_avail: null,
+    status: "new",
+    category: "ml",
+  },
   "ml band pegs": {
     type: "single",
     sender_ids: {},
@@ -1087,7 +1114,7 @@ var search_urls = {
     link: "https://www.roguefitness.com/extra-set-of-band-pegs",
     last_avail: null,
     category: "ml",
-    status: "new"
+    status: "new",
   },
   "infinity matador": {
     type: "single",
@@ -1109,10 +1136,11 @@ var search_urls = {
     type: "trolley",
     sender_ids: {},
     product_name: "Rogue LT-1 Trolley and Lever Arm Kit",
-    link: "hhttps://www.roguefitness.com/rogue-lt-1-50-cal-trolley-lever-arms-kit",
+    link:
+      "hhttps://www.roguefitness.com/rogue-lt-1-50-cal-trolley-lever-arms-kit",
     last_avail: null,
     category: "acc",
-    status: "new"
+    status: "new",
   },
   "usa alum collars": {
     type: "custom2",
@@ -1121,7 +1149,7 @@ var search_urls = {
     link: "https://www.roguefitness.com/rogue-usa-aluminum-collars",
     last_avail: null,
     category: "acc",
-    status: "new"
+    status: "new",
   },
   "ah-1 articulating": {
     type: "single",
@@ -1130,7 +1158,7 @@ var search_urls = {
     link: "https://www.roguefitness.com/monster-ah-1-articulating-handle-kit",
     last_avail: null,
     category: "m",
-    status: "new"
+    status: "new",
   },
   bikeerg: {
     type: "single",
@@ -1309,7 +1337,7 @@ var search_urls = {
     link: "https://www.roguefitness.com/rogue-monster-shackle",
     last_avail: null,
     category: "m",
-    status: "new"
+    status: "new",
   },
   "mg-2 multi grip": {
     type: "multi",
@@ -1484,8 +1512,7 @@ var search_urls = {
     type: "single",
     sender_ids: {},
     product_name: "UK Rogue 20KG Ohio Power Bar - Black Zinc",
-    link:
-      "https://www.rogueeurope.eu/rogue-20-kg-ohio-power-bar-black-zinc-eu",
+    link: "https://www.rogueeurope.eu/rogue-20-kg-ohio-power-bar-black-zinc-eu",
     last_avail: null,
     status: "new",
     category: "uk",
@@ -1494,8 +1521,7 @@ var search_urls = {
     type: "multi",
     sender_ids: {},
     product_name: "UK Rogue Kettlebells",
-    link:
-      "https://www.rogueeurope.eu/rogue-kettlebells-eu",
+    link: "https://www.rogueeurope.eu/rogue-kettlebells-eu",
     last_avail: null,
     status: "new",
     category: "uk",
@@ -1504,8 +1530,7 @@ var search_urls = {
     type: "multi",
     sender_ids: {},
     product_name: "UK Rogue KG Dumbbells",
-    link:
-      "https://www.rogueeurope.eu/rogue-kg-dumbbells",
+    link: "https://www.rogueeurope.eu/rogue-kg-dumbbells",
     last_avail: null,
     status: "new",
     category: "uk",
@@ -1514,8 +1539,7 @@ var search_urls = {
     type: "multi",
     sender_ids: {},
     product_name: "UK Rogue Home Timer",
-    link:
-      "https://www.rogueeurope.eu/rogue-home-timer-eu",
+    link: "https://www.rogueeurope.eu/rogue-home-timer-eu",
     last_avail: null,
     status: "new",
     category: "uk",
@@ -1524,8 +1548,7 @@ var search_urls = {
     type: "multi",
     sender_ids: {},
     product_name: "UK Rogue Vertical Plate Tree 2.0",
-    link:
-      "https://www.rogueeurope.eu/rogue-vertical-plate-tree-2-0-eu",
+    link: "https://www.rogueeurope.eu/rogue-vertical-plate-tree-2-0-eu",
     last_avail: null,
     status: "new",
     category: "uk",
@@ -1534,8 +1557,7 @@ var search_urls = {
     type: "multi",
     sender_ids: {},
     product_name: "UK AB-2 Adjustable Bench",
-    link:
-      "https://www.rogueeurope.eu/ab-2-adjustable-bench-eu",
+    link: "https://www.rogueeurope.eu/ab-2-adjustable-bench-eu",
     last_avail: null,
     status: "new",
     category: "uk",
@@ -1612,15 +1634,6 @@ var search_urls = {
     last_avail: null,
 
     category: "au",
-  },
-  "ca saml": {
-    type: "single",
-    sender_ids: {},
-    product_name: "CA SAML-24 Monster Lite Safety Spotter Arms (Pair)",
-    link: "https://www.roguecanada.ca/saml-24-monster-lite-spotter-arms-pair",
-    last_avail: null,
-
-    category: "ca",
   },
   "barbell squat": {
     type: "single",

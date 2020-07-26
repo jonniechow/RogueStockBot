@@ -21,7 +21,7 @@
 
 "use strict";
 require("dotenv").config();
-const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
@@ -44,7 +44,7 @@ var { getDataFromJS, getRequestDataFromJS } = require("./helper");
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 10;
+let delay = 30;
 // Limit of iteems
 let item_limit = 10;
 var db;
@@ -185,15 +185,9 @@ async function handleAllURLs() {
     let write_item_str = "";
     let in_stock_count = 0;
     let rand_string = Math.random().toString(36).substring(7);
-    var otherLinkURLS = "";
-    if (search_urls[item]["otherLinks"]) {
-      search_urls[item]["otherLinks"].forEach((link, index) => {
-        if (index == 0) {
-          otherLinkURLS += "CA: ";
-        }
-        otherLinkURLS += `${link}\n`;
-      });
-    }
+
+    let link = search_urls[item]["link"].split("/");
+    let caLink = `https://www.roguecanada.ca/${link[3]}`;
 
     // Loop through each item on page
     data.forEach((singleItem) => {
@@ -218,23 +212,23 @@ async function handleAllURLs() {
         avail = decodeURI("\u2705");
         in_stock_count += 1;
         write_item_str += singleItem["name"] + " " + avail + ", ";
-        // item_str +=
-        //   singleItem["name"] +
-        //   "\n" +
-        //   singleItem["price"] +
-        //   "\nIn stock: " +
-        //   avail +
-        //   "\n \n";
+        item_str +=
+          singleItem["name"] +
+          "\n" +
+          singleItem["price"] +
+          "\nIn stock: " +
+          avail +
+          "\n \n";
         // Update item's last availablity to current time
         search_urls[item]["last_avail"] = new Date();
       }
-      item_str +=
-        singleItem["name"] +
-        "\n" +
-        singleItem["price"] +
-        "\nIn stock: " +
-        avail +
-        "\n \n";
+      // item_str +=
+      //   singleItem["name"] +
+      //   "\n" +
+      //   singleItem["price"] +
+      //   "\nIn stock: " +
+      //   avail +
+      //   "\n \n";
     });
 
     // No items found, everything sold out
@@ -272,10 +266,8 @@ async function handleAllURLs() {
             `First initial check on ${dateTime}\n` +
             `You will be notified everytime there is a change in stock.\n` +
             `Will begin running in the background until "stop"\n\n` +
-            `Original link:\n${search_urls[item]["link"]}\n\n` +
-            `Non-cached link:\n${
-              search_urls[item]["link"] + "?=" + rand_string
-            }\n\n${otherLinkURLS}\n` +
+            `Link:\n${search_urls[item]["link"]}?=${rand_string}\n\n` +
+            `CA link:\n${caLink}?=${rand_string}\n\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
         callSendAPI(sender_id, response);
@@ -316,10 +308,8 @@ async function handleAllURLs() {
             "\n\n" +
             item_str +
             `Checked On ${dateTime}\n` +
-            `Original link:\n${search_urls[item]["link"]}\n\n` +
-            `Non-cached link:\n${
-              search_urls[item]["link"] + "?=" + rand_string
-            }\n\n${otherLinkURLS}\n` +
+            `Link:\n${search_urls[item]["link"]}?=${rand_string}\n\n` +
+            `CA link:\n${caLink}?=${rand_string}\n\n` +
             `If this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`,
         };
         callSendAPI(sender_id, response);
