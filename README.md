@@ -23,6 +23,10 @@ Has this project helped you? Consider donating!
 
 ### Updates
 
+v 2.1
+* Added new items
+* All CA Links are now supported
+
 v 2.0
 * Added new items including Ironmaster
 * Updated /current-items to be easier to navigate
