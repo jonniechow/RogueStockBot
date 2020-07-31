@@ -90,7 +90,9 @@
                             <% if (data[entry].prev_stock_count > 0) { %>
                             <tr>
                                 <td><%=data[entry].product_name%></td>
-                                <td><%=data[entry].prev_stock_count%></td>
+                                <td><% data[entry].itemString.forEach((item)=>{%>
+                                    <p><%=item%></p>
+                                    <%});%></td>
                                 <td><%=Object.keys(data[entry].sender_ids).length%></td>
                                 <td>
                                     <a href="<%=data[entry].link%>" target="_blank">Link</a>

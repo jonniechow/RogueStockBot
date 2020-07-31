@@ -21,7 +21,7 @@
 
 "use strict";
 require("dotenv").config();
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
@@ -44,7 +44,7 @@ var { getDataFromJS, getRequestDataFromJS } = require("./helper");
 let user_id_dic = {};
 let start_time;
 // Delay in seconds
-let delay = 30;
+let delay = 10;
 // Limit of iteems
 let item_limit = 10;
 var db;
@@ -236,6 +236,8 @@ async function handleAllURLs() {
       item_str = "Everything currently out of stock.\n\n";
       write_item_str = "Everything currently out of stock.";
     }
+
+    search_urls[item]["itemString"] = write_item_str.split(',');
 
     // Set date
     var today = new Date();
