@@ -1480,6 +1480,15 @@ var search_urls = {
 
     category: "acc",
   },
+  "p-4 pullup": {
+    type: "multi",
+    sender_ids: {},
+    product_name: "Rogue P-4 Pull-up System",
+    link: "https://www.roguefitness.com/p4-pullup-system",
+    last_avail: null,
+    status: "new",
+    category: "acc",
+  },
   "uk echo color": {
     type: "multi",
     sender_ids: {},
@@ -1495,6 +1504,15 @@ var search_urls = {
     link:
       "https://www.rogueeurope.eu/rogue-echo-bumper-plates-with-white-text-eu",
     last_avail: null,
+    category: "uk",
+  },
+  "uk p-4 pullup": {
+    type: "single",
+    sender_ids: {},
+    product_name: "Rogue P-4 Pull-up System",
+    link: "https://www.rogueeurope.eu/rogue-p-4-pull-up-system",
+    last_avail: null,
+    status: "new",
     category: "uk",
   },
   "uk rr plate": {
