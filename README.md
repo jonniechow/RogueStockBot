@@ -25,6 +25,10 @@ Has this project helped you? Consider donating!
 
 v 2.1
 * Added new items
+* Updated in stock items to be more detailed
+
+v 2.1
+* Added new items
 * All CA Links are now supported
 
 v 2.0

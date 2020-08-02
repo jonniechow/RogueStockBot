@@ -237,6 +237,8 @@ async function handleAllURLs() {
       write_item_str = "Everything currently out of stock.";
     }
 
+    search_urls[item]["itemString"] = write_item_str.split(',');
+
     // Set date
     var today = new Date();
     var date =
