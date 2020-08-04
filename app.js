@@ -228,12 +228,11 @@ async function handleAllURLs() {
         avail = decodeURI('\u2705');
         inStockCount += 1;
         writeItemStr += `${singleItem.name} ${avail}, `;
-        // itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock: ${avail}\n \n`;
+        itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock: ${avail}\n \n`;
         // Update item's last availablity to current time
         searchUrls[item].last_avail = new Date();
       }
-
-      itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock:${avail}\n \n`;
+      // itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock:${avail}\n \n`;
     });
 
     // No items found, everything sold out
@@ -459,7 +458,7 @@ function handleMessage(senderPsid, receivedMessage) {
           } else {
             throw new Error('Item not being searched by user');
           }
-          if (senderPsid in searchUrls[itemToDelete].sender) {
+          if (senderPsid in searchUrls[itemToDelete].senderIDs) {
             delete searchUrls[itemToDelete].senderIDs[senderPsid];
           } else {
             throw new Error('Item not being searched by user');
