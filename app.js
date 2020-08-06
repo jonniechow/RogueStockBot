@@ -21,7 +21,7 @@
 
 require('dotenv').config();
 
-const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
+const {PAGE_ACCESS_TOKEN} = process.env;
 // Imports dependencies and set up http server
 const request = require('request');
 const express = require('express');
@@ -49,7 +49,7 @@ const app = express().use(bodyParser.json());
 const userToID = {};
 let startTime;
 // Delay in seconds
-const delay = 10;
+const delay = 30;
 // Limit of iteems
 const itemLimit = 10;
 // let db;

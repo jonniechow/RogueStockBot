@@ -1175,6 +1175,15 @@ const searchUrls = {
     last_avail: null,
     category: 'acc',
   },
+  'plate wagon': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Rogue 26 ER Wagon Wheel Pair',
+    link: 'https://www.roguefitness.com/rogue-26-er-wagon-wheel-pair',
+    last_avail: null,
+    status: 'new',
+    category: 'plate',
+  },
   'camber bar': {
     type: 'single',
     senderIDs: {},
