@@ -32,11 +32,18 @@ const fs = require('fs');
 const readline = require('readline');
 const Stream = require('stream');
 const fuzzyset = require('fuzzyset.js');
+// const mongodb = require('mongodb');
 const searchUrls = require('./item-urls');
 const uselessItems = require('./useless-items');
 const {getRequestDataFromJS} = require('./helper');
 
 const app = express().use(bodyParser.json());
+
+// const mongoUrl = process.env.MONGO_URL;
+// const client = new mongodb.MongoClient(mongoUrl, {
+//   useUnifiedTopology: true,
+//   useNewUrlParser: true,
+// });
 
 // Dictionary of user_id to items they are searching
 const userToID = {};
@@ -45,6 +52,9 @@ let startTime;
 const delay = 10;
 // Limit of iteems
 const itemLimit = 10;
+// let db;
+// let itemData;
+// let userData;
 
 app.set('view engine', 'ejs');
 
@@ -72,6 +82,40 @@ function getTimeDiff(startingTime) {
   const timeElapsedStr = `${timeElapsed} days ${hours}:${minutes}:${seconds}`;
   return timeElapsedStr;
 }
+
+// function updateDatabase() {
+//   const itemCollection = db.collection('items');
+//   Object.keys(searchUrls).forEach((item) => {
+//     const itemProps = searchUrls[item];
+//     itemCollection.updateOne(
+//       {shortName: item},
+//       {
+//         $setOnInsert: {
+//           type: itemProps.type,
+//           productName: itemProps.product_name,
+//           link: itemProps.link,
+//           category: itemProps.category,
+//           lastAvail: itemProps.lastAvail,
+//         },
+//       },
+//       {upsert: true},
+//     );
+//   });
+//   itemCollection
+//     .find()
+//     .toArray()
+//     .then((items) => {
+//       console.log(`Successfully found ${items.length} documents.`);
+//       itemData = items;
+//     })
+//     .catch((err) => console.log(`Failed to find ${err}`));
+// }
+
+// client.connect((err) => {
+//   if (err) throw err;
+//   db = client.db('rogue');
+//   updateDatabase();
+// });
 
 function callSendAPI(senderPsid, response) {
   // Construct the message body
@@ -341,6 +385,8 @@ async function handleAllURLs() {
 // Handles messages from sender
 function handleMessage(senderPsid, receivedMessage) {
   let response;
+  // let userCollection = db.collection('users');
+  // let itemCollection = db.collection('items');
 
   // Checks if the message contains text
   if (receivedMessage.text) {
