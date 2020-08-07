@@ -241,6 +241,9 @@ async function handleAllURLs() {
       return;
     }
     const data = await getDataFromURL(item);
+    if (data.length === 0) {
+      return;
+    }
     let itemStr = '';
     let writeItemStr = '';
     let inStockCount = 0;
