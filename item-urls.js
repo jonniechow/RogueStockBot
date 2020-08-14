@@ -1098,7 +1098,7 @@ const searchUrls = {
     link:
       'https://www.roguefitness.com/sp3358-plate-storage-long-for-monster-lite',
     last_avail: null,
-    status: 'new',
+
     category: 'ml',
   },
   'ml pin pipe': {
@@ -1181,7 +1181,7 @@ const searchUrls = {
     product_name: 'Rogue 26 ER Wagon Wheel Pair',
     link: 'https://www.roguefitness.com/rogue-26-er-wagon-wheel-pair',
     last_avail: null,
-    status: 'new',
+
     category: 'plate',
   },
   'camber bar': {
@@ -1368,7 +1368,7 @@ const searchUrls = {
     product_name: 'Rogue 25MM IWF Olympic Weightlifting Bar - Cerakote',
     link: 'https://www.roguefitness.com/rogue-25mm-iwf-oly-bar-cerakote',
     last_avail: null,
-    status: 'new',
+
     category: 'barbell',
   },
   'barbell westside': {
@@ -1377,7 +1377,7 @@ const searchUrls = {
     product_name: 'Rogue Westside Power Bar 2.0',
     link: 'https://www.roguefitness.com/rogue-westside-power-bar-2-0',
     last_avail: null,
-    status: 'new',
+
     category: 'barbell',
   },
   'barbell toomey': {
@@ -1488,8 +1488,90 @@ const searchUrls = {
     product_name: 'Rogue P-4 Pull-up System',
     link: 'https://www.roguefitness.com/p4-pullup-system',
     last_avail: null,
+
+    category: 'acc',
+  },
+  'barbell ssb': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'SB-1 - Rogue Safety Squat Bar',
+    link: 'https://www.roguefitness.com/sb-1-rogue-safety-squat-bar',
+    last_avail: null,
+    status: 'new',
+
+    category: 'barbell',
+  },
+  'm socket': {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'Rogue Monster Socket Pull-up Bar',
+    link: 'https://www.roguefitness.com/rogue-monster-socket-pull-up-bar',
+    last_avail: null,
+    status: 'new',
+    category: 'm',
+  },
+  'ml socket': {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'Rogue Monster Lite Socket Pull-up Bar',
+    link: 'https://www.roguefitness.com/rogue-monster-lite-socket-pull-up-bar',
+    last_avail: null,
+    status: 'new',
+    category: 'ml',
+  },
+  'm socket curl': {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'Rogue Monster Socket Pull-up Curl Bar',
+    link: 'https://www.roguefitness.com/monster-socket-pull-up-bar-curl-bar',
+    last_avail: null,
+    status: 'new',
+    category: 'm',
+  },
+  'ml socket curl': {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'Rogue Monster Lite Socket Pull-up Curl Bar',
+    link: 'https://www.roguefitness.com/ml-socket-pull-up-bar-curl-bar',
+    last_avail: null,
+    status: 'new',
+    category: 'ml',
+  },
+  'm band pegs': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Monster Band Peg 2.0 - 4 Pack',
+    link: 'https://www.roguefitness.com/monster-band-pegs-2-0-4-pack',
+    last_avail: null,
+    status: 'new',
+    category: 'm',
+  },
+  'speed bag': {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'Rogue Rig Mount Speed Bag Platforms',
+    link: 'https://www.roguefitness.com/rogue-rig-mount-speed-bag-platforms',
+    last_avail: null,
     status: 'new',
     category: 'acc',
+  },
+  'ml wall mount kit': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Monster Lite Rack Wall Mount Kit',
+    link: 'https://www.roguefitness.com/monster-lite-rack-wall-mount-kit',
+    last_avail: null,
+    status: 'new',
+    category: 'ml',
+  },
+  'dumbbells urethane': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue Urethane Dumbbells',
+    link: 'https://www.roguefitness.com/rogue-urethane-dumbbells-new',
+    last_avail: null,
+    status: 'new',
+    category: 'cond',
   },
   'uk echo color': {
     type: 'multi',
@@ -1514,7 +1596,7 @@ const searchUrls = {
     product_name: 'Rogue P-4 Pull-up System',
     link: 'https://www.rogueeurope.eu/rogue-p-4-pull-up-system',
     last_avail: null,
-    status: 'new',
+
     category: 'uk',
   },
   'uk rr plate': {

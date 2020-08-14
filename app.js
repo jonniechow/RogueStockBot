@@ -22,6 +22,7 @@
 require('dotenv').config();
 
 const {PAGE_ACCESS_TOKEN} = process.env;
+// const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require('request');
 const express = require('express');
@@ -230,6 +231,7 @@ async function getDataFromURL(item) {
   } catch (error) {
     console.log(`Error: ${error}`);
   }
+  // console.log(items);
   return items;
 }
 
@@ -275,11 +277,11 @@ async function handleAllURLs() {
         avail = decodeURI('\u2705');
         inStockCount += 1;
         writeItemStr += `${singleItem.name} ${avail}, `;
-        itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock: ${avail}\n \n`;
+        // itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock: ${avail}\n \n`;
         // Update item's last availablity to current time
         searchUrls[item].last_avail = new Date();
       }
-      // itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock:${avail}\n \n`;
+      itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock:${avail}\n \n`;
     });
 
     // No items found, everything sold out
