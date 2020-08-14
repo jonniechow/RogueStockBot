@@ -277,11 +277,11 @@ async function handleAllURLs() {
         avail = decodeURI('\u2705');
         inStockCount += 1;
         writeItemStr += `${singleItem.name} ${avail}, `;
-        // itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock: ${avail}\n \n`;
+        itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock: ${avail}\n \n`;
         // Update item's last availablity to current time
         searchUrls[item].last_avail = new Date();
       }
-      itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock:${avail}\n \n`;
+      // itemStr += `${singleItem.name}\n${singleItem.price}\nIn stock:${avail}\n \n`;
     });
 
     // No items found, everything sold out
