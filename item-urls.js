@@ -1497,7 +1497,6 @@ const searchUrls = {
     product_name: 'SB-1 - Rogue Safety Squat Bar',
     link: 'https://www.roguefitness.com/sb-1-rogue-safety-squat-bar',
     last_avail: null,
-    status: 'new',
 
     category: 'barbell',
   },
@@ -1507,7 +1506,7 @@ const searchUrls = {
     product_name: 'Rogue Monster Socket Pull-up Bar',
     link: 'https://www.roguefitness.com/rogue-monster-socket-pull-up-bar',
     last_avail: null,
-    status: 'new',
+
     category: 'm',
   },
   'ml socket': {
@@ -1516,7 +1515,7 @@ const searchUrls = {
     product_name: 'Rogue Monster Lite Socket Pull-up Bar',
     link: 'https://www.roguefitness.com/rogue-monster-lite-socket-pull-up-bar',
     last_avail: null,
-    status: 'new',
+
     category: 'ml',
   },
   'm socket curl': {
@@ -1525,7 +1524,7 @@ const searchUrls = {
     product_name: 'Rogue Monster Socket Pull-up Curl Bar',
     link: 'https://www.roguefitness.com/monster-socket-pull-up-bar-curl-bar',
     last_avail: null,
-    status: 'new',
+
     category: 'm',
   },
   'ml socket curl': {
@@ -1534,7 +1533,7 @@ const searchUrls = {
     product_name: 'Rogue Monster Lite Socket Pull-up Curl Bar',
     link: 'https://www.roguefitness.com/ml-socket-pull-up-bar-curl-bar',
     last_avail: null,
-    status: 'new',
+
     category: 'ml',
   },
   'm band pegs': {
@@ -1543,7 +1542,7 @@ const searchUrls = {
     product_name: 'Monster Band Peg 2.0 - 4 Pack',
     link: 'https://www.roguefitness.com/monster-band-pegs-2-0-4-pack',
     last_avail: null,
-    status: 'new',
+
     category: 'm',
   },
   'speed bag': {
@@ -1552,7 +1551,7 @@ const searchUrls = {
     product_name: 'Rogue Rig Mount Speed Bag Platforms',
     link: 'https://www.roguefitness.com/rogue-rig-mount-speed-bag-platforms',
     last_avail: null,
-    status: 'new',
+
     category: 'acc',
   },
   'ml wall mount kit': {
@@ -1561,7 +1560,7 @@ const searchUrls = {
     product_name: 'Monster Lite Rack Wall Mount Kit',
     link: 'https://www.roguefitness.com/monster-lite-rack-wall-mount-kit',
     last_avail: null,
-    status: 'new',
+
     category: 'ml',
   },
   'dumbbells urethane': {
@@ -1570,8 +1569,36 @@ const searchUrls = {
     product_name: 'Rogue Urethane Dumbbells',
     link: 'https://www.roguefitness.com/rogue-urethane-dumbbells-new',
     last_avail: null,
-    status: 'new',
+
     category: 'cond',
+  },
+  'squat stand storage pair': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Rogue Squat Stand Base Storage - Pair',
+    link: 'https://www.roguefitness.com/rogue-squat-stand-base-storage-pair',
+    last_avail: null,
+    status: 'new',
+    category: 'acc',
+  },
+  'horizontal plate rack': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Rogue Horizontal Plate Rack 2.0',
+    link: 'https://www.roguefitness.com/horizontal-plate-rack-2-0',
+    last_avail: null,
+    status: 'new',
+    category: 'acc',
+  },
+  'plate hi-temp comp': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue Hi-Temp Competition Training Plates',
+    link:
+      'https://www.roguefitness.com/rogue-hi-temp-competition-training-plates',
+    last_avail: null,
+    status: 'new',
+    category: 'plate',
   },
   'uk echo color': {
     type: 'multi',
