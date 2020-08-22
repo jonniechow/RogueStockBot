@@ -16,8 +16,10 @@
     "mongodb": "^3.6.0",
     "mysql": "^2.18.1",
     "nightmare": "^3.0.2",
+    "read-last-lines": "^1.7.2",
     "request": "^2.88.2",
-    "should": "^13.2.3"
+    "should": "^13.2.3",
+    "split-lines": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "^7.5.0",
