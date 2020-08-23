@@ -1600,6 +1600,15 @@ const searchUrls = {
     status: 'new',
     category: 'plate',
   },
+  'plate fractional lb': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue LB Fractional Plates',
+    link: 'https://www.roguefitness.com/rogue-lb-fractional-plates',
+    last_avail: null,
+    status: 'new',
+    category: 'plate',
+  },
   'uk echo color': {
     type: 'multi',
     senderIDs: {},
