@@ -30,9 +30,11 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const readline = require('readline');
+const Stream = require('stream');
 const fuzzyset = require('fuzzyset.js');
-const readLastLines = require('read-last-lines');
-const splitLines = require('split-lines');
+// const readLastLines = require('read-last-lines');
+// const splitLines = require('split-lines');
 // const mongodb = require('mongodb');
 const searchUrls = require('./item-urls');
 const uselessItems = require('./useless-items');
@@ -625,23 +627,24 @@ app.get('/items-in-stock', (req, res) => {
 });
 
 app.get('/stock-updates', (req, res) => {
+  const instream = fs.createReadStream('stock-log.txt');
+  const outstream = new Stream();
+  const rl = readline.createInterface(instream, outstream);
   const dataFromLog = {item_info: []};
-  readLastLines.read('stock-log.txt', 100).then((lines) => {
-    splitLines(lines).forEach((line) => {
-      if (line === '') {
-        return;
-      }
-      const words = line.split('|');
-      const items = words[2].split(',');
-      const stockUpdatesInfo = {
-        time: words[0],
-        name: words[1],
-        items,
-        link: words[3],
-      };
-      dataFromLog.item_info.push(stockUpdatesInfo);
-    });
-    dataFromLog.item_info.reverse();
+  rl.on('line', (line) => {
+    // Process line here
+    const words = line.split('|');
+    const items = words[2].split(',');
+    const stockUpdatesInfo = {
+      time: words[0],
+      name: words[1],
+      items,
+      link: words[3],
+    };
+    dataFromLog.item_info.unshift(stockUpdatesInfo);
+  });
+  rl.on('close', function closeFile() {
+    dataFromLog.item_info = dataFromLog.item_info.slice(0, 100);
     res.render('stock-updates', {data: dataFromLog});
   });
 });
