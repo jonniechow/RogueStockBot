@@ -1578,7 +1578,7 @@ const searchUrls = {
     product_name: 'Rogue Squat Stand Base Storage - Pair',
     link: 'https://www.roguefitness.com/rogue-squat-stand-base-storage-pair',
     last_avail: null,
-    status: 'new',
+
     category: 'acc',
   },
   'horizontal plate rack': {
@@ -1587,7 +1587,7 @@ const searchUrls = {
     product_name: 'Rogue Horizontal Plate Rack 2.0',
     link: 'https://www.roguefitness.com/horizontal-plate-rack-2-0',
     last_avail: null,
-    status: 'new',
+
     category: 'acc',
   },
   'plate hi-temp comp': {
@@ -1597,7 +1597,7 @@ const searchUrls = {
     link:
       'https://www.roguefitness.com/rogue-hi-temp-competition-training-plates',
     last_avail: null,
-    status: 'new',
+
     category: 'plate',
   },
   'plate fractional lb': {
@@ -1606,8 +1606,53 @@ const searchUrls = {
     product_name: 'Rogue LB Fractional Plates',
     link: 'https://www.roguefitness.com/rogue-lb-fractional-plates',
     last_avail: null,
+
+    category: 'plate',
+  },
+  'conversion s1 s2': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'S-1 to S-2 Conversion Kit',
+    link: 'https://www.roguefitness.com/s-1-to-s-2-conversion-kit',
+    last_avail: null,
+    status: 'new',
+    category: 'rack',
+  },
+  'barbell castro': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'The Castro Bar',
+    link: 'https://www.roguefitness.com/the-castro-bar',
+    last_avail: null,
+    status: 'new',
+    category: 'barbell',
+  },
+  'm knurled knob': {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'Monster Knurled Knob',
+    link: 'https://www.roguefitness.com/monster-knurled-knob',
+    last_avail: null,
+    status: 'new',
+    category: 'm',
+  },
+  'plate york': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'York Legacy Iron Plates',
+    link: 'https://www.roguefitness.com/york-legacy-iron-plates',
+    last_avail: null,
     status: 'new',
     category: 'plate',
+  },
+  'plate tree york': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'York Olympic A-Frame Plate Tree',
+    link: 'https://www.roguefitness.com/york-olympic-a-frame-plate-tree',
+    last_avail: null,
+    status: 'new',
+    category: 'acc',
   },
   'uk echo color': {
     type: 'multi',

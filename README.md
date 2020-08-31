@@ -27,6 +27,11 @@ Has this project helped you? Consider donating!
 
 ### Updates
 
+v 2.4
+
+- Updated bot to have a 5 min cooldown between checks
+- Bot is now less reliable due to Rogue's rate limiting
+
 v 2.3
 
 - Added new items

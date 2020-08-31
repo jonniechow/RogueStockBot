@@ -26,11 +26,11 @@ const {PAGE_ACCESS_TOKEN} = process.env;
 // Imports dependencies and set up http server
 const request = require('request');
 const express = require('express');
-const axios = require('axios');
 const cheerio = require('cheerio');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const readline = require('readline');
+const superagent = require('superagent');
 const Stream = require('stream');
 const fuzzyset = require('fuzzyset.js');
 // const readLastLines = require('read-last-lines');
@@ -52,7 +52,7 @@ const app = express().use(bodyParser.json());
 const userToID = {};
 let startTime;
 // Delay in seconds
-const delay = 30;
+const delay = 300;
 // Limit of iteems
 const itemLimit = 10;
 // let db;
@@ -156,14 +156,37 @@ async function getDataFromURL(item) {
   const itemLink = itemUrlDict.link;
   let items = [];
   try {
-    const response = await axios.get(itemLink);
-    const redirectCount = response.request._redirectable._redirectCount;
+    let redirectCount = 0;
+    let tooManyRequests = false;
+    const appleUserAgent =
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9';
+    const response = await superagent
+      .get(itemLink)
+      .set('User-Agent', appleUserAgent)
+      .redirects(0)
+      .catch((err, res) => {
+        // Too many requests
+        if (err.status === 429) {
+          tooManyRequests = true;
+        }
+        // Redirects
+        if (err.status === 301) {
+          redirectCount = 1;
+        }
+      });
+    if (tooManyRequests) {
+      return [];
+    }
+    if (redirectCount === 1) {
+      items[0] = {};
+      items[0].in_stock = 'Notify Me';
+      return items;
+    }
     const itemType = itemUrlDict.type;
-
     // console.log("Looking for: " + item);
     // console.log(redirectCount);
     // console.log("Web scraping data from: " + itemLink);
-    const $ = cheerio.load(response.data);
+    const $ = cheerio.load(response.text);
 
     // Multiple items in a page
     if (itemType === 'multi') {
@@ -198,25 +221,25 @@ async function getDataFromURL(item) {
     } else if (itemType === 'grab bag') {
       // Boneyard page exists
       if (redirectCount === 0) {
-        items = getRequestDataFromJS(response.data, 'RogueColorSwatches');
+        items = getRequestDataFromJS(response.text, 'RogueColorSwatches');
       } else {
         items[0] = {};
         items[0].in_stock = 'Notify Me';
       }
     } else if (itemType === 'cerakote') {
-      items = getRequestDataFromJS(response.data, 'relatedColorSwatches');
+      items = getRequestDataFromJS(response.text, 'relatedColorSwatches');
     } else if (itemType === 'monster bench') {
-      items = getRequestDataFromJS(response.data, 'RogueColorSwatches', 5);
+      items = getRequestDataFromJS(response.text, 'RogueColorSwatches', 5);
     } else if (itemType === 'rmlc') {
-      items = getRequestDataFromJS(response.data, 'RogueColorSwatches', 11);
+      items = getRequestDataFromJS(response.text, 'RogueColorSwatches', 11);
     } else if (itemType === 'trolley') {
-      items = getRequestDataFromJS(response.data, 'RogueColorSwatches', 4);
+      items = getRequestDataFromJS(response.text, 'RogueColorSwatches', 4);
     } else if (itemType === 'db15') {
-      items = getRequestDataFromJS(response.data, 'RogueColorSwatches', 2);
+      items = getRequestDataFromJS(response.text, 'RogueColorSwatches', 2);
     } else if (itemType === 'custom2') {
-      items = getRequestDataFromJS(response.data, 'RogueColorSwatches');
+      items = getRequestDataFromJS(response.text, 'RogueColorSwatches');
     } else if (itemType === 'custom') {
-      items = getRequestDataFromJS(response.data, 'ColorSwatches');
+      items = getRequestDataFromJS(response.text, 'ColorSwatches');
     } else if (itemType === 'ironmaster') {
       items[0] = {};
       items[0].name = $('.product_title').text();
@@ -231,7 +254,7 @@ async function getDataFromURL(item) {
       items[0].in_stock = $('.product-options-bottom button').text();
     }
   } catch (error) {
-    console.log(`Error: ${error}`);
+    console.log(`Error getData: ${error}`);
   }
   // console.log(items);
   return items;
@@ -246,6 +269,7 @@ async function handleAllURLs() {
     }
     const data = await getDataFromURL(item);
     if (data.length === 0) {
+      console.log('here');
       return;
     }
     let itemStr = '';
@@ -436,6 +460,7 @@ function handleMessage(senderPsid, receivedMessage) {
           `roguestockbot.com/current-items\n` +
           `2) Reply back to this bot with each command one by one\n` +
           `3) The bot will reply back with an initial check then message you whenever there's an update\n\n` +
+          `4) If you don't get first check message, then rate limiting is in place` +
           `Type 'status' to check what items you are searching\n` +
           `Type 'stop {item command}' to stop checking a specific item. Ex: 'stop barbell op ss'\n` +
           `Type 'stop' to stop checking all items\n`,
