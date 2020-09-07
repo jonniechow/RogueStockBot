@@ -127,7 +127,6 @@ function callSendAPI(senderPsid, response) {
       id: senderPsid,
     },
     message: response,
-    tag: 'CONFIRMED_EVENT_UPDATE',
   };
 
   // Send the HTTP request to the Messenger Platform
