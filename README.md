@@ -27,6 +27,10 @@ Has this project helped you? Consider donating!
 
 ### Updates
 
+v 2.5
+
+- Added FAQ section
+
 v 2.4
 
 - Updated bot to have a 5 min cooldown between checks

@@ -1615,7 +1615,7 @@ const searchUrls = {
     product_name: 'S-1 to S-2 Conversion Kit',
     link: 'https://www.roguefitness.com/s-1-to-s-2-conversion-kit',
     last_avail: null,
-    status: 'new',
+
     category: 'rack',
   },
   'barbell castro': {
@@ -1624,7 +1624,7 @@ const searchUrls = {
     product_name: 'The Castro Bar',
     link: 'https://www.roguefitness.com/the-castro-bar',
     last_avail: null,
-    status: 'new',
+
     category: 'barbell',
   },
   'm knurled knob': {
@@ -1633,7 +1633,7 @@ const searchUrls = {
     product_name: 'Monster Knurled Knob',
     link: 'https://www.roguefitness.com/monster-knurled-knob',
     last_avail: null,
-    status: 'new',
+
     category: 'm',
   },
   'plate york': {
@@ -1642,7 +1642,7 @@ const searchUrls = {
     product_name: 'York Legacy Iron Plates',
     link: 'https://www.roguefitness.com/york-legacy-iron-plates',
     last_avail: null,
-    status: 'new',
+
     category: 'plate',
   },
   'plate tree york': {
@@ -1651,8 +1651,78 @@ const searchUrls = {
     product_name: 'York Olympic A-Frame Plate Tree',
     link: 'https://www.roguefitness.com/york-olympic-a-frame-plate-tree',
     last_avail: null,
-    status: 'new',
+
     category: 'acc',
+  },
+  'westside scout hyper': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Westside Scout Hyper',
+    link: 'https://www.roguefitness.com/westside-scout-hyper',
+    status: 'new',
+    last_avail: null,
+
+    category: 'acc',
+  },
+  'barbell freedom 25mm': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Rogue 25MM Freedom Bar',
+    link: 'https://www.roguefitness.com/rogue-25-mm-freedom-bar',
+    status: 'new',
+    last_avail: null,
+
+    category: 'barbell',
+  },
+  'plate urethane 12-sided': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue 12-Sided Urethane Grip Plate',
+    link: 'https://www.roguefitness.com/rogue-12-sided-urethane-grip-plates',
+    status: 'new',
+    last_avail: null,
+
+    category: 'plate',
+  },
+  'barbell t-15': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Rogue T-15LB Technique Bar',
+    link: 'https://www.roguefitness.com/rogue-t-15-lb-technique-bar',
+    status: 'new',
+    last_avail: null,
+
+    category: 'barbell',
+  },
+  'lp-2': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Rogue LP-2 Lat Pulldown / Low Row',
+    link: 'https://www.roguefitness.com/rogue-lp-2-lat-pulldown-low-row',
+    status: 'new',
+    last_avail: null,
+
+    category: 'acc',
+  },
+  'm lat pulldown stand alone': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Monster Lat Pulldown/Low Row (Stand Alone)',
+    link: 'https://www.roguefitness.com/lat-pulldown-low-row-stand-alone',
+    status: 'new',
+    last_avail: null,
+
+    category: 'm',
+  },
+  'm lat pulldown rack mounted': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Monster Lat Pulldown/Low Row (Rack Mounted)',
+    link: 'https://www.roguefitness.com/lat-pulldown-low-row-rackmounted',
+    status: 'new',
+    last_avail: null,
+
+    category: 'm',
   },
   'uk echo color': {
     type: 'multi',

@@ -674,6 +674,10 @@ app.get('/stock-updates', (req, res) => {
   });
 });
 
+app.get('/faq', (req, res) => {
+  res.render('faq');
+});
+
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => {
   // Parse the request body from the POST
