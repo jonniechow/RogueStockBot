@@ -1659,7 +1659,7 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Westside Scout Hyper',
     link: 'https://www.roguefitness.com/westside-scout-hyper',
-    status: 'new',
+
     last_avail: null,
 
     category: 'acc',
@@ -1669,7 +1669,7 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Rogue 25MM Freedom Bar',
     link: 'https://www.roguefitness.com/rogue-25-mm-freedom-bar',
-    status: 'new',
+
     last_avail: null,
 
     category: 'barbell',
@@ -1679,7 +1679,7 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Rogue 12-Sided Urethane Grip Plate',
     link: 'https://www.roguefitness.com/rogue-12-sided-urethane-grip-plates',
-    status: 'new',
+
     last_avail: null,
 
     category: 'plate',
@@ -1689,7 +1689,7 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Rogue T-15LB Technique Bar',
     link: 'https://www.roguefitness.com/rogue-t-15-lb-technique-bar',
-    status: 'new',
+
     last_avail: null,
 
     category: 'barbell',
@@ -1699,7 +1699,7 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Rogue LP-2 Lat Pulldown / Low Row',
     link: 'https://www.roguefitness.com/rogue-lp-2-lat-pulldown-low-row',
-    status: 'new',
+
     last_avail: null,
 
     category: 'acc',
@@ -1709,7 +1709,7 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Monster Lat Pulldown/Low Row (Stand Alone)',
     link: 'https://www.roguefitness.com/lat-pulldown-low-row-stand-alone',
-    status: 'new',
+
     last_avail: null,
 
     category: 'm',
@@ -1719,10 +1719,53 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Monster Lat Pulldown/Low Row (Rack Mounted)',
     link: 'https://www.roguefitness.com/lat-pulldown-low-row-rackmounted',
+    last_avail: null,
+    category: 'm',
+  },
+  'kettlebells rubber': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue Rubber Coated Kettlebells',
+    link: 'https://www.roguefitness.com/rogue-rubber-coated-kettlebells',
     status: 'new',
     last_avail: null,
-
+    category: 'cond',
+  },
+  'ml stabilizer': {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'Monster Lite Stabilizer Kit',
+    link: 'https://www.roguefitness.com/monster-lite-stabilizer-kit',
+    status: 'new',
+    last_avail: null,
+    category: 'ml',
+  },
+  'onnit steel clubs': {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'ONNIT Steel Clubs',
+    link: 'https://www.roguefitness.com/onnit-steel-clubs',
+    status: 'new',
+    last_avail: null,
+    category: 'cond',
+  },
+  'm crossmember': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue Monster Crossmembers',
+    link: 'https://www.roguefitness.com/rogue-monster-crossmembers',
+    status: 'new',
+    last_avail: null,
     category: 'm',
+  },
+  'barbell womens br 2.0': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Rogue 25MM Womens B&R Bar 2.0',
+    link: 'https://www.roguefitness.com/rogue-25mm-womens-b-r-bar',
+    status: 'new',
+    last_avail: null,
+    category: 'barbell',
   },
   'uk echo color': {
     type: 'multi',
@@ -1900,6 +1943,24 @@ const searchUrls = {
       'https://www.rogueaustralia.com.au/black-concept-2-model-d-rower-pm5-au',
     last_avail: null,
 
+    category: 'au',
+  },
+  'au curl bar': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'AU Rogue Curl Bar',
+    link: 'https://www.rogueaustralia.com.au/rogue-curl-bar-au',
+    last_avail: null,
+    status: 'new',
+    category: 'au',
+  },
+  'au plate echo color': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'AU Rogue Color Echo Bumper Plates',
+    link: 'https://www.rogueaustralia.com.au/rogue-color-echo-bumper-plate-au',
+    last_avail: null,
+    status: 'new',
     category: 'au',
   },
   'barbell squat': {
