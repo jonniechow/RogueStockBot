@@ -18,6 +18,7 @@
     "mysql": "^2.18.1",
     "nightmare": "^3.0.2",
     "node-fetch": "^2.6.1",
+    "random-useragent": "^0.5.0",
     "read-last-lines": "^1.7.2",
     "request": "^2.88.2",
     "should": "^13.2.3",

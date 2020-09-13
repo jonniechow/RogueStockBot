@@ -33,6 +33,7 @@ const readline = require('readline');
 const superagent = require('superagent');
 const Stream = require('stream');
 const fuzzyset = require('fuzzyset.js');
+const randomUseragent = require('random-useragent');
 // const readLastLines = require('read-last-lines');
 // const splitLines = require('split-lines');
 // const mongodb = require('mongodb');
@@ -52,7 +53,7 @@ const app = express().use(bodyParser.json());
 const userToID = {};
 let startTime;
 // Delay in seconds
-const delay = 300;
+const delay = 10;
 // Limit of iteems
 const itemLimit = 10;
 // let db;
@@ -157,11 +158,9 @@ async function getDataFromURL(item) {
   try {
     let redirectCount = 0;
     let tooManyRequests = false;
-    const appleUserAgent =
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9';
     const response = await superagent
       .get(itemLink)
-      .set('User-Agent', appleUserAgent)
+      .set('User-Agent', randomUseragent.getRandom())
       .redirects(0)
       .catch((err, res) => {
         // Too many requests
@@ -268,7 +267,6 @@ async function handleAllURLs() {
     }
     const data = await getDataFromURL(item);
     if (data.length === 0) {
-      console.log('here');
       return;
     }
     let itemStr = '';
@@ -489,6 +487,7 @@ function handleMessage(senderPsid, receivedMessage) {
             userToID[senderPsid].products[key],
           )}\n\n`;
       });
+      searchStr += `Remember to respond to the bot daily! Must respond within last 24 hours to bot to receive notifications\n\n`;
       searchStr += `Last reset: ${startTime}\n\nIf this bot has helped you get your items please consider donating!\npaypal.me/roguestockbot`;
       response = {
         text: searchStr,
