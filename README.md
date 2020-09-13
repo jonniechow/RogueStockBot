@@ -27,6 +27,11 @@ Has this project helped you? Consider donating!
 
 ### Updates
 
+v 2.6
+
+- Changed delay to 10 seconds
+- Updated to bypass rate limiting check hopefully for now
+
 v 2.5
 
 - Added FAQ section
