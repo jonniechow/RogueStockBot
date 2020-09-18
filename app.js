@@ -30,12 +30,14 @@ const cheerio = require('cheerio');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const readline = require('readline');
-const superagent = require('superagent');
 const Stream = require('stream');
 const fuzzyset = require('fuzzyset.js');
-const randomUseragent = require('random-useragent');
-// const readLastLines = require('read-last-lines');
-// const splitLines = require('split-lines');
+const cloudscraper = require('cloudscraper').defaults({
+  maxRedirects: 0,
+  agentOptions: {
+    ciphers: 'ECDHE-ECDSA-AES128-GCM-SHA256',
+  },
+});
 // const mongodb = require('mongodb');
 const searchUrls = require('./item-urls');
 const uselessItems = require('./useless-items');
@@ -53,7 +55,7 @@ const app = express().use(bodyParser.json());
 const userToID = {};
 let startTime;
 // Delay in seconds
-const delay = 10;
+const delay = 30;
 // Limit of iteems
 const itemLimit = 10;
 // let db;
@@ -157,24 +159,18 @@ async function getDataFromURL(item) {
   let items = [];
   try {
     let redirectCount = 0;
-    let tooManyRequests = false;
-    const response = await superagent
+    // let tooManyRequests = false;
+    const response = await cloudscraper
       .get(itemLink)
-      .set('User-Agent', randomUseragent.getRandom())
-      .redirects(0)
-      .catch((err, res) => {
-        // Too many requests
-        if (err.status === 429) {
-          tooManyRequests = true;
-        }
-        // Redirects
-        if (err.status === 301) {
-          redirectCount = 1;
-        }
+      .then((htmlString) => {
+        return htmlString;
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(`Error getData ${item}: ${err}`);
+        redirectCount = 1;
       });
-    if (tooManyRequests) {
-      return [];
-    }
+
     if (redirectCount === 1) {
       items[0] = {};
       items[0].in_stock = 'Notify Me';
@@ -184,7 +180,7 @@ async function getDataFromURL(item) {
     // console.log("Looking for: " + item);
     // console.log(redirectCount);
     // console.log("Web scraping data from: " + itemLink);
-    const $ = cheerio.load(response.text);
+    const $ = cheerio.load(response);
 
     // Multiple items in a page
     if (itemType === 'multi') {
@@ -225,19 +221,19 @@ async function getDataFromURL(item) {
         items[0].in_stock = 'Notify Me';
       }
     } else if (itemType === 'cerakote') {
-      items = getRequestDataFromJS(response.text, 'relatedColorSwatches');
+      items = getRequestDataFromJS(response, 'relatedColorSwatches');
     } else if (itemType === 'monster bench') {
-      items = getRequestDataFromJS(response.text, 'RogueColorSwatches', 5);
+      items = getRequestDataFromJS(response, 'RogueColorSwatches', 5);
     } else if (itemType === 'rmlc') {
-      items = getRequestDataFromJS(response.text, 'RogueColorSwatches', 11);
+      items = getRequestDataFromJS(response, 'RogueColorSwatches', 11);
     } else if (itemType === 'trolley') {
-      items = getRequestDataFromJS(response.text, 'RogueColorSwatches', 4);
+      items = getRequestDataFromJS(response, 'RogueColorSwatches', 4);
     } else if (itemType === 'db15') {
-      items = getRequestDataFromJS(response.text, 'RogueColorSwatches', 2);
+      items = getRequestDataFromJS(response, 'RogueColorSwatches', 2);
     } else if (itemType === 'custom2') {
-      items = getRequestDataFromJS(response.text, 'RogueColorSwatches');
+      items = getRequestDataFromJS(response, 'RogueColorSwatches');
     } else if (itemType === 'custom') {
-      items = getRequestDataFromJS(response.text, 'ColorSwatches');
+      items = getRequestDataFromJS(response, 'ColorSwatches');
     } else if (itemType === 'ironmaster') {
       items[0] = {};
       items[0].name = $('.product_title').text();
@@ -252,7 +248,7 @@ async function getDataFromURL(item) {
       items[0].in_stock = $('.product-options-bottom button').text();
     }
   } catch (error) {
-    console.log(`Error getData: ${error}`);
+    console.log(`Error getData ${item}: ${error}`);
   }
   // console.log(items);
   return items;
