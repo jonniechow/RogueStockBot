@@ -60,7 +60,7 @@ const app = express().use(bodyParser.json());
 const userToID = {};
 let startTime;
 // Delay in seconds
-const delay = 30;
+const delay = 10;
 // Limit of iteems
 const itemLimit = 10;
 // let db;
@@ -165,6 +165,8 @@ async function getDataFromURL(item) {
   try {
     let redirectCount = 0;
     // let tooManyRequests = false;
+
+    console.log(randProxy);
 
     const response = await cloudscraper
       .get(itemLink)
