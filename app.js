@@ -174,6 +174,7 @@ async function getDataFromURL(item) {
         return htmlString;
       })
       .catch((err) => {
+        console.error(err);
         console.log(`Error getData ${item}: ${err.cause}`);
 
         redirectCount = 1;
