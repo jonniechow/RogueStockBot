@@ -32,16 +32,16 @@ const fs = require('fs');
 const readline = require('readline');
 const Stream = require('stream');
 const fuzzyset = require('fuzzyset.js');
-const ProxyList = require('free-proxy');
+// const ProxyList = require('free-proxy');
 
-const proxies = new ProxyList();
-const randProxy = proxies.random();
+// const proxies = new ProxyList();
+// const randProxy = proxies.random();
 const cloudscraper = require('cloudscraper').defaults({
   maxRedirects: 0,
   agentOptions: {
     ciphers: 'ECDHE-ECDSA-AES128-GCM-SHA256',
   },
-  proxy: randProxy.url,
+  // proxy: randProxy.url,
 });
 // const mongodb = require('mongodb');
 const searchUrls = require('./item-urls');
@@ -166,7 +166,7 @@ async function getDataFromURL(item) {
     let redirectCount = 0;
     // let tooManyRequests = false;
 
-    console.log(randProxy);
+    // console.log(randProxy);
 
     const response = await cloudscraper
       .get(itemLink)
@@ -174,7 +174,7 @@ async function getDataFromURL(item) {
         return htmlString;
       })
       .catch((err) => {
-        console.log(`Error getData ${item}: ${err}`);
+        console.log(`Error getData ${item}: ${err.cause}`);
 
         redirectCount = 1;
       });
