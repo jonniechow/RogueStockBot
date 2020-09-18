@@ -21,8 +21,8 @@
 
 require('dotenv').config();
 
-const {PAGE_ACCESS_TOKEN} = process.env;
-// const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
+// const {PAGE_ACCESS_TOKEN} = process.env;
+const PAGE_ACCESS_TOKEN = process.env.TEST_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const request = require('request');
 const express = require('express');
@@ -33,7 +33,6 @@ const readline = require('readline');
 const Stream = require('stream');
 const fuzzyset = require('fuzzyset.js');
 // const ProxyList = require('free-proxy');
-
 // const proxies = new ProxyList();
 // const randProxy = proxies.random();
 const cloudscraper = require('cloudscraper').defaults({
@@ -41,7 +40,7 @@ const cloudscraper = require('cloudscraper').defaults({
   agentOptions: {
     ciphers: 'ECDHE-ECDSA-AES128-GCM-SHA256',
   },
-  // proxy: randProxy.url,
+  // proxy: "localhost:8000",
 });
 // const mongodb = require('mongodb');
 const searchUrls = require('./item-urls');
@@ -164,9 +163,6 @@ async function getDataFromURL(item) {
   let items = [];
   try {
     let redirectCount = 0;
-    // let tooManyRequests = false;
-
-    // console.log(randProxy);
 
     const response = await cloudscraper
       .get(itemLink)
@@ -174,9 +170,7 @@ async function getDataFromURL(item) {
         return htmlString;
       })
       .catch((err) => {
-        console.error(err.cause);
-        console.log(`Error getData ${item}: ${err.cause}`);
-
+        console.log(`Error getData ${item}: ${err}`);
         redirectCount = 1;
       });
 
@@ -185,6 +179,7 @@ async function getDataFromURL(item) {
       items[0].in_stock = 'Notify Me';
       return items;
     }
+
     const itemType = itemUrlDict.type;
     // console.log("Looking for: " + item);
     // console.log(redirectCount);
@@ -224,7 +219,7 @@ async function getDataFromURL(item) {
     } else if (itemType === 'grab bag') {
       // Boneyard page exists
       if (redirectCount === 0) {
-        items = getRequestDataFromJS(response.text, 'RogueColorSwatches');
+        items = getRequestDataFromJS(response, 'RogueColorSwatches');
       } else {
         items[0] = {};
         items[0].in_stock = 'Notify Me';
