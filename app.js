@@ -59,7 +59,7 @@ const app = express().use(bodyParser.json());
 const userToID = {};
 let startTime;
 // Delay in seconds
-const delay = 30;
+const delay = 45;
 // Limit of iteems
 const itemLimit = 10;
 // let db;
@@ -163,6 +163,7 @@ async function getDataFromURL(item) {
   let items = [];
   try {
     let redirectCount = 0;
+    let captcha = false;
 
     const response = await cloudscraper
       .get(itemLink)
@@ -170,10 +171,16 @@ async function getDataFromURL(item) {
         return htmlString;
       })
       .catch((err) => {
-        console.log(`Error getData ${item}: ${err}`);
+        console.log(`Error getData 1 ${item}: ${err}`);
+        if (err.name === 'CaptchaError') {
+          captcha = true;
+        }
         redirectCount = 1;
       });
 
+    if (captcha) {
+      return [];
+    }
     if (redirectCount === 1) {
       items[0] = {};
       items[0].in_stock = 'Notify Me';
@@ -252,7 +259,7 @@ async function getDataFromURL(item) {
       items[0].in_stock = $('.product-options-bottom button').text();
     }
   } catch (error) {
-    console.log(`Error getData ${item}: ${error}`);
+    console.log(`Error getData 2 ${item}: ${error}`);
   }
   // console.log(items);
   return items;
