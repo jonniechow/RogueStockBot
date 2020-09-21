@@ -83,6 +83,15 @@ const searchUrls = {
     last_avail: null,
     category: 'plate',
   },
+  'plate training 2.0 kg': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue KG Training 2.0 Plates',
+    link: 'https://www.roguefitness.com/rogue-kg-training-2-0-plates',
+    status: 'new',
+    last_avail: null,
+    category: 'plate',
+  },
   'plate echo v2': {
     type: 'multi',
     senderIDs: {},
@@ -1727,7 +1736,7 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Rogue Rubber Coated Kettlebells',
     link: 'https://www.roguefitness.com/rogue-rubber-coated-kettlebells',
-    status: 'new',
+
     last_avail: null,
     category: 'cond',
   },
@@ -1736,7 +1745,7 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Monster Lite Stabilizer Kit',
     link: 'https://www.roguefitness.com/monster-lite-stabilizer-kit',
-    status: 'new',
+
     last_avail: null,
     category: 'ml',
   },
@@ -1745,7 +1754,7 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'ONNIT Steel Clubs',
     link: 'https://www.roguefitness.com/onnit-steel-clubs',
-    status: 'new',
+
     last_avail: null,
     category: 'cond',
   },
@@ -1754,7 +1763,7 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Rogue Monster Crossmembers',
     link: 'https://www.roguefitness.com/rogue-monster-crossmembers',
-    status: 'new',
+
     last_avail: null,
     category: 'm',
   },
@@ -1763,9 +1772,18 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Rogue 25MM Womens B&R Bar 2.0',
     link: 'https://www.roguefitness.com/rogue-25mm-womens-b-r-bar',
-    status: 'new',
+
     last_avail: null,
     category: 'barbell',
+  },
+  'hg axle collar': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue HG 2.0 Axle Collars',
+    link: 'https://www.roguefitness.com/rogue-hg-axle-collars',
+    status: 'new',
+    last_avail: null,
+    category: 'acc',
   },
   'uk echo color': {
     type: 'multi',
@@ -1951,7 +1969,7 @@ const searchUrls = {
     product_name: 'AU Rogue Curl Bar',
     link: 'https://www.rogueaustralia.com.au/rogue-curl-bar-au',
     last_avail: null,
-    status: 'new',
+
     category: 'au',
   },
   'au plate echo color': {
@@ -1960,7 +1978,7 @@ const searchUrls = {
     product_name: 'AU Rogue Color Echo Bumper Plates',
     link: 'https://www.rogueaustralia.com.au/rogue-color-echo-bumper-plate-au',
     last_avail: null,
-    status: 'new',
+
     category: 'au',
   },
   'barbell squat': {
