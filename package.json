@@ -12,6 +12,7 @@
     "dotenv": "^8.2.0",
     "ejs": "^3.1.2",
     "express": "^4.17.1",
+    "free-proxy": "^0.1.6",
     "fuzzyset.js": "^1.0.5",
     "got": "^11.5.2",
     "moment": "^2.24.0",
@@ -25,6 +26,7 @@
     "should": "^13.2.3",
     "split-lines": "^2.0.0",
     "superagent": "^6.0.0",
+    "superagent-proxy": "^2.0.0",
     "tor": "0.0.1"
   },
   "devDependencies": {

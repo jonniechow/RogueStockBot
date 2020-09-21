@@ -32,11 +32,15 @@ const fs = require('fs');
 const readline = require('readline');
 const Stream = require('stream');
 const fuzzyset = require('fuzzyset.js');
+// const ProxyList = require('free-proxy');
+// const proxies = new ProxyList();
+// const randProxy = proxies.random();
 const cloudscraper = require('cloudscraper').defaults({
   maxRedirects: 0,
   agentOptions: {
     ciphers: 'ECDHE-ECDSA-AES128-GCM-SHA256',
   },
+  // proxy: "localhost:8000",
 });
 // const mongodb = require('mongodb');
 const searchUrls = require('./item-urls');
@@ -55,7 +59,7 @@ const app = express().use(bodyParser.json());
 const userToID = {};
 let startTime;
 // Delay in seconds
-const delay = 30;
+const delay = 45;
 // Limit of iteems
 const itemLimit = 10;
 // let db;
@@ -159,23 +163,30 @@ async function getDataFromURL(item) {
   let items = [];
   try {
     let redirectCount = 0;
-    // let tooManyRequests = false;
+    let captcha = false;
+
     const response = await cloudscraper
       .get(itemLink)
       .then((htmlString) => {
         return htmlString;
       })
       .catch((err) => {
-        console.log(err);
-        console.log(`Error getData ${item}: ${err}`);
+        console.log(`Error getData 1 ${item}: ${err}`);
+        if (err.name === 'CaptchaError') {
+          captcha = true;
+        }
         redirectCount = 1;
       });
 
+    if (captcha) {
+      return [];
+    }
     if (redirectCount === 1) {
       items[0] = {};
       items[0].in_stock = 'Notify Me';
       return items;
     }
+
     const itemType = itemUrlDict.type;
     // console.log("Looking for: " + item);
     // console.log(redirectCount);
@@ -215,7 +226,7 @@ async function getDataFromURL(item) {
     } else if (itemType === 'grab bag') {
       // Boneyard page exists
       if (redirectCount === 0) {
-        items = getRequestDataFromJS(response.text, 'RogueColorSwatches');
+        items = getRequestDataFromJS(response, 'RogueColorSwatches');
       } else {
         items[0] = {};
         items[0].in_stock = 'Notify Me';
@@ -248,7 +259,7 @@ async function getDataFromURL(item) {
       items[0].in_stock = $('.product-options-bottom button').text();
     }
   } catch (error) {
-    console.log(`Error getData ${item}: ${error}`);
+    console.log(`Error getData 2 ${item}: ${error}`);
   }
   // console.log(items);
   return items;
