@@ -88,7 +88,6 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Rogue KG Training 2.0 Plates',
     link: 'https://www.roguefitness.com/rogue-kg-training-2-0-plates',
-    status: 'new',
     last_avail: null,
     category: 'plate',
   },
@@ -116,6 +115,15 @@ const searchUrls = {
     product_name: 'Rogue Color Echo Bumper Plates',
     link: 'https://www.roguefitness.com/rogue-color-echo-bumper-plate',
     last_avail: null,
+    category: 'plate',
+  },
+  'plate deep dish': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue Deep Dish Plates',
+    link: 'https://www.roguefitness.com/rogue-deep-dish-plates',
+    last_avail: null,
+    status: 'new',
     category: 'plate',
   },
   'plate machined': {
@@ -803,6 +811,15 @@ const searchUrls = {
     last_avail: null,
     category: 'm',
   },
+  'm 4-bar hanger': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Monster Rack Mount 4-Bar Hanger',
+    link: 'https://www.roguefitness.com/monster-rack-mount-4-bar-hanger',
+    last_avail: null,
+    status: 'new',
+    category: 'm',
+  },
   'infinity spotter': {
     type: 'multi',
     senderIDs: {},
@@ -1074,6 +1091,15 @@ const searchUrls = {
     link:
       'https://www.roguefitness.com/rogue-iwf-olympic-wl-bar-w-center-knurl-bright-zinc',
     last_avail: null,
+    category: 'barbell',
+  },
+  'barbell iwf cerakote': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Rogue 28MM IWF Olympic Weightlifting Bar - Cerakote',
+    link: 'https://www.roguefitness.com/rogue-28mm-iwf-oly-bar-cerakote',
+    last_avail: null,
+    status: 'new',
     category: 'barbell',
   },
   'rack r-3bt': {
@@ -1781,7 +1807,6 @@ const searchUrls = {
     senderIDs: {},
     product_name: 'Rogue HG 2.0 Axle Collars',
     link: 'https://www.roguefitness.com/rogue-hg-axle-collars',
-    status: 'new',
     last_avail: null,
     category: 'acc',
   },
