@@ -123,7 +123,7 @@ const searchUrls = {
     product_name: 'Rogue Deep Dish Plates',
     link: 'https://www.roguefitness.com/rogue-deep-dish-plates',
     last_avail: null,
-    status: 'new',
+
     category: 'plate',
   },
   'plate machined': {
@@ -817,7 +817,7 @@ const searchUrls = {
     product_name: 'Monster Rack Mount 4-Bar Hanger',
     link: 'https://www.roguefitness.com/monster-rack-mount-4-bar-hanger',
     last_avail: null,
-    status: 'new',
+
     category: 'm',
   },
   'infinity spotter': {
@@ -1099,7 +1099,7 @@ const searchUrls = {
     product_name: 'Rogue 28MM IWF Olympic Weightlifting Bar - Cerakote',
     link: 'https://www.roguefitness.com/rogue-28mm-iwf-oly-bar-cerakote',
     last_avail: null,
-    status: 'new',
+
     category: 'barbell',
   },
   'rack r-3bt': {
@@ -1809,6 +1809,43 @@ const searchUrls = {
     link: 'https://www.roguefitness.com/rogue-hg-axle-collars',
     last_avail: null,
     category: 'acc',
+  },
+  'oso collar': {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'OSO Barbell Collars',
+    status: 'new',
+    link: 'https://www.roguefitness.com/oso-barbell-collars',
+    last_avail: null,
+    category: 'acc',
+  },
+  'ml short storage': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Monster Lite Short Plate Storage Post Pair',
+    status: 'new',
+    link:
+      'https://www.roguefitness.com/monster-lite-short-plate-storage-post-pair',
+    last_avail: null,
+    category: 'ml',
+  },
+  'm straps': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue Monster Safety Strap System 2.0',
+    status: 'new',
+    link: 'https://www.roguefitness.com/rogue-monster-safety-strap-2-0-systems',
+    last_avail: null,
+    category: 'm',
+  },
+  'm plate storage': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Monster Plate Storage Channel',
+    status: 'new',
+    link: 'https://www.roguefitness.com/monster-plate-storage-channel',
+    last_avail: null,
+    category: 'm',
   },
   'uk echo color': {
     type: 'multi',
