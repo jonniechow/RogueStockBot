@@ -27,6 +27,14 @@ Has this project helped you? Consider donating!
 
 ### Updates
 
+v 2.8
+
+- Added new items
+
+v 2.7
+
+- Added new items
+
 v 2.6
 
 - Changed delay to 10 seconds
