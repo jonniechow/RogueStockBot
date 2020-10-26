@@ -33,7 +33,7 @@ v 2.8
 
 v 2.7
 
-- Added new items
+- Added deep dish plates
 
 v 2.6
 
