@@ -27,6 +27,10 @@ Has this project helped you? Consider donating!
 
 ### Updates
 
+v 2.9
+
+- Added new items
+
 v 2.8
 
 - Added new items
