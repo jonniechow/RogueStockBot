@@ -927,6 +927,15 @@ const searchUrls = {
     last_avail: null,
     category: 'cardio',
   },
+  'rower pm5 model e': {
+    type: 'single',
+    senderIDs: {},
+    product_name: 'Black Concept 2 Model E Rower - PM5',
+    link: 'https://www.roguefitness.com/concept2-model-e-rower-pm5-black',
+    last_avail: null,
+    status: 'new',
+    category: 'cardio',
+  },
   // GHD
   'abram ghd': {
     type: 'single',
@@ -1403,7 +1412,6 @@ const searchUrls = {
     product_name: 'Rogue 25MM IWF Olympic Weightlifting Bar - Cerakote',
     link: 'https://www.roguefitness.com/rogue-25mm-iwf-oly-bar-cerakote',
     last_avail: null,
-
     category: 'barbell',
   },
   'barbell westside': {
@@ -1739,6 +1747,63 @@ const searchUrls = {
 
     category: 'acc',
   },
+  'powerblocks commercial': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'PowerBlock Dumbbells - Commercial Use',
+    link: 'https://www.roguefitness.com/powerblocks-commercial-use',
+    status: 'new',
+    last_avail: null,
+    category: 'cond',
+  },
+  'barbell pyrros ss': {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'Rogue Pyrros Bar - 28MM - Stainless Steel',
+    link: 'https://www.roguefitness.com/rogue-pyrros-bar-28mm-stainless-steel',
+    status: 'new',
+    last_avail: null,
+    category: 'barbell',
+  },
+  'barbell ss cerakote': {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'Cerakote Sleeve Barbells',
+    link:
+      'https://www.roguefitness.com/stainless-shaft-cerakote-sleeve-barbells',
+    status: 'new',
+    last_avail: null,
+    category: 'barbell',
+  },
+  versaspot: {
+    type: 'custom2',
+    senderIDs: {},
+    product_name: 'VersaSpot Dumbbell Spotter System',
+    link:
+      'https://www.roguefitness.com/versaspot-dumbbell-spotter-system-black',
+    status: 'new',
+    last_avail: null,
+    category: 'acc',
+  },
+  'ml double plate storage': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Monster Lite Double Change Plate Storage',
+    link:
+      'https://www.roguefitness.com/monsterlite-double-change-plate-storage',
+    status: 'new',
+    last_avail: null,
+    category: 'ml',
+  },
+  'plate technique': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue Technique Plates',
+    link: 'https://www.roguefitness.com/rogue-technique-plates',
+    status: 'new',
+    last_avail: null,
+    category: 'plate',
+  },
   'm lat pulldown stand alone': {
     type: 'single',
     senderIDs: {},
@@ -1814,7 +1879,7 @@ const searchUrls = {
     type: 'custom2',
     senderIDs: {},
     product_name: 'OSO Barbell Collars',
-    status: 'new',
+
     link: 'https://www.roguefitness.com/oso-barbell-collars',
     last_avail: null,
     category: 'acc',
@@ -1823,7 +1888,7 @@ const searchUrls = {
     type: 'multi',
     senderIDs: {},
     product_name: 'Monster Lite Short Plate Storage Post Pair',
-    status: 'new',
+
     link:
       'https://www.roguefitness.com/monster-lite-short-plate-storage-post-pair',
     last_avail: null,
@@ -1833,7 +1898,7 @@ const searchUrls = {
     type: 'multi',
     senderIDs: {},
     product_name: 'Rogue Monster Safety Strap System 2.0',
-    status: 'new',
+
     link: 'https://www.roguefitness.com/rogue-monster-safety-strap-2-0-systems',
     last_avail: null,
     category: 'm',
@@ -1842,7 +1907,7 @@ const searchUrls = {
     type: 'multi',
     senderIDs: {},
     product_name: 'Monster Plate Storage Channel',
-    status: 'new',
+
     link: 'https://www.roguefitness.com/monster-plate-storage-channel',
     last_avail: null,
     category: 'm',
@@ -2041,6 +2106,26 @@ const searchUrls = {
     link: 'https://www.rogueaustralia.com.au/rogue-color-echo-bumper-plate-au',
     last_avail: null,
 
+    category: 'au',
+  },
+  'au ml straps': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'AU Monster Lite Strap Safety System 2.0',
+    link:
+      'https://www.rogueaustralia.com.au/monster-lite-strap-safety-system-2-0-au',
+    last_avail: null,
+    status: 'new',
+    category: 'au',
+  },
+  'au rml-490c': {
+    type: 'rmlc',
+    senderIDs: {},
+    product_name: 'AU Rogue RML-490C Power Rack 3.0',
+    link:
+      'https://www.rogueaustralia.com.au/rogue-rml-490-power-rack-color-3-0-au',
+    last_avail: null,
+    status: 'new',
     category: 'au',
   },
   'barbell squat': {
