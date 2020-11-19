@@ -91,6 +91,14 @@ const searchUrls = {
     last_avail: null,
     category: 'plate',
   },
+  'plate training kg iwf': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'Rogue Color KG Training 2.0 Plates (IWF)',
+    link: 'https://www.roguefitness.com/rogue-color-kg-training-2-0-plates-iwf',
+    last_avail: null,
+    category: 'plate',
+  },
   'plate echo v2': {
     type: 'multi',
     senderIDs: {},
