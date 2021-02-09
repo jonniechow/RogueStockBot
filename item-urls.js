@@ -2017,6 +2017,41 @@ const searchUrls = {
 
     category: 'uk',
   },
+  'uk bike echo': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'UK Rogue Echo Bike',
+    link: 'https://www.rogueeurope.eu/rogue-echo-bike-eu',
+    last_avail: null,
+    category: 'uk',
+  },
+  'uk squat sml-2': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'UK SML-2 Rogue 90" Monster Lite Squat Stand',
+    link:
+      'https://www.rogueeurope.eu/rogue-sml-2c-squat-stand-eu',
+    last_avail: null,
+    category: 'uk',
+  },
+  'uk squat sml-2c': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'UK SML-2C Rogue 90" Monster Lite Squat Stand',
+    link:
+      'https://www.rogueeurope.eu/rogue-sml-2c-squat-stand-eu',
+    last_avail: null,
+    category: 'uk',
+  },
+  'uk squat sml-2': {
+    type: 'multi',
+    senderIDs: {},
+    product_name: 'UK SML-3 Rogue 108" Monster Lite Squat Stand',
+    link:
+      'https://www.rogueeurope.eu/sml-3-rogue-108-monster-lite-squat-stand-7997-eu',
+    last_avail: null,
+    category: 'uk',
+  },
   'au bench ab2': {
     type: 'multi',
     senderIDs: {},
